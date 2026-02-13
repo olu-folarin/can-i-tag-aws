@@ -17,8 +17,13 @@ https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/Welcome.ht
 """
 
 import json
-import boto3
-from botocore.exceptions import ClientError, NoCredentialsError
+try:
+    import boto3
+    from botocore.exceptions import ClientError, NoCredentialsError
+except ImportError:
+    boto3 = None
+    ClientError = Exception
+    NoCredentialsError = Exception
 from pathlib import Path
 from rich.console import Console
 from rich.table import Table
@@ -78,6 +83,10 @@ KNOWN_TAGGING_API_SUPPORTED_SERVICES = [
 
 def get_tagging_api_client(region: str = "eu-west-2"):
     """Create a Resource Groups Tagging API client."""
+    if boto3 is None:
+        raise RuntimeError(
+            "Optional dependency missing: boto3. Install requirements-rgtapi.txt to use this script."
+        )
     try:
         return boto3.client("resourcegroupstaggingapi", region_name=region)
     except NoCredentialsError:
@@ -259,6 +268,9 @@ def main():
     
     try:
         client = get_tagging_api_client()
+    except RuntimeError as e:
+        console.print(f"[red]{e}[/red]")
+        return
     except NoCredentialsError:
         console.print("[red]Please configure AWS credentials and try again.[/red]")
         return

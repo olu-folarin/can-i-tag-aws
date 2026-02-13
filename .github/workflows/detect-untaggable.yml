@@ -30,7 +30,7 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run unit tests
-        run: pytest -q tests/test_parsing.py
+        run: pytest -q tests/test_parsing.py tests/test_rgtapi_smoke.py
 
       - name: Run integration tests
         run: pytest -q tests/test_integration.py

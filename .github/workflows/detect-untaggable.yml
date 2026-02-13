@@ -24,9 +24,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt
+
+      - name: Run unit tests
+        run: pytest -q tests/test_parsing.py
+
+      - name: Run integration tests
+        run: pytest -q tests/test_integration.py
       
       - name: Run detection
         run: python detect_api_taggable.py

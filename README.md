@@ -81,6 +81,20 @@ pip install -r requirements.txt
 python detect_api_taggable.py
 ```
 
+For development/testing:
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
+For optional live validation via Resource Groups Tagging API:
+
+```bash
+pip install -r requirements-rgtapi.txt
+python resource_groups_api/detect_rgtapi.py
+```
+
 Output is saved to `output/` (latest) and `history/` (versioned).
 
 ---

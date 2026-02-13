@@ -13,12 +13,14 @@ permissions:
 jobs:
   detect:
     runs-on: ubuntu-latest
+    env:
+      PR_TOKEN: ${{ secrets.PR_BOT_TOKEN || github.token }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.PR_TOKEN }}
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -56,7 +58,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.PR_TOKEN }}
           commit-message: "chore: update untaggable resources report"
           title: "chore: update untaggable resources report"
           body: |
@@ -70,4 +72,4 @@ jobs:
         if: steps.cpr.outputs.pull-request-number
         run: gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number }}"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ env.PR_TOKEN }}

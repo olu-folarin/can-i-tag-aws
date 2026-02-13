@@ -1,0 +1,52 @@
+name: Detect Untaggable Resources
+
+on:
+  schedule:
+    # Quarterly: 1st of Jan, Apr, Jul, Oct at midnight UTC
+    - cron: '0 0 1 */3 *'
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Run detection
+        run: python detect_api_taggable.py
+      
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update untaggable resources report"
+          title: "chore: update untaggable resources report"
+          body: |
+            Automated update of untaggable resources detection.
+            
+            Run date: ${{ github.run_id }}
+          branch: auto-update-reports
+          delete-branch: true
+      
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-number
+        run: gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

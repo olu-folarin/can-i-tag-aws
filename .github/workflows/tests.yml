@@ -29,9 +29,8 @@ jobs:
         run: pytest -q tests/test_parsing.py
 
   integration:
-    name: Integration tests (non-blocking)
+    name: Integration tests
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     steps:
       - name: Checkout

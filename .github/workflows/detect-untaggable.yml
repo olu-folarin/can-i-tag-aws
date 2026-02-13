@@ -30,6 +30,20 @@ jobs:
       
       - name: Run detection
         run: python detect_api_taggable.py
+
+      - name: Prune history (keep latest 3)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          history_dir = Path("history")
+          if not history_dir.exists():
+              raise SystemExit(0)
+
+          files = sorted(history_dir.glob("api_taggable_resources_*.json"), reverse=True)
+          for f in files[3:]:
+              f.unlink()
+          PY
       
       - name: Create Pull Request
         id: cpr

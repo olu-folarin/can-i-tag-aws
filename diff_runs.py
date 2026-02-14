@@ -10,7 +10,6 @@ Usage:
 import json
 import sys
 from pathlib import Path
-from datetime import datetime
 from rich.console import Console
 from rich.table import Table
 
@@ -65,25 +64,6 @@ def compare_reports(old_report: dict, new_report: dict) -> dict:
             },
         }
     }
-
-
-def save_to_history(report_path: Path) -> Path:
-    """Save current report to history with timestamp."""
-    HISTORY_DIR.mkdir(parents=True, exist_ok=True)
-    
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    history_file = HISTORY_DIR / f"api_taggable_resources_{timestamp}.json"
-    
-    with open(report_path) as f:
-        data = json.load(f)
-    
-    data["run_timestamp"] = timestamp
-    
-    with open(history_file, "w") as f:
-        json.dump(data, f, indent=2)
-    
-    console.print(f"[green]Saved to history: {history_file}[/green]")
-    return history_file
 
 
 def get_latest_history_files() -> tuple[Path | None, Path | None]:

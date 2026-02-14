@@ -166,12 +166,6 @@ CFN_TO_IAM_SERVICE = {
     "socialmessaging": "AWS End User Messaging Social",
 }
 
-
-def get_iam_service_name(cfn_prefix: str) -> str | None:
-    """Get the IAM Authorization Reference service name for a CFN prefix."""
-    return CFN_TO_IAM_SERVICE.get(cfn_prefix.lower())
-
-
 def normalize_for_fuzzy_match(name: str) -> str:
     """Normalize a service name for fuzzy matching as fallback."""
     return (

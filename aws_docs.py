@@ -37,10 +37,12 @@ def get_all_services() -> list[dict]:
         if "list_" in href and href.endswith(".html"):
             service_name = link.get_text(strip=True)
             clean_href = href.lstrip("./")
-            services.append({
-                "name": service_name,
-                "url": f"{SERVICE_AUTH_REF_BASE}/{clean_href}",
-            })
+            services.append(
+                {
+                    "name": service_name,
+                    "url": f"{SERVICE_AUTH_REF_BASE}/{clean_href}",
+                }
+            )
 
     if len(services) < MIN_EXPECTED_SERVICES:
         raise AWSDocStructureError(

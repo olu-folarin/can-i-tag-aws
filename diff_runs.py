@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
+
 from rich.console import Console
 from rich.table import Table
 
@@ -39,14 +40,14 @@ def compare_reports(old_report: dict, new_report: dict) -> dict:
     """Compare two reports and return differences."""
     old_resources = extract_untaggable_set(old_report)
     new_resources = extract_untaggable_set(new_report)
-    
+
     added = new_resources - old_resources
     removed = old_resources - new_resources
     unchanged = old_resources & new_resources
-    
+
     old_summary = old_report.get("summary", {})
     new_summary = new_report.get("summary", {})
-    
+
     return {
         "added": sorted(list(added)),
         "removed": sorted(list(removed)),
@@ -64,7 +65,7 @@ def compare_reports(old_report: dict, new_report: dict) -> dict:
                 "old": old_summary.get("total_untaggable_resources", 0),
                 "new": new_summary.get("total_untaggable_resources", 0),
             },
-        }
+        },
     }
 
 
@@ -72,9 +73,9 @@ def get_latest_history_files() -> tuple[Path | None, Path | None]:
     """Get the two most recent history files."""
     if not HISTORY_DIR.exists():
         return None, None
-    
+
     files = sorted(HISTORY_DIR.glob("api_taggable_resources_*.json"), reverse=True)
-    
+
     if len(files) >= 2:
         return files[1], files[0]
     elif len(files) == 1:
@@ -85,38 +86,38 @@ def get_latest_history_files() -> tuple[Path | None, Path | None]:
 def display_diff(diff: dict) -> None:
     """Display the diff results."""
     console.print("\n[bold cyan]═══ DIFF RESULTS ═══[/bold cyan]\n")
-    
+
     table = Table(title="Summary Changes")
     table.add_column("Metric", style="cyan")
     table.add_column("Previous", style="yellow")
     table.add_column("Current", style="green")
     table.add_column("Change", style="magenta")
-    
+
     for metric, values in diff["summary_changes"].items():
         old_val = values["old"]
         new_val = values["new"]
         change = new_val - old_val
         change_str = f"+{change}" if change > 0 else str(change)
         table.add_row(metric.replace("_", " ").title(), str(old_val), str(new_val), change_str)
-    
+
     console.print(table)
-    
+
     console.print(f"\n[bold]Unchanged resources: {diff['unchanged_count']}[/bold]")
-    
+
     if diff["added"]:
         console.print(f"\n[bold green]ADDED ({len(diff['added'])}):[/bold green]")
         for service, resource in diff["added"][:20]:
             console.print(f"  + {service}: {resource}")
         if len(diff["added"]) > 20:
             console.print(f"  ... and {len(diff['added']) - 20} more")
-    
+
     if diff["removed"]:
         console.print(f"\n[bold red]REMOVED ({len(diff['removed'])}):[/bold red]")
         for service, resource in diff["removed"][:20]:
             console.print(f"  - {service}: {resource}")
         if len(diff["removed"]) > 20:
             console.print(f"  ... and {len(diff['removed']) - 20} more")
-    
+
     if not diff["added"] and not diff["removed"]:
         console.print("\n[bold green]No changes detected![/bold green]")
 
@@ -134,24 +135,24 @@ def main():
     else:
         console.print("Usage: python diff_runs.py [old_file.json] [new_file.json]")
         return
-    
+
     if not old_file.exists():
         console.print(f"[red]File not found: {old_file}[/red]")
         return
     if not new_file.exists():
         console.print(f"[red]File not found: {new_file}[/red]")
         return
-    
-    console.print(f"[blue]Comparing:[/blue]")
+
+    console.print("[blue]Comparing:[/blue]")
     console.print(f"  Old: {old_file}")
     console.print(f"  New: {new_file}")
-    
+
     old_report = load_report(old_file)
     new_report = load_report(new_file)
-    
+
     diff = compare_reports(old_report, new_report)
     display_diff(diff)
-    
+
     diff_output = OUTPUT_DIR / "diff_report.json"
     with open(diff_output, "w") as f:
         json.dump(diff, f, indent=2, default=str)

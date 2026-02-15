@@ -1,10 +1,8 @@
 """Tests for HTML parsing functions."""
 
-import pytest
 from bs4 import BeautifulSoup
 
 from detect_api_taggable import extract_resource_types_with_tagging_info, extract_tagging_actions_and_resources
-
 
 SAMPLE_RESOURCE_TYPES_HTML = """
 <html>
@@ -92,22 +90,22 @@ class TestExtractResourceTypesWithTaggingInfo:
         soup = BeautifulSoup(SAMPLE_RESOURCE_TYPES_HTML, "lxml")
         result = extract_resource_types_with_tagging_info(soup)
         resources = result["all_resources"]
-        
+
         assert "instance" in resources
         assert "volume" in resources
         assert "snapshot" in resources
-    
+
     def test_returns_empty_list_when_no_table(self):
         soup = BeautifulSoup("<html><body><h2>No table here</h2></body></html>", "lxml")
         result = extract_resource_types_with_tagging_info(soup)
-        
+
         assert result["all_resources"] == []
         assert result["resources_with_tag_condition"] == []
-    
+
     def test_returns_empty_list_when_no_resource_section(self):
         soup = BeautifulSoup("<html><body><h2>Actions</h2><table></table></body></html>", "lxml")
         result = extract_resource_types_with_tagging_info(soup)
-        
+
         assert result["all_resources"] == []
         assert result["resources_with_tag_condition"] == []
 
@@ -116,26 +114,26 @@ class TestExtractTaggingActionsAndResources:
     def test_extracts_tagging_actions(self):
         soup = BeautifulSoup(SAMPLE_ACTIONS_HTML, "lxml")
         result = extract_tagging_actions_and_resources(soup)
-        
+
         assert "createtags" in result["tagging_actions"]
-    
+
     def test_extracts_taggable_resources(self):
         soup = BeautifulSoup(SAMPLE_ACTIONS_HTML, "lxml")
         result = extract_tagging_actions_and_resources(soup)
-        
+
         assert "instance" in result["taggable_resources"]
         assert "volume" in result["taggable_resources"]
-    
+
     def test_returns_empty_when_no_tagging_actions(self):
         soup = BeautifulSoup(SAMPLE_NO_TAGGING_HTML, "lxml")
         result = extract_tagging_actions_and_resources(soup)
-        
+
         assert result["tagging_actions"] == []
         assert result["taggable_resources"] == []
-    
+
     def test_returns_empty_when_no_actions_section(self):
         soup = BeautifulSoup("<html><body><h2>Resource types</h2></body></html>", "lxml")
         result = extract_tagging_actions_and_resources(soup)
-        
+
         assert result["tagging_actions"] == []
         assert result["taggable_resources"] == []

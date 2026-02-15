@@ -1,10 +1,12 @@
 """Shared caching configuration for AWS documentation requests."""
 
-import requests_cache
 from pathlib import Path
+
+import requests_cache
 
 CACHE_DIR = Path(__file__).parent / ".cache"
 CACHE_DIR.mkdir(exist_ok=True)
+
 
 def get_cached_session(expire_after: int = 86400) -> requests_cache.CachedSession:
     """Get a cached requests session. Default expiry: 24 hours."""

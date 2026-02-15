@@ -166,13 +166,7 @@ CFN_TO_IAM_SERVICE = {
     "socialmessaging": "AWS End User Messaging Social",
 }
 
+
 def normalize_for_fuzzy_match(name: str) -> str:
     """Normalize a service name for fuzzy matching as fallback."""
-    return (
-        name.lower()
-        .replace(" ", "")
-        .replace("-", "")
-        .replace("_", "")
-        .replace("amazon", "")
-        .replace("aws", "")
-    )
+    return name.lower().replace(" ", "").replace("-", "").replace("_", "").replace("amazon", "").replace("aws", "")

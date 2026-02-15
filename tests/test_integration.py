@@ -9,6 +9,7 @@ These tests verify:
 Run with: pytest tests/test_integration.py -v
 """
 
+import pytest
 import requests
 
 from constants import (
@@ -17,6 +18,8 @@ from constants import (
     SERVICE_AUTH_REF_BASE,
     SERVICE_AUTH_REF_TOC,
 )
+
+pytestmark = pytest.mark.integration
 
 
 class TestAWSDocAccessibility:

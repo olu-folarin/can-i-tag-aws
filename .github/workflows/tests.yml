@@ -49,7 +49,7 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run unit tests
-        run: pytest -q tests/test_parsing.py tests/test_rgtapi_smoke.py
+        run: pytest -q -m "not integration"
 
   integration:
     name: Integration tests
@@ -69,4 +69,4 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run integration tests
-        run: pytest -q tests/test_integration.py
+        run: pytest -q -m integration

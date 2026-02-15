@@ -27,48 +27,17 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from aws_docs import get_all_services
 from cache_config import get_cached_session
 from constants import (
     DEFAULT_HTTP_TIMEOUT,
     MAX_RETRIES,
-    MIN_EXPECTED_SERVICES,
     RETRY_DELAY,
-    SERVICE_AUTH_REF_BASE,
-    SERVICE_AUTH_REF_TOC,
     TAGGING_ACTION_PATTERNS,
 )
-from exceptions import AWSDocStructureError
 
 console = Console()
 session = get_cached_session()
-
-
-def get_all_services() -> list[dict]:
-    """Fetch all AWS services from IAM Authorization Reference."""
-    console.print("[blue]Fetching AWS services from IAM Authorization Reference...[/blue]")
-    
-    response = session.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
-    response.raise_for_status()
-    soup = BeautifulSoup(response.text, "lxml")
-    
-    services = []
-    for link in soup.find_all("a", href=True):
-        href = link.get("href", "")
-        if "list_" in href and href.endswith(".html"):
-            service_name = link.get_text(strip=True)
-            clean_href = href.lstrip("./")
-            services.append({
-                "name": service_name,
-                "url": f"{SERVICE_AUTH_REF_BASE}/{clean_href}",
-            })
-    
-    if len(services) < MIN_EXPECTED_SERVICES:
-        raise AWSDocStructureError(
-            f"Expected at least {MIN_EXPECTED_SERVICES} services, found {len(services)}. "
-            "AWS documentation structure may have changed."
-        )
-    
-    return services
 
 
 def extract_service_prefix(soup: BeautifulSoup) -> str:

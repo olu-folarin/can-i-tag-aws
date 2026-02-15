@@ -13,40 +13,15 @@ Related scripts:
 """
 
 import json
-from bs4 import BeautifulSoup
 from pathlib import Path
 from rich.console import Console
 from rich.table import Table
+from aws_docs import get_all_services
 from cache_config import get_cached_session
-from constants import (
-    DEFAULT_HTTP_TIMEOUT,
-    SERVICE_AUTH_REF_BASE,
-    SERVICE_AUTH_REF_TOC,
-)
+from constants import DEFAULT_HTTP_TIMEOUT
 
 console = Console()
 session = get_cached_session()
-
-
-def get_all_services() -> list[dict]:
-    """Fetch all AWS services from IAM Authorization Reference."""
-    console.print("[blue]Fetching AWS services from IAM Authorization Reference...[/blue]")
-    
-    response = session.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
-    soup = BeautifulSoup(response.text, "lxml")
-    
-    services = []
-    for link in soup.find_all("a", href=True):
-        href = link.get("href", "")
-        if "list_" in href and href.endswith(".html"):
-            service_name = link.get_text(strip=True)
-            clean_href = href.lstrip("./")
-            services.append({
-                "name": service_name,
-                "url": f"{SERVICE_AUTH_REF_BASE}/{clean_href}",
-            })
-    
-    return services
 
 
 def check_tagging_support(service_url: str) -> dict:

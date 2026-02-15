@@ -212,29 +212,13 @@ def analyze_service(service: dict) -> dict:
         }
 
 
-def main():
-    console.print("[bold]AWS Resource-Level Tagging Detection (API Source of Truth)[/bold]")
-    console.print("[dim]Parsing IAM Service Authorization Reference for resource-level tagging support[/dim]\n")
+def classify_results(
+    results: list[dict],
+) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+    """Classify analyzed services into categories.
 
-    services = get_all_services()
-    console.print(f"[green]Found {len(services)} AWS services[/green]")
-
-    results = []
-
-    console.print("[blue]Analyzing services for resource-level tagging...[/blue]")
-
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = {executor.submit(analyze_service, svc): svc for svc in services}
-
-        completed = 0
-        for future in as_completed(futures):
-            completed += 1
-            if completed % 50 == 0:
-                console.print(f"  Progress: {completed}/{len(services)}")
-
-            result = future.result()
-            results.append(result)
-
+    Returns (no_tagging_api, has_tagging_api, mixed_services, errors).
+    """
     no_tagging_api = []
     has_tagging_api = []
     mixed_services = []
@@ -250,6 +234,57 @@ def main():
             if r.get("untaggable_resources"):
                 mixed_services.append(r)
 
+    return no_tagging_api, has_tagging_api, mixed_services, errors
+
+
+def build_report(
+    services: list[dict],
+    no_tagging_api: list[dict],
+    has_tagging_api: list[dict],
+    mixed_services: list[dict],
+) -> dict:
+    """Build the detection report from classified results."""
+    all_untaggable = []
+
+    for svc in no_tagging_api:
+        for res in svc.get("all_resources", []):
+            all_untaggable.append({"resource": res, "service": svc["name"], "reason": "service_no_tagging_api"})
+
+    for svc in mixed_services:
+        for res in svc.get("untaggable_resources", []):
+            all_untaggable.append(
+                {"resource": res, "service": svc["name"], "reason": "resource_not_in_tag_action_scope"}
+            )
+
+    return {
+        "summary": {
+            "total_services": len(services),
+            "services_without_tagging_api": len(no_tagging_api),
+            "services_with_tagging_api": len(has_tagging_api),
+            "mixed_services": len(mixed_services),
+            "total_untaggable_resources": len(all_untaggable),
+        },
+        "untaggable_resources": all_untaggable,
+        "services_without_tagging_api": [s["name"] for s in no_tagging_api],
+        "mixed_services_detail": [
+            {
+                "name": s["name"],
+                "taggable": s["taggable_resources"],
+                "untaggable": s["untaggable_resources"],
+            }
+            for s in mixed_services
+        ],
+    }
+
+
+def display_results(
+    no_tagging_api: list[dict],
+    has_tagging_api: list[dict],
+    mixed_services: list[dict],
+    errors: list[dict],
+    report: dict,
+) -> None:
+    """Display the analysis results to the console."""
     if errors:
         console.print(f"\n[bold red]WARNING: {len(errors)} services failed to parse[/bold red]")
         for err in errors[:5]:
@@ -281,40 +316,42 @@ def main():
                 f"  [red]Untaggable: {', '.join(svc['untaggable_resources'][:5])}{'...' if len(svc['untaggable_resources']) > 5 else ''}[/red]"
             )
 
+    console.print(
+        f"\n[bold]Total untaggable resources identified: {report['summary']['total_untaggable_resources']}[/bold]"
+    )
+    console.print("[dim]Run 'python diff_runs.py' to compare with previous runs[/dim]")
+
+
+def main():
+    console.print("[bold]AWS Resource-Level Tagging Detection (API Source of Truth)[/bold]")
+    console.print("[dim]Parsing IAM Service Authorization Reference for resource-level tagging support[/dim]\n")
+
+    services = get_all_services()
+    console.print(f"[green]Found {len(services)} AWS services[/green]")
+
+    results = []
+
+    console.print("[blue]Analyzing services for resource-level tagging...[/blue]")
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(analyze_service, svc): svc for svc in services}
+
+        completed = 0
+        for future in as_completed(futures):
+            completed += 1
+            if completed % 50 == 0:
+                console.print(f"  Progress: {completed}/{len(services)}")
+
+            result = future.result()
+            results.append(result)
+
+    no_tagging_api, has_tagging_api, mixed_services, errors = classify_results(results)
+    report = build_report(services, no_tagging_api, has_tagging_api, mixed_services)
+
+    display_results(no_tagging_api, has_tagging_api, mixed_services, errors, report)
+
     output_dir = Path(__file__).parent / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    all_untaggable = []
-
-    for svc in no_tagging_api:
-        for res in svc.get("all_resources", []):
-            all_untaggable.append({"resource": res, "service": svc["name"], "reason": "service_no_tagging_api"})
-
-    for svc in mixed_services:
-        for res in svc.get("untaggable_resources", []):
-            all_untaggable.append(
-                {"resource": res, "service": svc["name"], "reason": "resource_not_in_tag_action_scope"}
-            )
-
-    report = {
-        "summary": {
-            "total_services": len(services),
-            "services_without_tagging_api": len(no_tagging_api),
-            "services_with_tagging_api": len(has_tagging_api),
-            "mixed_services": len(mixed_services),
-            "total_untaggable_resources": len(all_untaggable),
-        },
-        "untaggable_resources": all_untaggable,
-        "services_without_tagging_api": [s["name"] for s in no_tagging_api],
-        "mixed_services_detail": [
-            {
-                "name": s["name"],
-                "taggable": s["taggable_resources"],
-                "untaggable": s["untaggable_resources"],
-            }
-            for s in mixed_services
-        ],
-    }
 
     output_file = output_dir / "api_taggable_resources.json"
     with open(output_file, "w") as f:
@@ -330,8 +367,6 @@ def main():
 
     console.print(f"\n[green]Report saved to {output_file}[/green]")
     console.print(f"[green]History saved to {history_file}[/green]")
-    console.print(f"\n[bold]Total untaggable resources identified: {len(all_untaggable)}[/bold]")
-    console.print("[dim]Run 'python diff_runs.py' to compare with previous runs[/dim]")
 
 
 if __name__ == "__main__":

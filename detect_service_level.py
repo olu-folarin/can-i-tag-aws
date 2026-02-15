@@ -64,61 +64,34 @@ def check_tagging_support(service_url: str) -> dict:
         }
 
 
-def main():
-    console.print("[bold]AWS Services Without Tagging Support (API Level)[/bold]")
-    console.print("[dim]Source of truth for SCP policies - applies to all creation methods[/dim]\n")
-
-    services = get_all_services()
-    console.print(f"[green]Found {len(services)} AWS services[/green]")
-
+def classify_results(
+    services: list[dict],
+) -> tuple[list[dict], list[dict], list[dict]]:
+    """Classify analyzed services into taggable, untaggable, and error buckets."""
     taggable = []
     untaggable = []
     errors = []
 
-    console.print("[blue]Analyzing all services for tagging API support...[/blue]")
+    for service in services:
+        info = service.get("tagging_info", {})
+        if info.get("error"):
+            errors.append(service)
+        elif info.get("has_tagging"):
+            taggable.append(service)
+        else:
+            untaggable.append(service)
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = {executor.submit(check_tagging_support, svc["url"]): svc for svc in services}
+    return taggable, untaggable, errors
 
-        completed = 0
-        for future in as_completed(futures):
-            completed += 1
-            if completed % 50 == 0:
-                console.print(f"  Progress: {completed}/{len(services)}")
 
-            service = futures[future]
-            result = future.result()
-            service["tagging_info"] = result
-
-            if result.get("error"):
-                errors.append(service)
-            elif result["has_tagging"]:
-                taggable.append(service)
-            else:
-                untaggable.append(service)
-
-    console.print("\n[bold cyan]═══ RESULTS ═══[/bold cyan]\n")
-
-    table = Table(title="API-Level Tagging Support")
-    table.add_column("Category", style="cyan")
-    table.add_column("Count", style="magenta")
-
-    table.add_row("Services WITH tagging API", str(len(taggable)))
-    table.add_row("Services WITHOUT tagging API", str(len(untaggable)))
-    table.add_row("Errors", str(len(errors)))
-
-    console.print(table)
-
-    console.print(f"\n[bold red]AWS SERVICES THAT DO NOT SUPPORT TAGGING ({len(untaggable)}):[/bold red]")
-    console.print("[dim]These cannot be tagged via ANY method - CFN, Terraform, Console, or CLI[/dim]\n")
-
-    for svc in sorted(untaggable, key=lambda x: x["name"]):
-        console.print(f"  - {svc['name']}")
-
-    output_dir = Path(__file__).parent / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    report = {
+def build_report(
+    services: list[dict],
+    taggable: list[dict],
+    untaggable: list[dict],
+    errors: list[dict],
+) -> dict:
+    """Build the service-level report from classified results."""
+    return {
         "summary": {
             "total_services": len(services),
             "taggable_services": len(taggable),
@@ -145,15 +118,69 @@ def main():
         },
     }
 
-    output_file = output_dir / "service_level_untaggable.json"
-    with open(output_file, "w") as f:
-        json.dump(report, f, indent=2)
 
-    console.print(f"\n[green]Report saved to {output_file}[/green]")
+def display_results(
+    taggable: list[dict],
+    untaggable: list[dict],
+    errors: list[dict],
+) -> None:
+    """Display the analysis results to the console."""
+    console.print("\n[bold cyan]═══ RESULTS ═══[/bold cyan]\n")
+
+    table = Table(title="API-Level Tagging Support")
+    table.add_column("Category", style="cyan")
+    table.add_column("Count", style="magenta")
+
+    table.add_row("Services WITH tagging API", str(len(taggable)))
+    table.add_row("Services WITHOUT tagging API", str(len(untaggable)))
+    table.add_row("Errors", str(len(errors)))
+
+    console.print(table)
+
+    console.print(f"\n[bold red]AWS SERVICES THAT DO NOT SUPPORT TAGGING ({len(untaggable)}):[/bold red]")
+    console.print("[dim]These cannot be tagged via ANY method - CFN, Terraform, Console, or CLI[/dim]\n")
+
+    for svc in sorted(untaggable, key=lambda x: x["name"]):
+        console.print(f"  - {svc['name']}")
 
     console.print(
         f"\n[bold]BOTTOM LINE: {len(untaggable)} AWS services have no tagging support at the API level[/bold]"
     )
+
+
+def main():
+    console.print("[bold]AWS Services Without Tagging Support (API Level)[/bold]")
+    console.print("[dim]Source of truth for SCP policies - applies to all creation methods[/dim]\n")
+
+    services = get_all_services()
+    console.print(f"[green]Found {len(services)} AWS services[/green]")
+
+    console.print("[blue]Analyzing all services for tagging API support...[/blue]")
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(check_tagging_support, svc["url"]): svc for svc in services}
+
+        completed = 0
+        for future in as_completed(futures):
+            completed += 1
+            if completed % 50 == 0:
+                console.print(f"  Progress: {completed}/{len(services)}")
+
+            service = futures[future]
+            result = future.result()
+            service["tagging_info"] = result
+
+    taggable, untaggable, errors = classify_results(services)
+    report = build_report(services, taggable, untaggable, errors)
+
+    display_results(taggable, untaggable, errors)
+
+    output_dir = Path(__file__).parent / "output"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "service_level_untaggable.json"
+    with open(output_file, "w") as f:
+        json.dump(report, f, indent=2)
+    console.print(f"\n[green]Report saved to {output_file}[/green]")
 
 
 if __name__ == "__main__":

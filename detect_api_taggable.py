@@ -27,6 +27,7 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import requests
 from aws_docs import get_all_services
 from cache_config import get_cached_session
 from constants import (
@@ -35,6 +36,7 @@ from constants import (
     RETRY_DELAY,
     TAGGING_ACTION_PATTERNS,
 )
+from exceptions import AWSDocParsingError
 
 console = Console()
 session = get_cached_session()
@@ -98,14 +100,6 @@ def extract_resource_types_with_tagging_info(soup: BeautifulSoup) -> dict:
     }
 
 
-def extract_resource_types(soup: BeautifulSoup) -> list[str]:
-    """Extract all resource types from the Resource types table.
-
-    Kept for backwards compatibility with existing unit tests and any external usage.
-    """
-    return extract_resource_types_with_tagging_info(soup)["all_resources"]
-
-
 def extract_tagging_actions_and_resources(soup: BeautifulSoup) -> dict:
     """Extract tagging actions and which resources they apply to."""
     tagging_actions = []
@@ -165,7 +159,7 @@ def fetch_with_retry(url: str, max_retries: int = MAX_RETRIES) -> str:
             response = session.get(url, timeout=DEFAULT_HTTP_TIMEOUT)
             response.raise_for_status()
             return response.text
-        except Exception as e:
+        except requests.RequestException as e:
             last_error = e
             if attempt < max_retries - 1:
                 delay = RETRY_DELAY * (2 ** attempt)
@@ -208,7 +202,7 @@ def analyze_service(service: dict) -> dict:
             "tagging_actions": tagging_info["tagging_actions"],
             "resources_with_tag_condition": list(resources_with_tag_condition),
         }
-    except Exception as e:
+    except (requests.RequestException, ValueError, AttributeError, AWSDocParsingError) as e:
         return {
             "name": service["name"],
             "url": service["url"],

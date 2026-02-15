@@ -28,24 +28,26 @@ from rich.console import Console
 from rich.table import Table
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from cache_config import get_cached_session
+from constants import (
+    DEFAULT_HTTP_TIMEOUT,
+    MAX_RETRIES,
+    MIN_EXPECTED_SERVICES,
+    RETRY_DELAY,
+    SERVICE_AUTH_REF_BASE,
+    SERVICE_AUTH_REF_TOC,
+    TAGGING_ACTION_PATTERNS,
+)
 from exceptions import AWSDocStructureError
 
 console = Console()
 session = get_cached_session()
-
-MIN_EXPECTED_SERVICES = 400
-MAX_RETRIES = 3
-RETRY_DELAY = 2
-
-SERVICE_AUTH_REF_BASE = "https://docs.aws.amazon.com/service-authorization/latest/reference"
-SERVICE_AUTH_REF_TOC = f"{SERVICE_AUTH_REF_BASE}/reference_policies_actions-resources-contextkeys.html"
 
 
 def get_all_services() -> list[dict]:
     """Fetch all AWS services from IAM Authorization Reference."""
     console.print("[blue]Fetching AWS services from IAM Authorization Reference...[/blue]")
     
-    response = session.get(SERVICE_AUTH_REF_TOC, timeout=30)
+    response = session.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "lxml")
     
@@ -170,11 +172,7 @@ def extract_tagging_actions_and_resources(soup: BeautifulSoup) -> dict:
             action_link = action_cell.find("a")
             action_text = (action_link.get_text(strip=True) if action_link else action_cell.get_text(strip=True)).lower()
             
-            is_tagging = any(pattern in action_text for pattern in [
-                "tagresource", "untagresource", 
-                "createtags", "deletetags",
-                "addtags", "removetags"
-            ])
+            is_tagging = any(pattern in action_text for pattern in TAGGING_ACTION_PATTERNS)
             
             if is_tagging:
                 tagging_actions.append(action_text)
@@ -195,7 +193,7 @@ def fetch_with_retry(url: str, max_retries: int = MAX_RETRIES) -> str:
     last_error = None
     for attempt in range(max_retries):
         try:
-            response = session.get(url, timeout=30)
+            response = session.get(url, timeout=DEFAULT_HTTP_TIMEOUT)
             response.raise_for_status()
             return response.text
         except Exception as e:

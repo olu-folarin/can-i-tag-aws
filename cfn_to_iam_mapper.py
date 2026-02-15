@@ -39,8 +39,6 @@ def load_service_level_data(output_dir: Path) -> dict:
 
 def get_cfn_resources() -> dict:
     """Get all CFN resource types grouped by service."""
-    console.print("[blue]Fetching CloudFormation resource types...[/blue]")
-
     spec = session.get(CFN_SPEC_URL, timeout=DEFAULT_HTTP_TIMEOUT).json()
     resource_types = spec.get("ResourceTypes", {})
 
@@ -108,51 +106,16 @@ def identify_resource_level_untaggables(
     return results
 
 
-def generate_report(results: dict, output_dir: Path) -> None:
-    """Generate the resource-level report."""
-
-    console.print("\n[bold cyan]═══ RESOURCE-LEVEL ANALYSIS ═══[/bold cyan]\n")
-
+def build_report(results: dict) -> dict:
+    """Build the resource-level analysis report from classification results."""
     taggable_svc_resources = sum(len(v["resources"]) for v in results["in_taggable_services"].values())
     untaggable_svc_resources = sum(len(v["resources"]) for v in results["in_untaggable_services"].values())
-    unknown_resources = sum(len(v["resources"]) for v in results["unknown_services"].values())
-
-    table = Table(title="Resource Distribution")
-    table.add_column("Category", style="cyan")
-    table.add_column("Services", style="magenta")
-    table.add_column("Resources", style="green")
-
-    table.add_row(
-        "In taggable services",
-        str(len(results["in_taggable_services"])),
-        str(taggable_svc_resources),
-    )
-    table.add_row(
-        "In untaggable services",
-        str(len(results["in_untaggable_services"])),
-        str(untaggable_svc_resources),
-    )
-    table.add_row(
-        "Unknown services",
-        str(len(results["unknown_services"])),
-        str(unknown_resources),
-    )
-
-    console.print(table)
-
-    console.print("\n[bold red]RESOURCES IN UNTAGGABLE SERVICES[/bold red]")
-    console.print("[dim]All resources in these services cannot be tagged[/dim]\n")
 
     all_untaggable_resources = []
-    for service, data in sorted(results["in_untaggable_services"].items()):
-        console.print(f"[yellow]{service}[/yellow] ({data['matched_service']})")
-        for r in data["resources"]:
-            console.print(f"  - {r}")
-            all_untaggable_resources.append(r)
+    for _service, data in sorted(results["in_untaggable_services"].items()):
+        all_untaggable_resources.extend(data["resources"])
 
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    report = {
+    return {
         "summary": {
             "services_with_tagging_api": len(results["in_taggable_services"]),
             "resources_in_taggable_services": taggable_svc_resources,
@@ -167,13 +130,45 @@ def generate_report(results: dict, output_dir: Path) -> None:
         "details": results,
     }
 
-    output_file = output_dir / "resource_level_analysis.json"
-    with open(output_file, "w") as f:
-        json.dump(report, f, indent=2)
 
-    console.print(f"\n[green]Report saved to {output_file}[/green]")
+def display_results(results: dict, report: dict) -> None:
+    """Display the analysis results to the console."""
+    console.print("\n[bold cyan]═══ RESOURCE-LEVEL ANALYSIS ═══[/bold cyan]\n")
 
-    console.print(f"\n[bold]Total resources in untaggable services: {len(all_untaggable_resources)}[/bold]")
+    summary = report["summary"]
+
+    table = Table(title="Resource Distribution")
+    table.add_column("Category", style="cyan")
+    table.add_column("Services", style="magenta")
+    table.add_column("Resources", style="green")
+
+    table.add_row(
+        "In taggable services",
+        str(summary["services_with_tagging_api"]),
+        str(summary["resources_in_taggable_services"]),
+    )
+    table.add_row(
+        "In untaggable services",
+        str(summary["services_without_tagging_api"]),
+        str(summary["resources_in_untaggable_services"]),
+    )
+    table.add_row(
+        "Unknown services",
+        str(summary["unknown_services"]),
+        str(len(report.get("resources_needing_verification", {}))),
+    )
+
+    console.print(table)
+
+    console.print("\n[bold red]RESOURCES IN UNTAGGABLE SERVICES[/bold red]")
+    console.print("[dim]All resources in these services cannot be tagged[/dim]\n")
+
+    for service, data in sorted(results["in_untaggable_services"].items()):
+        console.print(f"[yellow]{service}[/yellow] ({data['matched_service']})")
+        for r in data["resources"]:
+            console.print(f"  - {r}")
+
+    console.print(f"\n[bold]Total resources in untaggable services: {len(report['untaggable_resources'])}[/bold]")
     console.print("\n[yellow]Note: Resources in taggable services need manual verification[/yellow]")
     console.print("[yellow]to determine which specific resources don't support tagging.[/yellow]")
 
@@ -192,12 +187,21 @@ def main():
     console.print(f"[green]Loaded {len(service_data['taggable_services'])} taggable services[/green]")
     console.print(f"[green]Loaded {len(service_data['untaggable_services'])} untaggable services[/green]")
 
+    console.print("[blue]Fetching CloudFormation resource types...[/blue]")
     cfn_resources = get_cfn_resources()
     total_resources = sum(len(r) for r in cfn_resources.values())
     console.print(f"[green]Found {total_resources} resource types across {len(cfn_resources)} services[/green]")
 
     results = identify_resource_level_untaggables(cfn_resources, service_data)
-    generate_report(results, output_dir)
+    report = build_report(results)
+
+    display_results(results, report)
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "resource_level_analysis.json"
+    with open(output_file, "w") as f:
+        json.dump(report, f, indent=2)
+    console.print(f"\n[green]Report saved to {output_file}[/green]")
 
 
 if __name__ == "__main__":

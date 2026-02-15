@@ -1,6 +1,26 @@
 """Tests for diff_runs.py comparison logic."""
 
-from diff_runs import compare_reports, extract_untaggable_set
+from pathlib import Path
+
+import pytest
+
+from diff_runs import compare_reports, extract_untaggable_set, parse_args
+
+
+class TestParseArgs:
+    def test_both_positional_args(self):
+        args = parse_args(["old.json", "new.json"])
+        assert args.old_file == Path("old.json")
+        assert args.new_file == Path("new.json")
+
+    def test_no_args_defaults_to_none(self):
+        args = parse_args([])
+        assert args.old_file is None
+        assert args.new_file is None
+
+    def test_one_arg_errors(self):
+        with pytest.raises(SystemExit):
+            parse_args(["only_one.json"])
 
 
 class TestExtractUntaggableSet:

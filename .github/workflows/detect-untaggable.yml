@@ -2,8 +2,8 @@ name: Detect Untaggable Resources
 
 on:
   schedule:
-    # Quarterly: 1st of Jan, Apr, Jul, Oct at midnight UTC
-    - cron: '0 0 1 */3 *'
+    # Weekly: Monday 6am UTC
+    - cron: '0 6 * * 1'
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
@@ -32,10 +32,10 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run unit tests
-        run: pytest -q tests/test_parsing.py tests/test_rgtapi_smoke.py
+        run: pytest -q -m "not integration"
 
       - name: Run integration tests
-        run: pytest -q tests/test_integration.py
+        run: pytest -q -m integration
       
       - name: Run detection
         run: python detect_api_taggable.py

@@ -12,9 +12,12 @@ Run with: pytest tests/test_integration.py -v
 import pytest
 import requests
 
-SERVICE_AUTH_REF_BASE = "https://docs.aws.amazon.com/service-authorization/latest/reference"
-SERVICE_AUTH_REF_TOC = f"{SERVICE_AUTH_REF_BASE}/reference_policies_actions-resources-contextkeys.html"
-CFN_SPEC_URL = "https://d1uauaxba7bl26.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json"
+from constants import (
+    CFN_SPEC_URL,
+    DEFAULT_HTTP_TIMEOUT,
+    SERVICE_AUTH_REF_BASE,
+    SERVICE_AUTH_REF_TOC,
+)
 
 
 class TestAWSDocAccessibility:
@@ -22,13 +25,13 @@ class TestAWSDocAccessibility:
     
     def test_iam_service_auth_ref_toc_accessible(self):
         """Verify IAM Service Authorization Reference TOC is accessible."""
-        response = requests.get(SERVICE_AUTH_REF_TOC, timeout=30)
+        response = requests.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
         assert response.status_code == 200
         assert "Actions, resources, and condition keys" in response.text
     
     def test_cfn_spec_accessible(self):
         """Verify CloudFormation spec is accessible."""
-        response = requests.get(CFN_SPEC_URL, timeout=30)
+        response = requests.get(CFN_SPEC_URL, timeout=DEFAULT_HTTP_TIMEOUT)
         assert response.status_code == 200
         data = response.json()
         assert "ResourceTypes" in data
@@ -41,7 +44,7 @@ class TestAWSDocStructure:
         """Verify we find a reasonable number of services."""
         from bs4 import BeautifulSoup
         
-        response = requests.get(SERVICE_AUTH_REF_TOC, timeout=30)
+        response = requests.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
         soup = BeautifulSoup(response.text, "lxml")
         
         services = []
@@ -57,7 +60,7 @@ class TestAWSDocStructure:
         from bs4 import BeautifulSoup
         
         ec2_url = f"{SERVICE_AUTH_REF_BASE}/list_amazonec2.html"
-        response = requests.get(ec2_url, timeout=30)
+        response = requests.get(ec2_url, timeout=DEFAULT_HTTP_TIMEOUT)
         soup = BeautifulSoup(response.text, "lxml")
         
         tables = soup.find_all("table")
@@ -69,7 +72,7 @@ class TestAWSDocStructure:
     
     def test_cfn_spec_has_expected_resource_count(self):
         """Verify CFN spec has a reasonable number of resource types."""
-        response = requests.get(CFN_SPEC_URL, timeout=30)
+        response = requests.get(CFN_SPEC_URL, timeout=DEFAULT_HTTP_TIMEOUT)
         data = response.json()
         
         resource_types = data.get("ResourceTypes", {})
@@ -84,7 +87,7 @@ class TestSampleServiceParsing:
         from bs4 import BeautifulSoup
         
         ec2_url = f"{SERVICE_AUTH_REF_BASE}/list_amazonec2.html"
-        response = requests.get(ec2_url, timeout=30)
+        response = requests.get(ec2_url, timeout=DEFAULT_HTTP_TIMEOUT)
         soup = BeautifulSoup(response.text, "lxml")
         
         text = soup.get_text().lower()
@@ -95,7 +98,7 @@ class TestSampleServiceParsing:
         from bs4 import BeautifulSoup
         
         artifact_url = f"{SERVICE_AUTH_REF_BASE}/list_awsartifact.html"
-        response = requests.get(artifact_url, timeout=30)
+        response = requests.get(artifact_url, timeout=DEFAULT_HTTP_TIMEOUT)
         soup = BeautifulSoup(response.text, "lxml")
         
         text = soup.get_text().lower()

@@ -12,17 +12,18 @@ Related scripts:
 - detect_service_level.py [SECONDARY] - Quick service-level check
 """
 
+from __future__ import annotations
+
 import json
 from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 from cache_config import get_cached_session
+from constants import CFN_SPEC_URL, DEFAULT_HTTP_TIMEOUT
 from service_mapping import CFN_TO_IAM_SERVICE, normalize_for_fuzzy_match
 
 console = Console()
 session = get_cached_session()
-
-CFN_SPEC_URL = "https://d1uauaxba7bl26.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json"
 
 
 def load_service_level_data(output_dir: Path) -> dict:
@@ -38,7 +39,7 @@ def get_cfn_resources() -> dict:
     """Get all CFN resource types grouped by service."""
     console.print("[blue]Fetching CloudFormation resource types...[/blue]")
     
-    spec = session.get(CFN_SPEC_URL, timeout=30).json()
+    spec = session.get(CFN_SPEC_URL, timeout=DEFAULT_HTTP_TIMEOUT).json()
     resource_types = spec.get("ResourceTypes", {})
     
     by_service = {}

@@ -7,6 +7,8 @@ Usage:
     python diff_runs.py  # Uses current and previous runs from history/
 """
 
+from __future__ import annotations
+
 import json
 import sys
 from pathlib import Path

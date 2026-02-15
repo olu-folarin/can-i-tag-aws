@@ -3,10 +3,6 @@
 import pytest
 from bs4 import BeautifulSoup
 
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from detect_api_taggable import extract_resource_types, extract_tagging_actions_and_resources
 
 

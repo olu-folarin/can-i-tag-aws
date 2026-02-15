@@ -18,19 +18,21 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 from cache_config import get_cached_session
+from constants import (
+    DEFAULT_HTTP_TIMEOUT,
+    SERVICE_AUTH_REF_BASE,
+    SERVICE_AUTH_REF_TOC,
+)
 
 console = Console()
 session = get_cached_session()
-
-SERVICE_AUTH_REF_BASE = "https://docs.aws.amazon.com/service-authorization/latest/reference"
-SERVICE_AUTH_REF_TOC = f"{SERVICE_AUTH_REF_BASE}/reference_policies_actions-resources-contextkeys.html"
 
 
 def get_all_services() -> list[dict]:
     """Fetch all AWS services from IAM Authorization Reference."""
     console.print("[blue]Fetching AWS services from IAM Authorization Reference...[/blue]")
     
-    response = session.get(SERVICE_AUTH_REF_TOC, timeout=30)
+    response = session.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
     soup = BeautifulSoup(response.text, "lxml")
     
     services = []
@@ -50,7 +52,7 @@ def get_all_services() -> list[dict]:
 def check_tagging_support(service_url: str) -> dict:
     """Check if a service has tagging API actions."""
     try:
-        response = session.get(service_url, timeout=15)
+        response = session.get(service_url, timeout=DEFAULT_HTTP_TIMEOUT)
         page_text = response.text.lower()
         found_actions = []
         

@@ -43,7 +43,7 @@ def check_tagging_support(service_url: str) -> dict:
             found_actions.append("CreateTags")
         if "deletetags" in page_text:
             found_actions.append("DeleteTags")
-        if "addtags" in page_text and "addtagsto" in page_text:
+        if "addtags" in page_text:
             found_actions.append("AddTags*")
         if "removetags" in page_text:
             found_actions.append("RemoveTags*")

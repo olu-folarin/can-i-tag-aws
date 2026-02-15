@@ -5,6 +5,8 @@ This eliminates false positives from substring matching (e.g., "ec2" matching "e
 The mapping is manually curated and should be updated when AWS adds new services.
 """
 
+import re
+
 CFN_TO_IAM_SERVICE = {
     "ec2": "Amazon EC2",
     "s3": "Amazon S3",
@@ -169,4 +171,5 @@ CFN_TO_IAM_SERVICE = {
 
 def normalize_for_fuzzy_match(name: str) -> str:
     """Normalize a service name for fuzzy matching as fallback."""
-    return name.lower().replace(" ", "").replace("-", "").replace("_", "").replace("amazon", "").replace("aws", "")
+    normalized = name.lower().replace(" ", "").replace("-", "").replace("_", "")
+    return re.sub(r"^(amazon|aws)", "", normalized)

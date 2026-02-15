@@ -1,6 +1,7 @@
-"""Tests for cfn_to_iam_mapper.match_service() logic."""
+"""Tests for cfn_to_iam_mapper.match_service() and service_mapping helpers."""
 
 from cfn_to_iam_mapper import match_service
+from service_mapping import normalize_for_fuzzy_match
 
 
 class TestMatchService:
@@ -41,3 +42,32 @@ class TestMatchService:
         service_list = ["Amazon EC2", "Amazon S3", "AWS Lambda"]
         assert match_service("s3", service_list) == "Amazon S3"
         assert match_service("lambda", service_list) == "AWS Lambda"
+
+
+class TestNormalizeFuzzyMatch:
+    def test_strips_amazon_prefix(self):
+        assert normalize_for_fuzzy_match("Amazon EC2") == "ec2"
+
+    def test_strips_aws_prefix(self):
+        assert normalize_for_fuzzy_match("AWS Lambda") == "lambda"
+
+    def test_does_not_strip_amazon_substring(self):
+        """Regression: 'amazon' in the middle should NOT be stripped."""
+        result = normalize_for_fuzzy_match("Something Amazon Inside")
+        assert "amazon" in result
+
+    def test_does_not_strip_aws_substring(self):
+        """Regression: 'aws' in the middle should NOT be stripped."""
+        result = normalize_for_fuzzy_match("Powered by AWS Mantle")
+        assert "aws" in result
+
+    def test_rawdata_not_corrupted(self):
+        """Regression: 'rawdata' must not become 'rdata'."""
+        assert normalize_for_fuzzy_match("rawdata") == "rawdata"
+
+    def test_normalizes_spaces_hyphens_underscores(self):
+        assert normalize_for_fuzzy_match("some-service_name here") == "someservicenamehere"
+
+    def test_already_lowercase_prefix(self):
+        assert normalize_for_fuzzy_match("amazonec2") == "ec2"
+        assert normalize_for_fuzzy_match("awslambda") == "lambda"

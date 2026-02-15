@@ -9,8 +9,8 @@ Usage:
 
 from __future__ import annotations
 
+import argparse
 import json
-import sys
 from pathlib import Path
 
 from rich.console import Console
@@ -122,19 +122,43 @@ def display_diff(diff: dict) -> None:
         console.print("\n[bold green]No changes detected![/bold green]")
 
 
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Compare two runs of the untaggable resource detection to identify changes.",
+    )
+    parser.add_argument(
+        "old_file",
+        nargs="?",
+        type=Path,
+        help="Path to the older JSON report. Omit both args to use latest history files.",
+    )
+    parser.add_argument(
+        "new_file",
+        nargs="?",
+        type=Path,
+        help="Path to the newer JSON report. Omit both args to use latest history files.",
+    )
+    args = parser.parse_args(argv)
+
+    if (args.old_file is None) != (args.new_file is None):
+        parser.error("Provide both old_file and new_file, or neither to use history.")
+
+    return args
+
+
 def main():
-    if len(sys.argv) == 3:
-        old_file = Path(sys.argv[1])
-        new_file = Path(sys.argv[2])
-    elif len(sys.argv) == 1:
+    args = parse_args()
+
+    if args.old_file and args.new_file:
+        old_file = args.old_file
+        new_file = args.new_file
+    else:
         old_file, new_file = get_latest_history_files()
         if not old_file or not new_file:
             console.print("[yellow]Not enough history files for comparison.[/yellow]")
             console.print("Run the detector twice to generate history, or provide two files as arguments.")
             return
-    else:
-        console.print("Usage: python diff_runs.py [old_file.json] [new_file.json]")
-        return
 
     if not old_file.exists():
         console.print(f"[red]File not found: {old_file}[/red]")

@@ -13,6 +13,7 @@ Related scripts:
 """
 
 import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 import requests
@@ -76,20 +77,25 @@ def main():
 
     console.print("[blue]Analyzing all services for tagging API support...[/blue]")
 
-    total = len(services)
-    for i, service in enumerate(services, 1):
-        if i % 25 == 0:
-            console.print(f"  Progress: {i}/{total}")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(check_tagging_support, svc["url"]): svc for svc in services}
 
-        result = check_tagging_support(service["url"])
-        service["tagging_info"] = result
+        completed = 0
+        for future in as_completed(futures):
+            completed += 1
+            if completed % 50 == 0:
+                console.print(f"  Progress: {completed}/{len(services)}")
 
-        if result.get("error"):
-            errors.append(service)
-        elif result["has_tagging"]:
-            taggable.append(service)
-        else:
-            untaggable.append(service)
+            service = futures[future]
+            result = future.result()
+            service["tagging_info"] = result
+
+            if result.get("error"):
+                errors.append(service)
+            elif result["has_tagging"]:
+                taggable.append(service)
+            else:
+                untaggable.append(service)
 
     console.print("\n[bold cyan]═══ RESULTS ═══[/bold cyan]\n")
 

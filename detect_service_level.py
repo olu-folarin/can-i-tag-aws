@@ -16,6 +16,7 @@ import json
 from pathlib import Path
 from rich.console import Console
 from rich.table import Table
+import requests
 from aws_docs import get_all_services
 from cache_config import get_cached_session
 from constants import DEFAULT_HTTP_TIMEOUT
@@ -52,7 +53,7 @@ def check_tagging_support(service_url: str) -> dict:
             "can_tag_only": can_tag and not can_untag,
             "tagging_actions": found_actions,
         }
-    except Exception as e:
+    except requests.RequestException as e:
         return {
             "has_tagging": None,
             "error": str(e),

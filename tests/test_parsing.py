@@ -3,7 +3,7 @@
 import pytest
 from bs4 import BeautifulSoup
 
-from detect_api_taggable import extract_resource_types, extract_tagging_actions_and_resources
+from detect_api_taggable import extract_resource_types_with_tagging_info, extract_tagging_actions_and_resources
 
 
 SAMPLE_RESOURCE_TYPES_HTML = """
@@ -87,10 +87,11 @@ SAMPLE_NO_TAGGING_HTML = """
 """
 
 
-class TestExtractResourceTypes:
+class TestExtractResourceTypesWithTaggingInfo:
     def test_extracts_resource_names(self):
         soup = BeautifulSoup(SAMPLE_RESOURCE_TYPES_HTML, "lxml")
-        resources = extract_resource_types(soup)
+        result = extract_resource_types_with_tagging_info(soup)
+        resources = result["all_resources"]
         
         assert "instance" in resources
         assert "volume" in resources
@@ -98,15 +99,17 @@ class TestExtractResourceTypes:
     
     def test_returns_empty_list_when_no_table(self):
         soup = BeautifulSoup("<html><body><h2>No table here</h2></body></html>", "lxml")
-        resources = extract_resource_types(soup)
+        result = extract_resource_types_with_tagging_info(soup)
         
-        assert resources == []
+        assert result["all_resources"] == []
+        assert result["resources_with_tag_condition"] == []
     
     def test_returns_empty_list_when_no_resource_section(self):
         soup = BeautifulSoup("<html><body><h2>Actions</h2><table></table></body></html>", "lxml")
-        resources = extract_resource_types(soup)
+        result = extract_resource_types_with_tagging_info(soup)
         
-        assert resources == []
+        assert result["all_resources"] == []
+        assert result["resources_with_tag_condition"] == []
 
 
 class TestExtractTaggingActionsAndResources:

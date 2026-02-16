@@ -16,16 +16,18 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
+from report_types import DiffReport
+
 console = Console()
 
 HISTORY_DIR = Path(__file__).parent / "history"
 OUTPUT_DIR = Path(__file__).parent / "output"
 
 
-def load_report(filepath: Path) -> dict:
+def load_report(filepath: Path) -> dict:  # type: ignore[type-arg]
     """Load a JSON report file."""
     with open(filepath) as f:
-        return json.load(f)
+        return json.load(f)  # type: ignore[no-any-return]
 
 
 def extract_untaggable_set(report: dict) -> set[tuple[str, str]]:
@@ -36,7 +38,7 @@ def extract_untaggable_set(report: dict) -> set[tuple[str, str]]:
     return resources
 
 
-def compare_reports(old_report: dict, new_report: dict) -> dict:
+def compare_reports(old_report: dict, new_report: dict) -> DiffReport:
     """Compare two reports and return differences."""
     old_resources = extract_untaggable_set(old_report)
     new_resources = extract_untaggable_set(new_report)
@@ -83,7 +85,7 @@ def get_latest_history_files() -> tuple[Path | None, Path | None]:
     return None, None
 
 
-def display_diff(diff: dict) -> None:
+def display_diff(diff: DiffReport) -> None:
     """Display the diff results."""
     console.print("\n[bold cyan]═══ DIFF RESULTS ═══[/bold cyan]\n")
 

@@ -3,6 +3,8 @@
 Provides the canonical get_all_services() used by all detection scripts.
 """
 
+from __future__ import annotations
+
 from bs4 import BeautifulSoup
 from rich.console import Console
 
@@ -14,12 +16,13 @@ from constants import (
     SERVICE_AUTH_REF_TOC,
 )
 from exceptions import AWSDocStructureError
+from report_types import ServiceEntry
 
 console = Console()
 session = get_cached_session()
 
 
-def get_all_services() -> list[dict]:
+def get_all_services() -> list[ServiceEntry]:
     """Fetch all AWS services from IAM Authorization Reference.
 
     Returns a list of dicts with 'name' and 'url' keys.
@@ -31,17 +34,19 @@ def get_all_services() -> list[dict]:
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "lxml")
 
-    services = []
+    services: list[ServiceEntry] = []
     for link in soup.find_all("a", href=True):
         href = link.get("href", "")
+        if not isinstance(href, str):
+            continue
         if "list_" in href and href.endswith(".html"):
             service_name = link.get_text(strip=True)
             clean_href = href.lstrip("./")
             services.append(
-                {
-                    "name": service_name,
-                    "url": f"{SERVICE_AUTH_REF_BASE}/{clean_href}",
-                }
+                ServiceEntry(
+                    name=service_name,
+                    url=f"{SERVICE_AUTH_REF_BASE}/{clean_href}",
+                )
             )
 
     if len(services) < MIN_EXPECTED_SERVICES:

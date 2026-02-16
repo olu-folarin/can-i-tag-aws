@@ -18,6 +18,8 @@ Related scripts:
 - cfn_to_iam_mapper.py [SUPPLEMENTARY] - CloudFormation resource mapping
 """
 
+from __future__ import annotations
+
 import json
 import re
 import time
@@ -39,6 +41,14 @@ from constants import (
     TAGGING_ACTION_PATTERNS,
 )
 from exceptions import AWSDocParsingError
+from report_types import (
+    ApiReport,
+    ResourceTypeInfo,
+    ServiceAnalysisResult,
+    ServiceEntry,
+    TaggingActionInfo,
+    UntaggableResource,
+)
 
 console = Console()
 session = get_cached_session()
@@ -53,7 +63,7 @@ def extract_service_prefix(soup: BeautifulSoup) -> str:
     return ""
 
 
-def extract_resource_types_with_tagging_info(soup: BeautifulSoup) -> dict:
+def extract_resource_types_with_tagging_info(soup: BeautifulSoup) -> ResourceTypeInfo:
     """Extract all resource types and identify which have aws:ResourceTag condition keys.
 
     The presence of aws:ResourceTag/${TagKey} condition key is the authoritative
@@ -100,7 +110,7 @@ def extract_resource_types_with_tagging_info(soup: BeautifulSoup) -> dict:
     }
 
 
-def extract_tagging_actions_and_resources(soup: BeautifulSoup) -> dict:
+def extract_tagging_actions_and_resources(soup: BeautifulSoup) -> TaggingActionInfo:
     """Extract tagging actions and which resources they apply to."""
     tagging_actions = []
     taggable_resources = set()
@@ -160,16 +170,16 @@ def fetch_with_retry(url: str, max_retries: int = MAX_RETRIES) -> str:
         try:
             response = session.get(url, timeout=DEFAULT_HTTP_TIMEOUT)
             response.raise_for_status()
-            return response.text
+            return response.text  # type: ignore[no-any-return]
         except requests.RequestException as e:
             last_error = e
             if attempt < max_retries - 1:
                 delay = RETRY_DELAY * (2**attempt)
                 time.sleep(delay)
-    raise last_error
+    raise last_error  # type: ignore[misc]
 
 
-def analyze_service(service: dict) -> dict:
+def analyze_service(service: ServiceEntry) -> ServiceAnalysisResult:
     """Analyze a single service for resource-level tagging support.
 
     A resource is considered TAGGABLE if:
@@ -213,16 +223,21 @@ def analyze_service(service: dict) -> dict:
 
 
 def classify_results(
-    results: list[dict],
-) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+    results: list[ServiceAnalysisResult],
+) -> tuple[
+    list[ServiceAnalysisResult],
+    list[ServiceAnalysisResult],
+    list[ServiceAnalysisResult],
+    list[ServiceAnalysisResult],
+]:
     """Classify analyzed services into categories.
 
     Returns (no_tagging_api, has_tagging_api, mixed_services, errors).
     """
-    no_tagging_api = []
-    has_tagging_api = []
-    mixed_services = []
-    errors = []
+    no_tagging_api: list[ServiceAnalysisResult] = []
+    has_tagging_api: list[ServiceAnalysisResult] = []
+    mixed_services: list[ServiceAnalysisResult] = []
+    errors: list[ServiceAnalysisResult] = []
 
     for r in results:
         if r.get("error"):
@@ -238,22 +253,24 @@ def classify_results(
 
 
 def build_report(
-    services: list[dict],
-    no_tagging_api: list[dict],
-    has_tagging_api: list[dict],
-    mixed_services: list[dict],
-) -> dict:
+    services: list[ServiceEntry],
+    no_tagging_api: list[ServiceAnalysisResult],
+    has_tagging_api: list[ServiceAnalysisResult],
+    mixed_services: list[ServiceAnalysisResult],
+) -> ApiReport:
     """Build the detection report from classified results."""
-    all_untaggable = []
+    all_untaggable: list[UntaggableResource] = []
 
     for svc in no_tagging_api:
-        for res in svc.get("all_resources", []):
-            all_untaggable.append({"resource": res, "service": svc["name"], "reason": "service_no_tagging_api"})
+        for res in svc.get("all_resources", []):  # type: ignore[attr-defined]
+            all_untaggable.append(
+                UntaggableResource(resource=res, service=svc["name"], reason="service_no_tagging_api")
+            )
 
     for svc in mixed_services:
-        for res in svc.get("untaggable_resources", []):
+        for res in svc.get("untaggable_resources", []):  # type: ignore[attr-defined]
             all_untaggable.append(
-                {"resource": res, "service": svc["name"], "reason": "resource_not_in_tag_action_scope"}
+                UntaggableResource(resource=res, service=svc["name"], reason="resource_not_in_tag_action_scope")
             )
 
     return {
@@ -269,8 +286,8 @@ def build_report(
         "mixed_services_detail": [
             {
                 "name": s["name"],
-                "taggable": s["taggable_resources"],
-                "untaggable": s["untaggable_resources"],
+                "taggable": s["taggable_resources"],  # type: ignore[typeddict-item]
+                "untaggable": s["untaggable_resources"],  # type: ignore[typeddict-item]
             }
             for s in mixed_services
         ],
@@ -278,11 +295,11 @@ def build_report(
 
 
 def display_results(
-    no_tagging_api: list[dict],
-    has_tagging_api: list[dict],
-    mixed_services: list[dict],
-    errors: list[dict],
-    report: dict,
+    no_tagging_api: list[ServiceAnalysisResult],
+    has_tagging_api: list[ServiceAnalysisResult],
+    mixed_services: list[ServiceAnalysisResult],
+    errors: list[ServiceAnalysisResult],
+    report: ApiReport,
 ) -> None:
     """Display the analysis results to the console."""
     if errors:
@@ -309,11 +326,11 @@ def display_results(
         console.print("\n[bold yellow]MIXED SERVICES (have both taggable and untaggable resources):[/bold yellow]\n")
         for svc in sorted(mixed_services, key=lambda x: x["name"]):
             console.print(f"[cyan]{svc['name']}[/cyan]")
+            taggable_res: list[str] = svc.get("taggable_resources", [])  # type: ignore[assignment]
+            untaggable_res: list[str] = svc.get("untaggable_resources", [])  # type: ignore[assignment]
+            console.print(f"  Taggable: {', '.join(taggable_res[:5])}{'...' if len(taggable_res) > 5 else ''}")
             console.print(
-                f"  Taggable: {', '.join(svc['taggable_resources'][:5])}{'...' if len(svc['taggable_resources']) > 5 else ''}"
-            )
-            console.print(
-                f"  [red]Untaggable: {', '.join(svc['untaggable_resources'][:5])}{'...' if len(svc['untaggable_resources']) > 5 else ''}[/red]"
+                f"  [red]Untaggable: {', '.join(untaggable_res[:5])}{'...' if len(untaggable_res) > 5 else ''}[/red]"
             )
 
     console.print(
@@ -361,9 +378,9 @@ def main():
     history_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     history_file = history_dir / f"api_taggable_resources_{timestamp}.json"
-    report["run_timestamp"] = timestamp
+    history_report = {**report, "run_timestamp": timestamp}
     with open(history_file, "w") as f:
-        json.dump(report, f, indent=2)
+        json.dump(history_report, f, indent=2)
 
     console.print(f"\n[green]Report saved to {output_file}[/green]")
     console.print(f"[green]History saved to {history_file}[/green]")

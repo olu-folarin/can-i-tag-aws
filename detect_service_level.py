@@ -12,6 +12,8 @@ Related scripts:
 - cfn_to_iam_mapper.py [SUPPLEMENTARY] - CloudFormation resource mapping
 """
 
+from __future__ import annotations
+
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -23,12 +25,13 @@ from rich.table import Table
 from aws_docs import get_all_services
 from cache_config import get_cached_session
 from constants import DEFAULT_HTTP_TIMEOUT
+from report_types import SvcReport, TaggingSupportResult
 
 console = Console()
 session = get_cached_session()
 
 
-def check_tagging_support(service_url: str) -> dict:
+def check_tagging_support(service_url: str) -> TaggingSupportResult:
     """Check if a service has tagging API actions."""
     try:
         response = session.get(service_url, timeout=DEFAULT_HTTP_TIMEOUT)
@@ -89,7 +92,7 @@ def build_report(
     taggable: list[dict],
     untaggable: list[dict],
     errors: list[dict],
-) -> dict:
+) -> SvcReport:
     """Build the service-level report from classified results."""
     return {
         "summary": {
@@ -120,9 +123,9 @@ def build_report(
 
 
 def display_results(
-    taggable: list[dict],
-    untaggable: list[dict],
-    errors: list[dict],
+    taggable: list[dict],  # type: ignore[type-arg]
+    untaggable: list[dict],  # type: ignore[type-arg]
+    errors: list[dict],  # type: ignore[type-arg]
 ) -> None:
     """Display the analysis results to the console."""
     console.print("\n[bold cyan]═══ RESULTS ═══[/bold cyan]\n")
@@ -168,10 +171,10 @@ def main():
 
             service = futures[future]
             result = future.result()
-            service["tagging_info"] = result
+            service["tagging_info"] = result  # type: ignore[typeddict-unknown-key]
 
-    taggable, untaggable, errors = classify_results(services)
-    report = build_report(services, taggable, untaggable, errors)
+    taggable, untaggable, errors = classify_results(services)  # type: ignore[arg-type]
+    report = build_report(services, taggable, untaggable, errors)  # type: ignore[arg-type]
 
     display_results(taggable, untaggable, errors)
 

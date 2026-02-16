@@ -22,18 +22,19 @@ from rich.table import Table
 
 from cache_config import get_cached_session
 from constants import CFN_SPEC_URL, DEFAULT_HTTP_TIMEOUT
+from report_types import CfnReport, ClassificationResults, ServiceLevelData
 from service_mapping import CFN_TO_IAM_SERVICE, normalize_for_fuzzy_match
 
 console = Console()
 session = get_cached_session()
 
 
-def load_service_level_data(output_dir: Path) -> dict:
+def load_service_level_data(output_dir: Path) -> ServiceLevelData:
     """Load the service-level untaggable data."""
     service_file = output_dir / "service_level_untaggable.json"
     if service_file.exists():
         with open(service_file) as f:
-            return json.load(f)
+            return json.load(f)  # type: ignore[no-any-return]
     return {"untaggable_services": [], "taggable_services": []}
 
 
@@ -42,7 +43,7 @@ def get_cfn_resources() -> dict:
     spec = session.get(CFN_SPEC_URL, timeout=DEFAULT_HTTP_TIMEOUT).json()
     resource_types = spec.get("ResourceTypes", {})
 
-    by_service = {}
+    by_service: dict[str, list[str]] = {}
     for resource_type in resource_types.keys():
         parts = resource_type.split("::")
         if len(parts) >= 3:
@@ -71,14 +72,14 @@ def match_service(cfn_prefix: str, service_list: list[str]) -> str | None:
 
 
 def identify_resource_level_untaggables(
-    cfn_resources: dict,
-    service_data: dict,
-) -> dict:
+    cfn_resources: dict[str, list[str]],
+    service_data: ServiceLevelData,
+) -> ClassificationResults:
     """Identify resources in untaggable vs taggable services using verified mapping."""
     taggable_services = service_data.get("taggable_services", [])
     untaggable_services = service_data.get("untaggable_services", [])
 
-    results = {
+    results: ClassificationResults = {
         "in_taggable_services": {},
         "in_untaggable_services": {},
         "unknown_services": {},
@@ -106,7 +107,7 @@ def identify_resource_level_untaggables(
     return results
 
 
-def build_report(results: dict) -> dict:
+def build_report(results: ClassificationResults) -> CfnReport:
     """Build the resource-level analysis report from classification results."""
     taggable_svc_resources = sum(len(v["resources"]) for v in results["in_taggable_services"].values())
     untaggable_svc_resources = sum(len(v["resources"]) for v in results["in_untaggable_services"].values())
@@ -131,7 +132,7 @@ def build_report(results: dict) -> dict:
     }
 
 
-def display_results(results: dict, report: dict) -> None:
+def display_results(results: ClassificationResults, report: CfnReport) -> None:
     """Display the analysis results to the console."""
     console.print("\n[bold cyan]═══ RESOURCE-LEVEL ANALYSIS ═══[/bold cyan]\n")
 

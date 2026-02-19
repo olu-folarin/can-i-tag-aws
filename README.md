@@ -11,17 +11,16 @@ Automatically detect which AWS resources **cannot be tagged**: so you can build 
 
 ## The Problem
 
-**Tagging is critical for AWS cost allocation, compliance, and resource management.** But not all AWS resources support tagging and AWS doesn't provide a single list of what can't be tagged.
+Tagging is critical for AWS cost allocation, compliance, and resource management. But not all AWS resources support tagging and AWS doesn't provide a single list of what can't be tagged.
 
-This creates real problems:
-- **SCP policies fail** when they enforce tags on untaggable resources
-- **Cost allocation gaps**: untagged resources can't be attributed to teams/projects
-- **Compliance blind spots**: you can't enforce what you can't tag
-- **Manual maintenance**: hundreds of untaggable resources across 400+ services
+- SCP policies fail when they enforce tags on untaggable resources
+- Untagged resources can't be attributed to teams or projects
+- You can't enforce compliance on resources you can't tag
+- The untaggable list spans 400+ services and changes regularly
 
 ## The Solution
 
-This tool automatically detects all AWS resources that cannot be tagged by parsing the authoritative source: the **IAM Service Authorization Reference**.
+Parses the **IAM Service Authorization Reference** to identify every AWS resource that cannot be tagged.
 
 ### Methodology
 
@@ -31,26 +30,22 @@ A resource is considered **taggable** if:
 
 A resource is **untaggable** only if it has NEITHER indicator.
 
-Run the tool to get current findings for your analysis.
-
 ## Why `aws:ResourceTag`?
 
-This tool checks for `aws:ResourceTag/${TagKey}` condition key presence as a strong signal that a resource supports tagging in a way that works with tag-based access control.
+The `aws:ResourceTag/${TagKey}` condition key is a strong signal that a resource supports tagging in a way that works with tag-based access control. Not all services express this consistently, so detection uses two indicators:
 
-However, not all services express tagging support consistently, so the tool uses **two indicators**:
+- `aws:ResourceTag/${TagKey}` condition keys in the Resource types table
+- Tagging action scope (`TagResource`, `CreateTags`, `AddTags`) from the Actions table
 
-- **`aws:ResourceTag/${TagKey}` condition keys** in the Resource types table
-- **Tagging action scope** (for example `TagResource`, `CreateTags`, `AddTags`) from the Actions table
-
-This makes the results more useful for real-world governance (including SCP strategies) than relying on only one signal.
+More reliable for governance and SCP strategies than either signal alone.
 
 ## Out of Scope
 
-This tool detects **untaggable resources**, not:
+Scope is limited to untaggable resources, not:
 
-- **Usage metrics** (API requests, bytes processed): billing/telemetry aggregates, not resources
-- **Ephemeral items** (Lambda invocations, API calls): transient actions without persistent state
-- **Marketplace/third-party products**: not covered by the IAM Service Authorization Reference
+- Usage metrics like API requests and bytes processed, which are billing/telemetry aggregates
+- Ephemeral items like Lambda invocations and API calls that lack persistent state
+- Marketplace and third-party products outside the IAM Service Authorization Reference
 
 ## Known Limitations
 
@@ -150,7 +145,12 @@ Without these exclusions, your SCP policies will block legitimate resource creat
 
 ## Contributing
 
-Contributions welcome! Please open an issue or PR.
+PRs and issues welcome. If submitting code:
+
+- Run `ruff check .` and `ruff format --check .` before pushing
+- Run `pytest -m "not integration"` to verify unit tests pass
+- Add tests for new logic; use `@pytest.mark.integration` for anything hitting live URLs
+- One concern per PR
 
 ## License
 

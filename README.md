@@ -1,6 +1,6 @@
 # can-i-tag-aws
 
-Automatically detect which AWS resources **cannot be tagged** — so you can build accurate SCP policies and avoid compliance gaps.
+Automatically detect which AWS resources **cannot be tagged**: so you can build accurate SCP policies and avoid compliance gaps.
 
 ## Who Is This For?
 
@@ -11,13 +11,13 @@ Automatically detect which AWS resources **cannot be tagged** — so you can bui
 
 ## The Problem
 
-**Tagging is critical for AWS cost allocation, compliance, and resource management.** But not all AWS resources support tagging — and AWS doesn't provide a single list of what can't be tagged.
+**Tagging is critical for AWS cost allocation, compliance, and resource management.** But not all AWS resources support tagging and AWS doesn't provide a single list of what can't be tagged.
 
 This creates real problems:
 - **SCP policies fail** when they enforce tags on untaggable resources
-- **Cost allocation gaps** — untagged resources can't be attributed to teams/projects
-- **Compliance blind spots** — you can't enforce what you can't tag
-- **Manual maintenance** — hundreds of untaggable resources across 400+ services
+- **Cost allocation gaps**: untagged resources can't be attributed to teams/projects
+- **Compliance blind spots**: you can't enforce what you can't tag
+- **Manual maintenance**: hundreds of untaggable resources across 400+ services
 
 ## The Solution
 
@@ -143,8 +143,8 @@ python diff_runs.py  # Compare latest two runs
 
 For SCP tagging policies, you need to **exclude untaggable resources** from tag enforcement:
 
-1. **Service-level exclusions** — Entire services with no tagging API
-2. **Resource-level exclusions** — Specific resources in mixed-support services
+1. **Service-level exclusions**: Entire services with no tagging API
+2. **Resource-level exclusions**: Specific resources in mixed-support services
 
 Without these exclusions, your SCP policies will block legitimate resource creation.
 

@@ -129,9 +129,9 @@ The primary script works offline by parsing AWS documentation. The RGTAPI script
 
 ## Output Files
 
-- `output/api_taggable_resources.json` - Comprehensive untaggable resource list
-- `output/service_level_untaggable.json` - Services without tagging API
-- `history/` - Timestamped versions for change tracking
+- `output/api_taggable_resources.json`: Comprehensive untaggable resource list
+- `output/service_level_untaggable.json`: Services without tagging API
+- `history/`: Timestamped versions for change tracking
 
 ## Comparing Runs
 

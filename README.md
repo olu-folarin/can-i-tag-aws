@@ -1,5 +1,10 @@
 # can-i-tag-aws
 
+[![Tests](https://github.com/olu-folarin/can-i-tag-aws/actions/workflows/tests.yml/badge.svg)](https://github.com/olu-folarin/can-i-tag-aws/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/github/license/olu-folarin/can-i-tag-aws)](LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/olu-folarin/can-i-tag-aws)](https://github.com/olu-folarin/can-i-tag-aws/commits/main)
+[![Docker: GHCR](https://img.shields.io/badge/Docker-GHCR-blue?logo=docker)](https://ghcr.io/olu-folarin/can-i-tag-aws)
+
 Automatically detect which AWS resources **cannot be tagged**: so you can build accurate SCP policies and avoid compliance gaps.
 
 ## Who Is This For?
@@ -17,6 +22,8 @@ Tagging is critical for AWS cost allocation, compliance, and resource management
 - Untagged resources can't be attributed to teams or projects
 - You can't enforce compliance on resources you can't tag
 - The untaggable list spans 400+ services and changes regularly
+
+For SCP tagging policies, you need to exclude untaggable resources from tag enforcement. That means both service-level exclusions (entire services with no tagging API) and resource-level exclusions (specific resources in mixed-support services). Without these exclusions, your SCP policies will block legitimate resource creation.
 
 ## The Solution
 
@@ -92,6 +99,36 @@ python resource_groups_api/detect_rgtapi.py
 
 Output is saved to `output/` (latest) and `history/` (versioned).
 
+### Sample Output
+
+From `output/api_taggable_resources.json`:
+
+```json
+{
+  "summary": {
+    "total_services": 462,
+    "services_without_tagging_api": 125,
+    "services_with_tagging_api": 337,
+    "mixed_services": 119,
+    "total_untaggable_resources": 532
+  },
+  "untaggable_resources": [
+    {
+      "resource": "execute-api-general",
+      "service": "Amazon API Gateway",
+      "reason": "service_no_tagging_api"
+    }
+  ],
+  "mixed_services_detail": [
+    {
+      "name": "Apache Kafka APIs for Amazon MSK clusters",
+      "taggable": ["cluster"],
+      "untaggable": ["transactional-id", "group", "topic"]
+    }
+  ]
+}
+```
+
 ---
 
 ## Scripts
@@ -133,15 +170,6 @@ The primary script works offline by parsing AWS documentation. The RGTAPI script
 ```bash
 python diff_runs.py  # Compare latest two runs
 ```
-
-## Why This Matters
-
-For SCP tagging policies, you need to **exclude untaggable resources** from tag enforcement:
-
-1. **Service-level exclusions**: Entire services with no tagging API
-2. **Resource-level exclusions**: Specific resources in mixed-support services
-
-Without these exclusions, your SCP policies will block legitimate resource creation.
 
 ## Contributing
 

@@ -35,6 +35,7 @@ from rich.table import Table
 from aws_docs import get_all_services
 from cache_config import get_cached_session
 from constants import (
+    AWS_MANAGED_DEFAULTS,
     DEFAULT_HTTP_TIMEOUT,
     MAX_RETRIES,
     RETRY_DELAY,
@@ -43,6 +44,8 @@ from constants import (
 from exceptions import AWSDocParsingError
 from report_types import (
     ApiReport,
+    ConditionallyTaggableResource,
+    MixedServiceDetail,
     ResourceTypeInfo,
     ServiceAnalysisResult,
     ServiceEntry,
@@ -252,6 +255,35 @@ def classify_results(
     return no_tagging_api, has_tagging_api, mixed_services, errors
 
 
+def _build_conditionally_taggable(
+    has_tagging_api: list[ServiceAnalysisResult],
+) -> list[ConditionallyTaggableResource]:
+    """Cross-reference detected taggable resources against known AWS-managed defaults.
+
+    Returns entries only for resource types that were actually detected as taggable,
+    so the list stays accurate as the upstream IAM docs evolve.
+    """
+    detected: dict[str, set[str]] = {}
+    for svc in has_tagging_api:
+        name = svc["name"]
+        detected[name] = set(svc.get("taggable_resources", []))  # type: ignore[attr-defined,call-overload]
+
+    result: list[ConditionallyTaggableResource] = []
+    for entry in AWS_MANAGED_DEFAULTS:
+        service = entry["service"]
+        resource_type = entry["resource_type"]
+        if service in detected and resource_type in detected[service]:
+            result.append(
+                ConditionallyTaggableResource(
+                    resource=resource_type,
+                    service=service,
+                    arn_pattern=entry["arn_pattern"],
+                    description=entry["description"],
+                )
+            )
+    return result
+
+
 def build_report(
     services: list[ServiceEntry],
     no_tagging_api: list[ServiceAnalysisResult],
@@ -273,6 +305,26 @@ def build_report(
                 UntaggableResource(resource=res, service=svc["name"], reason="resource_not_in_tag_action_scope")
             )
 
+    all_conditionally_taggable = _build_conditionally_taggable(has_tagging_api)
+
+    # Build (service, resource_type) index for fast lookup when annotating mixed services
+    managed_index: set[tuple[str, str]] = {(e["service"], e["resource_type"]) for e in AWS_MANAGED_DEFAULTS}
+
+    mixed_services_detail: list[MixedServiceDetail] = []
+    for s in mixed_services:
+        taggable: list[str] = list(s.get("taggable_resources", []))  # type: ignore[attr-defined,call-overload]
+        cond_taggable = [r for r in taggable if (s["name"], r) in managed_index]
+        still_taggable = [r for r in taggable if (s["name"], r) not in managed_index]
+        untaggable: list[str] = list(s.get("untaggable_resources", []))  # type: ignore[attr-defined,call-overload]
+        mixed_services_detail.append(
+            MixedServiceDetail(
+                name=s["name"],
+                taggable=still_taggable,
+                conditionally_taggable=cond_taggable,
+                untaggable=untaggable,
+            )
+        )
+
     return {
         "summary": {
             "total_services": len(services),
@@ -280,17 +332,12 @@ def build_report(
             "services_with_tagging_api": len(has_tagging_api),
             "mixed_services": len(mixed_services),
             "total_untaggable_resources": len(all_untaggable),
+            "conditionally_taggable_resource_types": len(all_conditionally_taggable),
         },
         "untaggable_resources": all_untaggable,
+        "conditionally_taggable_resources": all_conditionally_taggable,
         "services_without_tagging_api": [s["name"] for s in no_tagging_api],
-        "mixed_services_detail": [
-            {
-                "name": s["name"],
-                "taggable": s["taggable_resources"],  # type: ignore[typeddict-item]
-                "untaggable": s["untaggable_resources"],  # type: ignore[typeddict-item]
-            }
-            for s in mixed_services
-        ],
+        "mixed_services_detail": mixed_services_detail,
     }
 
 
@@ -318,6 +365,10 @@ def display_results(
     table.add_row("Services WITHOUT tagging API", str(len(no_tagging_api)))
     table.add_row("Services WITH tagging API", str(len(has_tagging_api)))
     table.add_row("Mixed services (some resources untaggable)", str(len(mixed_services)))
+    table.add_row(
+        "Conditionally taggable resource types (AWS-managed instances)",
+        str(report["summary"]["conditionally_taggable_resource_types"]),
+    )
     table.add_row("Errors", str(len(errors)))
 
     console.print(table)
@@ -333,8 +384,19 @@ def display_results(
                 f"  [red]Untaggable: {', '.join(untaggable_res[:5])}{'...' if len(untaggable_res) > 5 else ''}[/red]"
             )
 
+    cond_taggable = report.get("conditionally_taggable_resources", [])
+    if cond_taggable:
+        console.print("\n[bold yellow]CONDITIONALLY TAGGABLE (AWS-managed instances cannot be tagged):[/bold yellow]\n")
+        for entry in cond_taggable:
+            console.print(f"[cyan]{entry['service']}[/cyan] / [magenta]{entry['resource']}[/magenta]")
+            console.print(f"  ARN pattern to exclude: [dim]{entry['arn_pattern']}[/dim]")
+            console.print(f"  {entry['description']}")
+
     console.print(
         f"\n[bold]Total untaggable resources identified: {report['summary']['total_untaggable_resources']}[/bold]"
+    )
+    console.print(
+        f"[bold]Conditionally taggable resource types: {report['summary']['conditionally_taggable_resource_types']}[/bold]"
     )
     console.print("[dim]Run 'python diff_runs.py' to compare with previous runs[/dim]")
 

@@ -45,6 +45,7 @@ from exceptions import AWSDocParsingError
 from report_types import (
     ApiReport,
     ConditionallyTaggableResource,
+    MixedServiceDetail,
     ResourceTypeInfo,
     ServiceAnalysisResult,
     ServiceEntry,
@@ -265,7 +266,7 @@ def _build_conditionally_taggable(
     detected: dict[str, set[str]] = {}
     for svc in has_tagging_api:
         name = svc["name"]
-        detected[name] = set(svc.get("taggable_resources", []))  # type: ignore[attr-defined]
+        detected[name] = set(svc.get("taggable_resources", []))  # type: ignore[attr-defined,call-overload]
 
     result: list[ConditionallyTaggableResource] = []
     for entry in AWS_MANAGED_DEFAULTS:
@@ -309,18 +310,19 @@ def build_report(
     # Build (service, resource_type) index for fast lookup when annotating mixed services
     managed_index: set[tuple[str, str]] = {(e["service"], e["resource_type"]) for e in AWS_MANAGED_DEFAULTS}
 
-    mixed_services_detail = []
+    mixed_services_detail: list[MixedServiceDetail] = []
     for s in mixed_services:
-        taggable: list[str] = list(s.get("taggable_resources", []))  # type: ignore[attr-defined]
+        taggable: list[str] = list(s.get("taggable_resources", []))  # type: ignore[attr-defined,call-overload]
         cond_taggable = [r for r in taggable if (s["name"], r) in managed_index]
         still_taggable = [r for r in taggable if (s["name"], r) not in managed_index]
+        untaggable: list[str] = list(s.get("untaggable_resources", []))  # type: ignore[attr-defined,call-overload]
         mixed_services_detail.append(
-            {
-                "name": s["name"],
-                "taggable": still_taggable,
-                "conditionally_taggable": cond_taggable,
-                "untaggable": s.get("untaggable_resources", []),  # type: ignore[attr-defined]
-            }
+            MixedServiceDetail(
+                name=s["name"],
+                taggable=still_taggable,
+                conditionally_taggable=cond_taggable,
+                untaggable=untaggable,
+            )
         )
 
     return {

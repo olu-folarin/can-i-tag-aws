@@ -307,9 +307,7 @@ def build_report(
     all_conditionally_taggable = _build_conditionally_taggable(has_tagging_api)
 
     # Build (service, resource_type) index for fast lookup when annotating mixed services
-    managed_index: set[tuple[str, str]] = {
-        (e["service"], e["resource_type"]) for e in AWS_MANAGED_DEFAULTS
-    }
+    managed_index: set[tuple[str, str]] = {(e["service"], e["resource_type"]) for e in AWS_MANAGED_DEFAULTS}
 
     mixed_services_detail = []
     for s in mixed_services:
@@ -386,9 +384,7 @@ def display_results(
 
     cond_taggable = report.get("conditionally_taggable_resources", [])
     if cond_taggable:
-        console.print(
-            "\n[bold yellow]CONDITIONALLY TAGGABLE (AWS-managed instances cannot be tagged):[/bold yellow]\n"
-        )
+        console.print("\n[bold yellow]CONDITIONALLY TAGGABLE (AWS-managed instances cannot be tagged):[/bold yellow]\n")
         for entry in cond_taggable:
             console.print(f"[cyan]{entry['service']}[/cyan] / [magenta]{entry['resource']}[/magenta]")
             console.print(f"  ARN pattern to exclude: [dim]{entry['arn_pattern']}[/dim]")

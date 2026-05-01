@@ -68,8 +68,19 @@ jobs:
           branch: auto-update-reports
           delete-branch: true
       
-      - name: Enable auto-merge
+      - name: Merge pull request
         if: steps.cpr.outputs.pull-request-number
-        run: gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ env.PR_TOKEN }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          # Try auto-merge first (waits on required checks). If the PR is already
+          # in clean status with no checks to wait on, GitHub refuses to enable
+          # auto-merge, so fall back to a direct squash merge.
+          if ! gh pr merge --auto --squash "$PR_NUMBER" 2>&1 | tee /tmp/merge.log; then
+            if grep -q "clean status" /tmp/merge.log; then
+              gh pr merge --squash "$PR_NUMBER"
+            else
+              exit 1
+            fi
+          fi

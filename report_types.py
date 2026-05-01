@@ -28,6 +28,20 @@ class UntaggableResource(TypedDict):
     reason: str
 
 
+class ConditionallyTaggableResource(TypedDict):
+    """A resource type that supports tagging but has AWS-managed instances that cannot be tagged.
+
+    The resource type passes standard taggability checks, but specific AWS-managed
+    default instances (e.g., default.redis7, default.mysql8.0) are read-only to the
+    account holder. SCP tag enforcement must exclude the given ARN pattern.
+    """
+
+    resource: str
+    service: str
+    arn_pattern: str
+    description: str
+
+
 # ---------------------------------------------------------------------------
 # detect_api_taggable.py
 # ---------------------------------------------------------------------------
@@ -79,6 +93,7 @@ class ApiReportSummary(TypedDict):
     services_with_tagging_api: int
     mixed_services: int
     total_untaggable_resources: int
+    conditionally_taggable_resource_types: int
 
 
 class MixedServiceDetail(TypedDict):
@@ -86,6 +101,7 @@ class MixedServiceDetail(TypedDict):
 
     name: str
     taggable: list[str]
+    conditionally_taggable: list[str]
     untaggable: list[str]
 
 
@@ -94,6 +110,7 @@ class ApiReport(TypedDict):
 
     summary: ApiReportSummary
     untaggable_resources: list[UntaggableResource]
+    conditionally_taggable_resources: list[ConditionallyTaggableResource]
     services_without_tagging_api: list[str]
     mixed_services_detail: list[MixedServiceDetail]
 

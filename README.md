@@ -23,7 +23,7 @@ Tagging is critical for AWS cost allocation, compliance, and resource management
 - You can't enforce compliance on resources you can't tag
 - The untaggable list spans 400+ services and changes regularly
 
-For SCP tagging policies, you need to exclude untaggable resources from tag enforcement. That means both service-level exclusions (entire services with no tagging API) and resource-level exclusions (specific resources in mixed-support services). Without these exclusions, your SCP policies will block legitimate resource creation.
+For SCP tagging policies, you need to exclude untaggable resources from tag enforcement. That means service-level exclusions (entire services with no tagging API), resource-level exclusions (specific resource types in mixed-support services), and instance-level exclusions (specific AWS-managed default instances of otherwise-taggable resource types). Without these exclusions, your SCP policies will block legitimate API calls.
 
 ## The Solution
 
@@ -36,6 +36,8 @@ A resource is considered **taggable** if:
 - It's in scope of TagResource/CreateTags/AddTags action
 
 A resource is **untaggable** only if it has NEITHER indicator.
+
+A resource type is **conditionally taggable** if it passes both checks above, but specific AWS-managed default instances within that type cannot be tagged. For example, `elasticache:parametergroup` as a type is taggable. You can tag a user-created parameter group. But `default.redis7` is an AWS-managed default owned by AWS, not by the account, so it will reject tags. This is an instance-level restriction that IAM documentation does not distinguish from user-created instances of the same type. The tool maintains a curated list of known patterns and surfaces them as a separate `conditionally_taggable_resources` category with the ARN patterns you need to exclude from SCP enforcement.
 
 ## Why `aws:ResourceTag`?
 
@@ -59,6 +61,7 @@ Scope is limited to untaggable resources, not:
 - **Web scraping dependency**: the tool parses AWS HTML docs; structure changes can break extraction
 - **Point-in-time accuracy**: AWS adds/changes services frequently; re-run to stay current
 - **Native runs may be unstable on some macOS setups** (Python/lxml segfaults). Docker is the recommended execution path.
+- **Conditionally taggable list is manually curated**: AWS does not publish a registry of managed default instances. The `conditionally_taggable_resources` list covers known patterns (ElastiCache default parameter groups, RDS default parameter and option groups, AWS-managed IAM policies) but may be incomplete. If you encounter an AWS-managed resource instance that rejects tags despite the type appearing as taggable, open an issue.
 
 ## Quick Start
 
@@ -110,7 +113,8 @@ From `output/api_taggable_resources.json`:
     "services_without_tagging_api": 125,
     "services_with_tagging_api": 337,
     "mixed_services": 119,
-    "total_untaggable_resources": 532
+    "total_untaggable_resources": 532,
+    "conditionally_taggable_resource_types": 4
   },
   "untaggable_resources": [
     {
@@ -119,11 +123,20 @@ From `output/api_taggable_resources.json`:
       "reason": "service_no_tagging_api"
     }
   ],
+  "conditionally_taggable_resources": [
+    {
+      "resource": "parametergroup",
+      "service": "Amazon ElastiCache",
+      "arn_pattern": "arn:aws:elasticache:*:*:parametergroup:default.*",
+      "description": "AWS-managed default ElastiCache parameter groups (e.g., default.redis7, default.memcached1.6)"
+    }
+  ],
   "mixed_services_detail": [
     {
-      "name": "Apache Kafka APIs for Amazon MSK clusters",
-      "taggable": ["cluster"],
-      "untaggable": ["transactional-id", "group", "topic"]
+      "name": "Amazon ElastiCache",
+      "taggable": ["cluster", "subnetgroup", "snapshot"],
+      "conditionally_taggable": ["parametergroup"],
+      "untaggable": ["globalreplicationgroup"]
     }
   ]
 }

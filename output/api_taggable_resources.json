@@ -9,8 +9,13 @@
   },
   "untaggable_resources": [
     {
-      "resource": "execute-api-domain",
-      "service": "Amazon API Gateway",
+      "resource": "accountinorganization",
+      "service": "AWS Account Management",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "account",
+      "service": "AWS Account Management",
       "reason": "service_no_tagging_api"
     },
     {
@@ -19,12 +24,22 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "created-backend",
-      "service": "AWS Amplify Admin",
+      "resource": "execute-api-domain",
+      "service": "Amazon API Gateway",
       "reason": "service_no_tagging_api"
     },
     {
       "resource": "api",
+      "service": "AWS Amplify Admin",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "storage",
+      "service": "AWS Amplify Admin",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "job",
       "service": "AWS Amplify Admin",
       "reason": "service_no_tagging_api"
     },
@@ -44,7 +59,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "storage",
+      "resource": "created-backend",
       "service": "AWS Amplify Admin",
       "reason": "service_no_tagging_api"
     },
@@ -54,27 +69,12 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "job",
-      "service": "AWS Amplify Admin",
-      "reason": "service_no_tagging_api"
-    },
-    {
       "resource": "auth",
       "service": "AWS Amplify Admin",
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "accountinorganization",
-      "service": "AWS Account Management",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "account",
-      "service": "AWS Account Management",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "application",
+      "resource": "connector",
       "service": "AWS App Studio",
       "reason": "service_no_tagging_api"
     },
@@ -84,17 +84,12 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "connector",
+      "resource": "application",
       "service": "AWS App Studio",
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "mesh",
-      "service": "AWS App Mesh Preview",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "virtualnode",
+      "resource": "virtualservice",
       "service": "AWS App Mesh Preview",
       "reason": "service_no_tagging_api"
     },
@@ -104,7 +99,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "virtualgateway",
+      "resource": "mesh",
       "service": "AWS App Mesh Preview",
       "reason": "service_no_tagging_api"
     },
@@ -119,8 +114,18 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "virtualservice",
+      "resource": "virtualgateway",
       "service": "AWS App Mesh Preview",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "virtualnode",
+      "service": "AWS App Mesh Preview",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "customer-agreement",
+      "service": "AWS Artifact",
       "reason": "service_no_tagging_api"
     },
     {
@@ -130,11 +135,6 @@
     },
     {
       "resource": "agreement",
-      "service": "AWS Artifact",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "customer-agreement",
       "service": "AWS Artifact",
       "reason": "service_no_tagging_api"
     },
@@ -169,12 +169,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "domain",
-      "service": "AWS Control Catalog",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "common-control",
+      "resource": "control",
       "service": "AWS Control Catalog",
       "reason": "service_no_tagging_api"
     },
@@ -184,7 +179,12 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "control",
+      "resource": "common-control",
+      "service": "AWS Control Catalog",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "domain",
       "service": "AWS Control Catalog",
       "reason": "service_no_tagging_api"
     },
@@ -194,7 +194,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "preset",
+      "resource": "job",
       "service": "Amazon Elastic Transcoder",
       "reason": "service_no_tagging_api"
     },
@@ -204,7 +204,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "job",
+      "resource": "preset",
       "service": "Amazon Elastic Transcoder",
       "reason": "service_no_tagging_api"
     },
@@ -229,22 +229,17 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "identitystore",
-      "service": "AWS Identity Store",
+      "resource": "synctargetresource",
+      "service": "AWS Identity Sync",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "syncprofileresource",
+      "service": "AWS Identity Sync",
       "reason": "service_no_tagging_api"
     },
     {
       "resource": "user",
-      "service": "AWS Identity Store",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "allusers",
-      "service": "AWS Identity Store",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "allgroupmemberships",
       "service": "AWS Identity Store",
       "reason": "service_no_tagging_api"
     },
@@ -254,7 +249,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "groupmembership",
+      "resource": "allgroupmemberships",
       "service": "AWS Identity Store",
       "reason": "service_no_tagging_api"
     },
@@ -264,13 +259,18 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "synctargetresource",
-      "service": "AWS Identity Sync",
+      "resource": "groupmembership",
+      "service": "AWS Identity Store",
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "syncprofileresource",
-      "service": "AWS Identity Sync",
+      "resource": "identitystore",
+      "service": "AWS Identity Store",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "allusers",
+      "service": "AWS Identity Store",
       "reason": "service_no_tagging_api"
     },
     {
@@ -284,12 +284,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "call",
-      "service": "AWS IQ",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "request",
+      "resource": "paymentrequest",
       "service": "AWS IQ",
       "reason": "service_no_tagging_api"
     },
@@ -299,32 +294,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "proposal",
-      "service": "AWS IQ",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "paymentschedule",
-      "service": "AWS IQ",
-      "reason": "service_no_tagging_api"
-    },
-    {
       "resource": "conversation",
-      "service": "AWS IQ",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "token",
-      "service": "AWS IQ",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "seller",
-      "service": "AWS IQ",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "paymentrequest",
       "service": "AWS IQ",
       "reason": "service_no_tagging_api"
     },
@@ -339,12 +309,42 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "attachment",
+      "resource": "seller",
+      "service": "AWS IQ",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "request",
+      "service": "AWS IQ",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "paymentschedule",
       "service": "AWS IQ",
       "reason": "service_no_tagging_api"
     },
     {
       "resource": "permission",
+      "service": "AWS IQ",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "attachment",
+      "service": "AWS IQ",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "call",
+      "service": "AWS IQ",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "proposal",
+      "service": "AWS IQ",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "token",
       "service": "AWS IQ",
       "reason": "service_no_tagging_api"
     },
@@ -374,12 +374,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "alllistings",
-      "service": "AWS Marketplace Discovery",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "allpurchaseoptions",
+      "resource": "purchaseoption",
       "service": "AWS Marketplace Discovery",
       "reason": "service_no_tagging_api"
     },
@@ -394,12 +389,17 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "offer",
+      "resource": "alllistings",
       "service": "AWS Marketplace Discovery",
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "purchaseoption",
+      "resource": "allpurchaseoptions",
+      "service": "AWS Marketplace Discovery",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "offer",
       "service": "AWS Marketplace Discovery",
       "reason": "service_no_tagging_api"
     },
@@ -424,13 +424,8 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "datasource",
-      "service": "Amazon OpenSearch",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "application",
-      "service": "Amazon OpenSearch",
+      "resource": "workflow-run",
+      "service": "Amazon Nova Act",
       "reason": "service_no_tagging_api"
     },
     {
@@ -439,8 +434,13 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "workflow-run",
-      "service": "Amazon Nova Act",
+      "resource": "application",
+      "service": "Amazon OpenSearch",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "datasource",
+      "service": "Amazon OpenSearch",
       "reason": "service_no_tagging_api"
     },
     {
@@ -474,32 +474,7 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "healthcheck",
-      "service": "Amazon Route 53",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "hostedzone",
-      "service": "Amazon Route 53",
-      "reason": "service_no_tagging_api"
-    },
-    {
       "resource": "trafficpolicyinstance",
-      "service": "Amazon Route 53",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "delegationset",
-      "service": "Amazon Route 53",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "queryloggingconfig",
-      "service": "Amazon Route 53",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "vpc",
       "service": "Amazon Route 53",
       "reason": "service_no_tagging_api"
     },
@@ -509,7 +484,27 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "change",
+      "resource": "healthcheck",
+      "service": "Amazon Route 53",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "vpc",
+      "service": "Amazon Route 53",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "hostedzone",
+      "service": "Amazon Route 53",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "queryloggingconfig",
+      "service": "Amazon Route 53",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "delegationset",
       "service": "Amazon Route 53",
       "reason": "service_no_tagging_api"
     },
@@ -519,13 +514,13 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "objectlambdaaccesspoint",
-      "service": "Amazon S3 Object Lambda",
+      "resource": "change",
+      "service": "Amazon Route 53",
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "endpoint",
-      "service": "Amazon S3 on Outposts",
+      "resource": "objectlambdaaccesspoint",
+      "service": "Amazon S3 Object Lambda",
       "reason": "service_no_tagging_api"
     },
     {
@@ -534,12 +529,17 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "object",
+      "resource": "accesspoint",
       "service": "Amazon S3 on Outposts",
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "accesspoint",
+      "resource": "endpoint",
+      "service": "Amazon S3 on Outposts",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "object",
       "service": "Amazon S3 on Outposts",
       "reason": "service_no_tagging_api"
     },
@@ -554,8 +554,13 @@
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "custom-verification-email-template",
-      "service": "Amazon SES",
+      "resource": "oauth2-public-client-localhost",
+      "service": "AWS Signin",
+      "reason": "service_no_tagging_api"
+    },
+    {
+      "resource": "oauth2-public-client-remote",
+      "service": "AWS Signin",
       "reason": "service_no_tagging_api"
     },
     {
@@ -569,27 +574,22 @@
       "reason": "service_no_tagging_api"
     },
     {
+      "resource": "custom-verification-email-template",
+      "service": "Amazon SES",
+      "reason": "service_no_tagging_api"
+    },
+    {
       "resource": "identity",
       "service": "Amazon SES",
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "oauth2-public-client-remote",
-      "service": "AWS Signin",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "oauth2-public-client-localhost",
-      "service": "AWS Signin",
-      "reason": "service_no_tagging_api"
-    },
-    {
-      "resource": "domain",
+      "resource": "export",
       "service": "Amazon SimpleDB",
       "reason": "service_no_tagging_api"
     },
     {
-      "resource": "export",
+      "resource": "domain",
       "service": "Amazon SimpleDB",
       "reason": "service_no_tagging_api"
     },
@@ -624,12 +624,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "group",
+      "resource": "transactional-id",
       "service": "Apache Kafka APIs for Amazon MSK clusters",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "transactional-id",
+      "resource": "group",
       "service": "Apache Kafka APIs for Amazon MSK clusters",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -639,22 +639,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "schedule",
-      "service": "Alexa for Business",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "skillgroup",
-      "service": "Alexa for Business",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "conferenceprovider",
-      "service": "Alexa for Business",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "addressbook",
+      "resource": "networkprofile",
       "service": "Alexa for Business",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -669,17 +654,32 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "addressbook",
+      "service": "Alexa for Business",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "contact",
       "service": "Alexa for Business",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "networkprofile",
+      "resource": "gateway",
       "service": "Alexa for Business",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "gateway",
+      "resource": "conferenceprovider",
+      "service": "Alexa for Business",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "skillgroup",
+      "service": "Alexa for Business",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "schedule",
       "service": "Alexa for Business",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -694,6 +694,11 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "tags",
+      "service": "Amazon API Gateway Management",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "domainnameaccessassociation",
       "service": "Amazon API Gateway Management",
       "reason": "resource_not_in_tag_action_scope"
@@ -704,13 +709,13 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "tags",
-      "service": "Amazon API Gateway Management",
+      "resource": "hostedconfigurationversion",
+      "service": "AWS AppConfig",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "hostedconfigurationversion",
-      "service": "AWS AppConfig",
+      "resource": "mergedapiassociation",
+      "service": "AWS AppSync",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -724,12 +729,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "mergedapiassociation",
-      "service": "AWS AppSync",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "datasource",
+      "resource": "sourceapiassociation",
       "service": "AWS AppSync",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -739,7 +739,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "sourceapiassociation",
+      "resource": "datasource",
       "service": "AWS AppSync",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -769,7 +769,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "publishedschema",
+      "resource": "developmentschema",
       "service": "Amazon Cloud Directory",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -779,22 +779,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "developmentschema",
+      "resource": "publishedschema",
       "service": "Amazon Cloud Directory",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "recommendation",
-      "service": "Amazon Bedrock Agentcore",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "registry-record",
-      "service": "Amazon Bedrock Agentcore",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "code-interpreter",
+      "resource": "browser",
       "service": "Amazon Bedrock Agentcore",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -804,7 +794,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "policy-generation",
+      "resource": "batch-evaluate",
+      "service": "Amazon Bedrock Agentcore",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "recommendation",
       "service": "Amazon Bedrock Agentcore",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -814,7 +809,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "batch-evaluate",
+      "resource": "configuration-bundle",
+      "service": "Amazon Bedrock Agentcore",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "registry-record",
       "service": "Amazon Bedrock Agentcore",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -824,27 +824,17 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "configuration-bundle",
+      "resource": "policy-generation",
       "service": "Amazon Bedrock Agentcore",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "browser",
+      "resource": "code-interpreter",
       "service": "Amazon Bedrock Agentcore",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "data-automation-profile",
-      "service": "Amazon Bedrock",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "flow-execution",
-      "service": "Amazon Bedrock",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "system-tool",
       "service": "Amazon Bedrock",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -854,17 +844,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "bedrock-marketplace-model-endpoint",
-      "service": "Amazon Bedrock",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "default-prompt-router",
-      "service": "Amazon Bedrock",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "guardrail-profile",
+      "service": "Amazon Bedrock",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "bedrock-marketplace-model-endpoint",
       "service": "Amazon Bedrock",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -874,13 +859,18 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "type",
-      "service": "AWS CloudFormation",
+      "resource": "system-tool",
+      "service": "Amazon Bedrock",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "stackset-target",
-      "service": "AWS CloudFormation",
+      "resource": "default-prompt-router",
+      "service": "Amazon Bedrock",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "data-automation-profile",
+      "service": "Amazon Bedrock",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -899,17 +889,22 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "type",
+      "service": "AWS CloudFormation",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "stackset-target",
+      "service": "AWS CloudFormation",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "internetevent",
       "service": "Amazon CloudWatch Internet Monitor",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "voice-profile",
-      "service": "Amazon Chime",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "origin-access-control",
+      "resource": "cache-policy",
       "service": "Amazon CloudFront",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -919,7 +914,27 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "origin-access-control",
+      "service": "Amazon CloudFront",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "continuous-deployment-policy",
+      "service": "Amazon CloudFront",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "realtime-log-config",
+      "service": "Amazon CloudFront",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "field-level-encryption-profile",
+      "service": "Amazon CloudFront",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "response-headers-policy",
       "service": "Amazon CloudFront",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -934,28 +949,13 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "response-headers-policy",
-      "service": "Amazon CloudFront",
+      "resource": "package",
+      "service": "AWS CodeArtifact",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "field-level-encryption-profile",
-      "service": "Amazon CloudFront",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "realtime-log-config",
-      "service": "Amazon CloudFront",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "cache-policy",
-      "service": "Amazon CloudFront",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "space",
-      "service": "Amazon CodeCatalyst",
+      "resource": "voice-profile",
+      "service": "Amazon Chime",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -964,13 +964,8 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "package",
-      "service": "AWS CodeArtifact",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "deploymentconfig",
-      "service": "AWS CodeDeploy",
+      "resource": "space",
+      "service": "Amazon CodeCatalyst",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -984,12 +979,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "sandbox",
-      "service": "AWS CodeBuild",
+      "resource": "deploymentconfig",
+      "service": "AWS CodeDeploy",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "build-batch",
+      "resource": "sandbox",
       "service": "AWS CodeBuild",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -999,12 +994,17 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "report",
+      "resource": "build-batch",
       "service": "AWS CodeBuild",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "fleet",
+      "service": "AWS CodeBuild",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "report",
       "service": "AWS CodeBuild",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1016,6 +1016,16 @@
     {
       "resource": "remediationconfiguration",
       "service": "AWS Config",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "baseline",
+      "service": "AWS Control Tower",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "entitled-assets",
+      "service": "AWS Data Exchange",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1034,16 +1044,6 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "entitled-assets",
-      "service": "AWS Data Exchange",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "baseline",
-      "service": "AWS Control Tower",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "tool",
       "service": "AWS Diagnostic tools",
       "reason": "resource_not_in_tag_action_scope"
@@ -1054,7 +1054,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "sample",
+      "resource": "test",
       "service": "AWS Device Farm",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1064,7 +1064,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "suite",
+      "resource": "job",
       "service": "AWS Device Farm",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1074,23 +1074,13 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "test",
+      "resource": "suite",
       "service": "AWS Device Farm",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "job",
+      "resource": "sample",
       "service": "AWS Device Farm",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "backup",
-      "service": "Amazon DynamoDB",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "global-table",
-      "service": "Amazon DynamoDB",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1109,18 +1099,18 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "backup",
+      "service": "Amazon DynamoDB",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "global-table",
+      "service": "Amazon DynamoDB",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "launchconfiguration",
       "service": "Amazon EC2 Auto Scaling",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "registry",
-      "service": "Amazon Elastic Container Registry Public",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "allcomponentbuildversions",
-      "service": "Amazon EC2 Image Builder",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1129,12 +1119,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "workflowexecution",
-      "service": "Amazon EC2 Image Builder",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "workflowstepexecution",
+      "resource": "allcomponentbuildversions",
       "service": "Amazon EC2 Image Builder",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1144,8 +1129,23 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "workflowstepexecution",
+      "service": "Amazon EC2 Image Builder",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "lifecycleexecution",
       "service": "Amazon EC2 Image Builder",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "workflowexecution",
+      "service": "Amazon EC2 Image Builder",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "registry",
+      "service": "Amazon Elastic Container Registry Public",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1164,32 +1164,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "qualified-aws-managed-view",
-      "service": "Amazon Connect",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "authentication-profile",
-      "service": "Amazon Connect",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "wildcard-legacy-phone-number",
-      "service": "Amazon Connect",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "wildcard-queue",
-      "service": "Amazon Connect",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "wildcard-contact-flow",
-      "service": "Amazon Connect",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "wildcard-agent-status",
+      "resource": "aws-managed-view",
       "service": "Amazon Connect",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1199,7 +1174,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "wildcard-quick-connect",
+      "resource": "authentication-profile",
       "service": "Amazon Connect",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1209,12 +1184,37 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "aws-managed-view",
+      "resource": "contact",
       "service": "Amazon Connect",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "contact",
+      "resource": "qualified-aws-managed-view",
+      "service": "Amazon Connect",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "wildcard-agent-status",
+      "service": "Amazon Connect",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "wildcard-contact-flow",
+      "service": "Amazon Connect",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "wildcard-queue",
+      "service": "Amazon Connect",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "wildcard-legacy-phone-number",
+      "service": "Amazon Connect",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "wildcard-quick-connect",
       "service": "Amazon Connect",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1224,18 +1224,13 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "folder",
-      "service": "AWS Elemental MediaStore",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "object",
       "service": "AWS Elemental MediaStore",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "channelpolicy",
-      "service": "AWS Elemental MediaPackage V2",
+      "resource": "folder",
+      "service": "AWS Elemental MediaStore",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1244,13 +1239,18 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "bridge",
-      "service": "AWS Elemental MediaConnect",
+      "resource": "channelpolicy",
+      "service": "AWS Elemental MediaPackage V2",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "gatewayinstance",
-      "service": "AWS Elemental MediaConnect",
+      "resource": "prefetchschedule",
+      "service": "AWS Elemental MediaTailor",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "program",
+      "service": "AWS Elemental MediaTailor",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1264,18 +1264,18 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "gateway",
+      "resource": "bridge",
       "service": "AWS Elemental MediaConnect",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "prefetchschedule",
-      "service": "AWS Elemental MediaTailor",
+      "resource": "gatewayinstance",
+      "service": "AWS Elemental MediaConnect",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "program",
-      "service": "AWS Elemental MediaTailor",
+      "resource": "gateway",
+      "service": "AWS Elemental MediaConnect",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1304,17 +1304,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "message",
-      "service": "AWS End User Messaging SMS and Voice V2",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "replay",
-      "service": "Amazon EventBridge",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "stop-instance",
+      "resource": "reboot-instance",
       "service": "Amazon EventBridge",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1324,32 +1314,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "key",
+      "service": "Amazon EventBridge",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "endpoint",
-      "service": "Amazon EventBridge",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "api-destination",
-      "service": "Amazon EventBridge",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "reboot-instance",
-      "service": "Amazon EventBridge",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "event-source",
-      "service": "Amazon EventBridge",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "alias",
-      "service": "Amazon EventBridge",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "terminate-instance",
       "service": "Amazon EventBridge",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1359,18 +1329,53 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "api-destination",
+      "service": "Amazon EventBridge",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "event-source",
+      "service": "Amazon EventBridge",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "terminate-instance",
+      "service": "Amazon EventBridge",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "replay",
+      "service": "Amazon EventBridge",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "alias",
+      "service": "Amazon EventBridge",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "connection",
       "service": "Amazon EventBridge",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "key",
+      "resource": "stop-instance",
       "service": "Amazon EventBridge",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "message",
+      "service": "AWS End User Messaging SMS and Voice V2",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "algorithm",
       "service": "Amazon Forecast",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "groundstationresource",
+      "service": "AWS Ground Station",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1384,12 +1389,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "groundstationresource",
-      "service": "AWS Ground Station",
+      "resource": "workbook",
+      "service": "Amazon Honeycode",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "screen-automation",
+      "resource": "screen",
       "service": "Amazon Honeycode",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1399,12 +1404,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "workbook",
-      "service": "Amazon Honeycode",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "screen",
+      "resource": "screen-automation",
       "service": "Amazon Honeycode",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1439,21 +1439,6 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "access-report",
-      "service": "AWS Identity and Access Management (IAM)",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "delegation-request",
-      "service": "AWS Identity and Access Management (IAM)",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "sms-mfa",
-      "service": "AWS Identity and Access Management (IAM)",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "federated-user",
       "service": "AWS Identity and Access Management (IAM)",
       "reason": "resource_not_in_tag_action_scope"
@@ -1469,13 +1454,18 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "dataset",
-      "service": "AWS IoT Analytics",
+      "resource": "access-report",
+      "service": "AWS Identity and Access Management (IAM)",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "datastore",
-      "service": "AWS IoT Analytics",
+      "resource": "sms-mfa",
+      "service": "AWS Identity and Access Management (IAM)",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "delegation-request",
+      "service": "AWS Identity and Access Management (IAM)",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1484,23 +1474,13 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "connectivityinfo",
-      "service": "AWS IoT Greengrass V2",
+      "resource": "dataset",
+      "service": "AWS IoT Analytics",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "rootcatalog",
-      "service": "AWS Glue",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "table",
-      "service": "AWS Glue",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "tableversion",
-      "service": "AWS Glue",
+      "resource": "datastore",
+      "service": "AWS IoT Analytics",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1514,52 +1494,32 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "table",
+      "service": "AWS Glue",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "rootcatalog",
+      "service": "AWS Glue",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "tableversion",
+      "service": "AWS Glue",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "connectivityinfo",
+      "service": "AWS IoT Greengrass V2",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "metadatatransferjob",
       "service": "AWS IoT TwinMaker",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "resourcedefinitionversion",
-      "service": "AWS IoT Greengrass",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "loggerdefinitionversion",
-      "service": "AWS IoT Greengrass",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "thing",
-      "service": "AWS IoT Greengrass",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "thingruntimeconfig",
-      "service": "AWS IoT Greengrass",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "connectordefinitionversion",
-      "service": "AWS IoT Greengrass",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "connectivityinfo",
-      "service": "AWS IoT Greengrass",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "certificateauthority",
-      "service": "AWS IoT Greengrass",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "deployment",
-      "service": "AWS IoT Greengrass",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "coredefinitionversion",
       "service": "AWS IoT Greengrass",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1569,7 +1529,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "devicedefinitionversion",
+      "resource": "thingruntimeconfig",
       "service": "AWS IoT Greengrass",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1579,7 +1539,47 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "coredefinitionversion",
+      "service": "AWS IoT Greengrass",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "thing",
+      "service": "AWS IoT Greengrass",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "devicedefinitionversion",
+      "service": "AWS IoT Greengrass",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "functiondefinitionversion",
+      "service": "AWS IoT Greengrass",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "loggerdefinitionversion",
+      "service": "AWS IoT Greengrass",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "resourcedefinitionversion",
+      "service": "AWS IoT Greengrass",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "deployment",
+      "service": "AWS IoT Greengrass",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "connectivityinfo",
+      "service": "AWS IoT Greengrass",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "connectordefinitionversion",
       "service": "AWS IoT Greengrass",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1604,38 +1604,8 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "thing",
-      "service": "AWS IoT",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "cert",
-      "service": "AWS IoT",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "topic",
-      "service": "AWS IoT",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "topicfilter",
-      "service": "AWS IoT",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "client",
-      "service": "AWS IoT",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "destination",
-      "service": "AWS IoT",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "index",
-      "service": "AWS IoT",
+      "resource": "alias",
+      "service": "AWS Key Management Service",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1649,8 +1619,38 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "layer",
-      "service": "AWS Lambda",
+      "resource": "index",
+      "service": "AWS IoT",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "destination",
+      "service": "AWS IoT",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "thing",
+      "service": "AWS IoT",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "cert",
+      "service": "AWS IoT",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "client",
+      "service": "AWS IoT",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "topicfilter",
+      "service": "AWS IoT",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "topic",
+      "service": "AWS IoT",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1664,8 +1664,8 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "alias",
-      "service": "AWS Key Management Service",
+      "resource": "layer",
+      "service": "AWS Lambda",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1674,7 +1674,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "datasource",
+      "resource": "mlmodel",
       "service": "Amazon Machine Learning",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1684,13 +1684,18 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "mlmodel",
+      "resource": "datasource",
       "service": "Amazon Machine Learning",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "rbac-role",
       "service": "Amazon Managed Workflows for Apache Airflow",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "exportsnapshotrecord",
+      "service": "Amazon Lightsail",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1704,17 +1709,17 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "exportsnapshotrecord",
-      "service": "Amazon Lightsail",
+      "resource": "assessment",
+      "service": "AWS Marketplace Catalog",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "topic",
+      "resource": "configuration",
       "service": "Amazon Managed Streaming for Apache Kafka",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "group",
+      "resource": "topic",
       "service": "Amazon Managed Streaming for Apache Kafka",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1724,18 +1729,8 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "configuration",
+      "resource": "group",
       "service": "Amazon Managed Streaming for Apache Kafka",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "assessment",
-      "service": "AWS Marketplace Catalog",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "migrationtask",
-      "service": "AWS Migration Hub",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1744,7 +1739,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "automationunitresource",
+      "resource": "migrationtask",
       "service": "AWS Migration Hub",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1754,22 +1749,27 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "vpn-connection-device-type",
-      "service": "Amazon EC2",
+      "resource": "automationunitresource",
+      "service": "AWS Migration Hub",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "multiregionparametergroup",
+      "service": "Amazon MemoryDB",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "import-task",
+      "service": "Amazon Neptune Analytics",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "export-task",
+      "service": "Amazon Neptune Analytics",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "role",
-      "service": "Amazon EC2",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "license-configuration",
-      "service": "Amazon EC2",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "certificate",
       "service": "Amazon EC2",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1784,28 +1784,18 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "multiregionparametergroup",
-      "service": "Amazon MemoryDB",
+      "resource": "vpn-connection-device-type",
+      "service": "Amazon EC2",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "export-task",
-      "service": "Amazon Neptune Analytics",
+      "resource": "certificate",
+      "service": "Amazon EC2",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "import-task",
-      "service": "Amazon Neptune Analytics",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "pipeline-blueprint",
-      "service": "Amazon OpenSearch Ingestion",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "user",
-      "service": "Amazon One Enterprise",
+      "resource": "license-configuration",
+      "service": "Amazon EC2",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1814,18 +1804,13 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "dashboards",
-      "service": "Amazon OpenSearch Serverless",
+      "resource": "user",
+      "service": "Amazon One Enterprise",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "backup",
-      "service": "AWS OpsWorks Configuration Management",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "server",
-      "service": "AWS OpsWorks Configuration Management",
+      "resource": "pipeline-blueprint",
+      "service": "Amazon OpenSearch Ingestion",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1839,12 +1824,22 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "awspolicy",
-      "service": "AWS Organizations",
+      "resource": "dashboards",
+      "service": "Amazon OpenSearch Serverless",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "organization",
+      "resource": "server",
+      "service": "AWS OpsWorks Configuration Management",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "backup",
+      "service": "AWS OpsWorks Configuration Management",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "awspolicy",
       "service": "AWS Organizations",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1854,38 +1849,48 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "organization",
+      "service": "AWS Organizations",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "alias",
       "service": "AWS Payment Cryptography",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "recipe",
-      "service": "Amazon Personalize",
+      "resource": "engagement-by-accepting-invitation-task",
+      "service": "AWS Partner Central",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "featuretransformation",
-      "service": "Amazon Personalize",
+      "resource": "benefit",
+      "service": "AWS Partner Central",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "metricattribution",
-      "service": "Amazon Personalize",
+      "resource": "benefitallocation",
+      "service": "AWS Partner Central",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "datainsightsjob",
-      "service": "Amazon Personalize",
+      "resource": "engagement-from-opportunity-task",
+      "service": "AWS Partner Central",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "algorithm",
-      "service": "Amazon Personalize",
+      "resource": "engagement-invitation",
+      "service": "AWS Partner Central",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "schema",
-      "service": "Amazon Personalize",
+      "resource": "engagement",
+      "service": "AWS Partner Central",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "resourcesnapshot",
+      "service": "AWS Partner Central",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -1899,12 +1904,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "engagement-from-opportunity-task",
-      "service": "AWS Partner Central",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "resourcesnapshot",
+      "resource": "solution",
       "service": "AWS Partner Central",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1914,12 +1914,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "engagement",
-      "service": "AWS Partner Central",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "solution",
+      "resource": "connection",
       "service": "AWS Partner Central",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1929,32 +1924,37 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "engagement-by-accepting-invitation-task",
-      "service": "AWS Partner Central",
+      "resource": "schema",
+      "service": "Amazon Personalize",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "benefitallocation",
-      "service": "AWS Partner Central",
+      "resource": "datainsightsjob",
+      "service": "Amazon Personalize",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "benefit",
-      "service": "AWS Partner Central",
+      "resource": "recipe",
+      "service": "Amazon Personalize",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "engagement-invitation",
-      "service": "AWS Partner Central",
+      "resource": "metricattribution",
+      "service": "Amazon Personalize",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "connection",
-      "service": "AWS Partner Central",
+      "resource": "algorithm",
+      "service": "Amazon Personalize",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "apps",
+      "resource": "featuretransformation",
+      "service": "Amazon Personalize",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "user",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1964,27 +1964,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "journeys",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "otp",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "events",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "messages",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "endpoint",
+      "resource": "templates",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -1994,42 +1974,17 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "campaign-metrics",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "import-job",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "journey-metrics",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "recommenders",
+      "resource": "endpoint",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "export-job",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "application-metrics",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "recommender",
-      "service": "Amazon Pinpoint",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "user",
+      "resource": "apps",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2039,12 +1994,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "channels",
+      "resource": "import-job",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "journey-execution-activity-metrics",
+      "resource": "recommender",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2054,12 +2009,37 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "campaign-metrics",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "channels",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "attribute",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "templates",
+      "resource": "application-metrics",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "export-job",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "recommenders",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "messages",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2069,7 +2049,27 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "events",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "journeys",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "journey-execution-activity-metrics",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "phone-number-validate",
+      "service": "Amazon Pinpoint",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "otp",
       "service": "Amazon Pinpoint",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2089,22 +2089,22 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "managed-workgroup",
-      "service": "Amazon Redshift Serverless",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "endpointaccess",
       "service": "Amazon Redshift Serverless",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "resource-share-invitation",
-      "service": "AWS Resource Access Manager (RAM)",
+      "resource": "managed-workgroup",
+      "service": "Amazon Redshift Serverless",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "permission",
+      "service": "AWS Resource Access Manager (RAM)",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "resource-share-invitation",
       "service": "AWS Resource Access Manager (RAM)",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2114,8 +2114,8 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "routingcontrol",
-      "service": "Amazon Route 53 Recovery Controls",
+      "resource": "dbname",
+      "service": "Amazon Redshift",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -2124,17 +2124,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "dbname",
+      "resource": "namespace",
       "service": "Amazon Redshift",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "dbgroup",
-      "service": "Amazon Redshift",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "namespace",
       "service": "Amazon Redshift",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2149,47 +2144,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "assetbundleimportjob",
-      "service": "Amazon QuickSight",
+      "resource": "routingcontrol",
+      "service": "Amazon Route 53 Recovery Controls",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "user",
-      "service": "Amazon QuickSight",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "automationjob",
-      "service": "Amazon QuickSight",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "assignment",
-      "service": "Amazon QuickSight",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "automationgroup",
-      "service": "Amazon QuickSight",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "agent",
-      "service": "Amazon QuickSight",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "extensionaccess",
-      "service": "Amazon QuickSight",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "assetbundleexportjob",
-      "service": "Amazon QuickSight",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "account",
       "service": "Amazon QuickSight",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2199,12 +2159,27 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "refreshschedule",
+      "resource": "group",
       "service": "Amazon QuickSight",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "group",
+      "resource": "account",
+      "service": "Amazon QuickSight",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "assetbundleimportjob",
+      "service": "Amazon QuickSight",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "assignment",
+      "service": "Amazon QuickSight",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "agent",
       "service": "Amazon QuickSight",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2214,17 +2189,42 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "automationjob",
+      "service": "Amazon QuickSight",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "refreshschedule",
+      "service": "Amazon QuickSight",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "extensionaccess",
+      "service": "Amazon QuickSight",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "automationgroup",
+      "service": "Amazon QuickSight",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "assetbundleexportjob",
+      "service": "Amazon QuickSight",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "resolver-config",
       "service": "Amazon Route 53 Resolver",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "federated-user",
+      "resource": "context-provider",
       "service": "AWS Security Token Service",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "context-provider",
+      "resource": "federated-user",
       "service": "AWS Security Token Service",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2239,12 +2239,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "finding-aggregator",
+      "resource": "product",
       "service": "AWS Security Hub",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "product",
+      "resource": "finding-aggregator",
       "service": "AWS Security Hub",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2269,27 +2269,22 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "multiregionaccesspoint",
-      "service": "Amazon S3",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "multiregionaccesspointrequestarn",
       "service": "Amazon S3",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "labelled express",
-      "service": "AWS Step Functions",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "labelled execution",
-      "service": "AWS Step Functions",
+      "resource": "multiregionaccesspoint",
+      "service": "Amazon S3",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "express",
+      "service": "AWS Step Functions",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "labelled express",
       "service": "AWS Step Functions",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2299,12 +2294,17 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "labelled execution",
+      "service": "AWS Step Functions",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "bill-of-materials-import-job",
       "service": "AWS Supply Chain",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "export-job",
+      "resource": "import-job",
       "service": "Amazon Simple Email Service v2",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2314,7 +2314,7 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "import-job",
+      "resource": "export-job",
       "service": "Amazon Simple Email Service v2",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2339,18 +2339,58 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "contactchannel",
+      "resource": "engagement",
       "service": "AWS Systems Manager Incident Manager Contacts",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "engagement",
+      "resource": "contactchannel",
       "service": "AWS Systems Manager Incident Manager Contacts",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
       "resource": "profile",
       "service": "AWS Transform",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "managednotificationchildevent",
+      "service": "AWS User Notifications",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "managednotificationconfiguration",
+      "service": "AWS User Notifications",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "notificationevent",
+      "service": "AWS User Notifications",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "eventrule",
+      "service": "AWS User Notifications",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "managednotificationevent",
+      "service": "AWS User Notifications",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "shared-model-event",
+      "service": "Amazon SageMaker",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "shared-model",
+      "service": "Amazon SageMaker",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "sagemaker-catalog",
+      "service": "Amazon SageMaker",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -2364,48 +2404,8 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "shared-model-event",
-      "service": "Amazon SageMaker",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "sagemaker-catalog",
-      "service": "Amazon SageMaker",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "shared-model",
-      "service": "Amazon SageMaker",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
       "resource": "mlflow-tracking-server",
       "service": "Amazon SageMaker",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "eventrule",
-      "service": "AWS User Notifications",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "managednotificationconfiguration",
-      "service": "AWS User Notifications",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "managednotificationchildevent",
-      "service": "AWS User Notifications",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "managednotificationevent",
-      "service": "AWS User Notifications",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "notificationevent",
-      "service": "AWS User Notifications",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -2414,12 +2414,27 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "resourcedatasync",
+      "resource": "bucket",
       "service": "AWS Systems Manager",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "bucket",
+      "resource": "session",
+      "service": "AWS Systems Manager",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "servicesetting",
+      "service": "AWS Systems Manager",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "managed-instance-inventory",
+      "service": "AWS Systems Manager",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "opsitemgroup",
       "service": "AWS Systems Manager",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2434,37 +2449,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "servicesetting",
+      "resource": "resourcedatasync",
       "service": "AWS Systems Manager",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "opsitemgroup",
-      "service": "AWS Systems Manager",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "session",
-      "service": "AWS Systems Manager",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "managed-instance-inventory",
-      "service": "AWS Systems Manager",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "sizeconstraintset",
-      "service": "AWS WAF",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "sqlinjectionmatchset",
-      "service": "AWS WAF",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "regexpatternset",
+      "resource": "ipset",
       "service": "AWS WAF",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2474,12 +2464,12 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "ipset",
+      "resource": "sqlinjectionmatchset",
       "service": "AWS WAF",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "geomatchset",
+      "resource": "sizeconstraintset",
       "service": "AWS WAF",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2489,22 +2479,67 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
+      "resource": "regexpatternset",
+      "service": "AWS WAF",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
       "resource": "regexmatchset",
       "service": "AWS WAF",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "appsync",
-      "service": "AWS WAF V2",
+      "resource": "geomatchset",
+      "service": "AWS WAF",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "amplify-app",
-      "service": "AWS WAF V2",
+      "resource": "ipset",
+      "service": "AWS WAF Regional",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "userpool",
+      "resource": "bytematchset",
+      "service": "AWS WAF Regional",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "sqlinjectionmatchset",
+      "service": "AWS WAF Regional",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "sizeconstraintset",
+      "service": "AWS WAF Regional",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "xssmatchset",
+      "service": "AWS WAF Regional",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "loadbalancer/app/",
+      "service": "AWS WAF Regional",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "regexpatternset",
+      "service": "AWS WAF Regional",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "regexmatchset",
+      "service": "AWS WAF Regional",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "geomatchset",
+      "service": "AWS WAF Regional",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "verified-access-instance",
       "service": "AWS WAF V2",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2514,7 +2549,22 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "managedruleset",
+      "resource": "appsync",
+      "service": "AWS WAF V2",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "loadbalancer/app/",
+      "service": "AWS WAF V2",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "userpool",
+      "service": "AWS WAF V2",
+      "reason": "resource_not_in_tag_action_scope"
+    },
+    {
+      "resource": "amplify-app",
       "service": "AWS WAF V2",
       "reason": "resource_not_in_tag_action_scope"
     },
@@ -2524,58 +2574,8 @@
       "reason": "resource_not_in_tag_action_scope"
     },
     {
-      "resource": "loadbalancer/app/",
+      "resource": "managedruleset",
       "service": "AWS WAF V2",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "verified-access-instance",
-      "service": "AWS WAF V2",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "sizeconstraintset",
-      "service": "AWS WAF Regional",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "sqlinjectionmatchset",
-      "service": "AWS WAF Regional",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "regexpatternset",
-      "service": "AWS WAF Regional",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "bytematchset",
-      "service": "AWS WAF Regional",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "ipset",
-      "service": "AWS WAF Regional",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "geomatchset",
-      "service": "AWS WAF Regional",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "xssmatchset",
-      "service": "AWS WAF Regional",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "regexmatchset",
-      "service": "AWS WAF Regional",
-      "reason": "resource_not_in_tag_action_scope"
-    },
-    {
-      "resource": "loadbalancer/app/",
-      "service": "AWS WAF Regional",
       "reason": "resource_not_in_tag_action_scope"
     },
     {
@@ -2611,12 +2611,12 @@
     }
   ],
   "services_without_tagging_api": [
+    "AWS Account Management",
     "AWS Action Recommendations",
-    "AmazonMediaImport",
     "AWS Activate",
+    "AmazonMediaImport",
     "Amazon API Gateway",
     "AWS Amplify Admin",
-    "AWS Account Management",
     "AWS App Studio",
     "AWS App2Container",
     "AWS App Mesh Preview",
@@ -2626,22 +2626,22 @@
     "AWS Auto Scaling",
     "AWS Backup storage",
     "AWS Billing And Cost Management Recommended Actions",
-    "AWS Billing Console",
     "Amazon Bio Discovery",
+    "AWS Billing Console",
     "AWS Cloud Control API",
     "Amazon CloudFront KeyValueStore",
     "AWS CloudShell",
-    "AWS CodeDeploy secure host commands service",
     "Amazon CodeGuru",
-    "Amazon Cognito Sync",
+    "AWS CodeDeploy secure host commands service",
     "Amazon Comprehend Medical",
+    "Amazon Cognito Sync",
     "AWS Compute Optimizer",
     "AWS Connector Service",
     "AWS Management Console Mobile App",
     "AWS Consolidated Billing",
     "AWS Control Catalog",
-    "AWS Customer Verification Service",
     "AWS Cost Optimization Hub",
+    "AWS Customer Verification Service",
     "Database Query Metadata Service",
     "Amazon DevOps Guru",
     "Amazon ECS MCP Service",
@@ -2657,12 +2657,12 @@
     "AWS IAM Identity Center OIDC service",
     "AWS IAM Identity Center directory",
     "AWS Identity Store Auth",
-    "AWS Identity Store",
-    "AWS Import Export Disk Service",
     "AWS Identity Sync",
+    "AWS Import Export Disk Service",
+    "AWS Identity Store",
+    "Amazon InspectorScan",
     "Amazon Inspector",
     "Amazon Inspector2 Telemetry Channel",
-    "Amazon InspectorScan",
     "AWS IoT Device Tester",
     "AWS IoT Jobs DataPlane",
     "AWS IQ Permissions",
@@ -2672,28 +2672,28 @@
     "Amazon Location Service Places",
     "Amazon Location Service Routes",
     "Amazon Managed Blockchain Query",
-    "AWS Marketplace Commerce Analytics Service",
     "AWS Marketplace",
+    "AWS Marketplace Commerce Analytics Service",
     "AWS Marketplace Entitlement Service",
     "AWS Marketplace Discovery",
     "AWS Marketplace Image Building Service",
+    "AWS Marketplace Metering Service",
+    "AWS Marketplace Private Marketplace",
     "AWS Marketplace Management Portal",
     "AWS Marketplace Procurement Systems Integration",
-    "AWS Marketplace Private Marketplace",
     "AWS Marketplace Seller Reporting",
     "AWS Marketplace Reporting",
-    "AWS Marketplace Metering Service",
     "AWS Microservice Extractor for .NET",
-    "Amazon Mechanical Turk",
     "Amazon Message Gateway Service",
-    "AWS Migration Acceleration Program Credits",
     "Amazon Message Delivery Service",
+    "AWS Migration Acceleration Program Credits",
+    "Amazon Mechanical Turk",
     "Amazon Mobile Analytics",
     "AWS Migration Hub Strategy Recommendations",
     "AWS Network Manager Chat",
     "Amazon Neptune",
-    "Amazon OpenSearch",
     "Amazon Nova Act",
+    "Amazon OpenSearch",
     "AWS Partner central account management",
     "Amazon Pinpoint SMS and Voice Service",
     "Amazon Polly",
@@ -2712,15 +2712,15 @@
     "AWS Server Migration Service",
     "AWS Serverless Application Repository",
     "AWS Shield network security director",
-    "Amazon SES",
     "AWS Signin",
+    "Amazon SES",
     "Amazon SimpleDB",
     "AWS Snowball",
-    "AWS Support App in Slack",
     "AWS Support",
+    "AWS Support App in Slack",
+    "AWS Support Console",
     "AWS Support Plans",
     "AWS Sustainability",
-    "AWS Support Console",
     "AWS Systems Manager GUI Connect",
     "Tag Editor",
     "AWS Tax Settings",
@@ -2732,8 +2732,8 @@
     "Amazon VPC Lattice Services",
     "Amazon WorkMail Message Flow",
     "Amazon WorkDocs",
-    "Amazon WorkSpaces Application Manager",
-    "Amazon WorkSpaces AgentAccess MCP Server"
+    "Amazon WorkSpaces AgentAccess MCP Server",
+    "Amazon WorkSpaces Application Manager"
   ],
   "mixed_services_detail": [
     {
@@ -2744,17 +2744,17 @@
       "conditionally_taggable": [],
       "untaggable": [
         "topic",
-        "group",
-        "transactional-id"
+        "transactional-id",
+        "group"
       ]
     },
     {
       "name": "AWS Amplify",
       "taggable": [
-        "apps",
+        "branches",
         "domains",
         "webhooks",
-        "branches"
+        "apps"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -2770,26 +2770,26 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "schedule",
-        "skillgroup",
-        "conferenceprovider",
-        "addressbook",
+        "networkprofile",
         "profile",
         "gatewaygroup",
+        "addressbook",
         "contact",
-        "networkprofile",
-        "gateway"
+        "gateway",
+        "conferenceprovider",
+        "skillgroup",
+        "schedule"
       ]
     },
     {
       "name": "AWS App Runner",
       "taggable": [
+        "service",
+        "vpcconnector",
         "vpcingressconnection",
         "observabilityconfiguration",
-        "service",
-        "autoscalingconfiguration",
-        "vpcconnector",
-        "connection"
+        "connection",
+        "autoscalingconfiguration"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -2810,68 +2810,68 @@
     {
       "name": "Amazon API Gateway Management",
       "taggable": [
-        "gatewayresponse",
-        "gatewayresponses",
-        "sdk",
-        "basepathmapping",
-        "resource",
-        "privatebasepathmapping",
-        "domainnameaccessassociations",
-        "method",
-        "restapi",
-        "stages",
-        "template",
-        "apikeys",
-        "integrationresponse",
-        "vpclink",
-        "documentationpart",
-        "basepathmappings",
-        "documentationversion",
-        "authorizer",
         "documentationversions",
-        "clientcertificate",
+        "restapi",
         "resources",
-        "stage",
-        "models",
-        "domainname",
-        "integration",
-        "domainnames",
-        "model",
-        "requestvalidator",
-        "requestvalidators",
-        "restapis",
-        "documentationparts",
-        "deployments",
+        "template",
+        "documentationpart",
+        "clientcertificate",
+        "privatebasepathmapping",
         "usageplan",
-        "usageplankeys",
-        "privatedomainname",
-        "authorizers",
-        "privatebasepathmappings",
+        "gatewayresponses",
+        "domainnames",
         "deployment",
-        "vpclinks",
-        "apikey",
-        "clientcertificates",
-        "methodresponse",
+        "documentationversion",
+        "domainnameaccessassociations",
+        "documentationparts",
+        "integration",
         "usageplans",
-        "usageplankey"
+        "requestvalidator",
+        "resource",
+        "basepathmapping",
+        "vpclink",
+        "apikeys",
+        "authorizer",
+        "stage",
+        "requestvalidators",
+        "models",
+        "model",
+        "usageplankeys",
+        "authorizers",
+        "apikey",
+        "usageplankey",
+        "integrationresponse",
+        "clientcertificates",
+        "deployments",
+        "restapis",
+        "privatedomainname",
+        "gatewayresponse",
+        "method",
+        "methodresponse",
+        "stages",
+        "basepathmappings",
+        "domainname",
+        "sdk",
+        "vpclinks",
+        "privatebasepathmappings"
       ],
       "conditionally_taggable": [],
       "untaggable": [
+        "tags",
         "domainnameaccessassociation",
-        "account",
-        "tags"
+        "account"
       ]
     },
     {
       "name": "AWS AppConfig",
       "taggable": [
-        "environment",
         "configurationprofile",
+        "deploymentstrategy",
+        "configuration",
+        "environment",
+        "extensionassociation",
         "extension",
         "deployment",
-        "configuration",
-        "extensionassociation",
-        "deploymentstrategy",
         "application"
       ],
       "conditionally_taggable": [],
@@ -2882,27 +2882,27 @@
     {
       "name": "AWS AppSync",
       "taggable": [
-        "domain",
-        "api",
         "channelnamespace",
+        "api",
+        "domain",
         "graphqlapi"
       ],
       "conditionally_taggable": [],
       "untaggable": [
+        "mergedapiassociation",
         "type",
         "function",
-        "mergedapiassociation",
-        "datasource",
+        "sourceapiassociation",
         "field",
-        "sourceapiassociation"
+        "datasource"
       ]
     },
     {
       "name": "AWS Audit Manager",
       "taggable": [
-        "assessmentframework",
+        "control",
         "assessment",
-        "control"
+        "assessmentframework"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -2923,8 +2923,8 @@
     {
       "name": "AWS Billing And Cost Management Pricing Calculator",
       "taggable": [
-        "bill-scenario",
-        "workload-estimate"
+        "workload-estimate",
+        "bill-scenario"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -2934,14 +2934,14 @@
     {
       "name": "AWS Batch",
       "taggable": [
-        "compute-environment",
-        "service-environment",
-        "consumable-resource",
-        "scheduling-policy",
-        "service-job",
-        "quota-share",
         "job-definition-revision",
+        "service-job",
+        "compute-environment",
+        "scheduling-policy",
         "job",
+        "consumable-resource",
+        "service-environment",
+        "quota-share",
         "job-queue"
       ],
       "conditionally_taggable": [],
@@ -2953,8 +2953,8 @@
       "name": "Amazon Braket",
       "taggable": [
         "job",
-        "spending-limit",
-        "quantum-task"
+        "quantum-task",
+        "spending-limit"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -2968,114 +2968,114 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "publishedschema",
+        "developmentschema",
         "appliedschema",
-        "developmentschema"
+        "publishedschema"
       ]
     },
     {
       "name": "Amazon Bedrock Agentcore",
       "taggable": [
-        "code-interpreter-custom",
-        "paymentcredentialprovider",
+        "harness",
+        "online-evaluation-config",
+        "apikeycredentialprovider",
+        "runtime-endpoint",
+        "memory",
+        "evaluator",
+        "gateway",
+        "workload-identity-directory",
+        "payment-manager",
+        "runtime",
         "oauth2credentialprovider",
         "workload-identity",
-        "apikeycredentialprovider",
-        "browser-custom",
-        "online-evaluation-config",
-        "runtime",
-        "browser-profile",
-        "harness",
-        "gateway",
-        "memory",
         "token-vault",
-        "payment-manager",
+        "browser-profile",
         "policy-engine",
-        "workload-identity-directory",
-        "evaluator",
-        "runtime-endpoint"
+        "code-interpreter-custom",
+        "paymentcredentialprovider",
+        "browser-custom"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "recommendation",
-        "registry-record",
-        "code-interpreter",
+        "browser",
         "registry",
-        "policy-generation",
-        "ab-test",
         "batch-evaluate",
-        "policy",
+        "recommendation",
+        "ab-test",
         "configuration-bundle",
-        "browser"
+        "registry-record",
+        "policy",
+        "policy-generation",
+        "code-interpreter"
       ]
     },
     {
       "name": "Amazon Bedrock",
       "taggable": [
-        "model-copy-job",
-        "data-automation-library-ingestion-job",
-        "prompt",
-        "prompt-version",
-        "application-inference-profile",
-        "agent-alias",
-        "imported-model",
-        "data-automation-invocation-job",
-        "automated-reasoning-policy-version",
-        "async-invoke",
-        "model-import-job",
-        "agent",
-        "data-automation-library",
-        "flow-alias",
-        "guardrail",
-        "custom-model-deployment",
-        "model-customization-job",
-        "data-automation-project",
-        "model-invocation-job",
-        "session",
-        "blueprint",
-        "automated-reasoning-policy",
-        "evaluation-job",
-        "flow",
-        "blueprint-optimization-invocation",
-        "custom-model",
-        "knowledge-base",
-        "prompt-router",
         "provisioned-model",
-        "model-evaluation-job"
+        "automated-reasoning-policy-version",
+        "agent-alias",
+        "blueprint-optimization-invocation",
+        "agent",
+        "model-customization-job",
+        "model-invocation-job",
+        "async-invoke",
+        "application-inference-profile",
+        "flow-alias",
+        "model-evaluation-job",
+        "data-automation-library-ingestion-job",
+        "custom-model",
+        "imported-model",
+        "knowledge-base",
+        "flow",
+        "data-automation-invocation-job",
+        "data-automation-library",
+        "prompt",
+        "prompt-router",
+        "automated-reasoning-policy",
+        "blueprint",
+        "model-import-job",
+        "session",
+        "model-copy-job",
+        "prompt-version",
+        "evaluation-job",
+        "custom-model-deployment",
+        "data-automation-project",
+        "guardrail"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "data-automation-profile",
         "flow-execution",
-        "system-tool",
         "foundation-model",
-        "bedrock-marketplace-model-endpoint",
-        "default-prompt-router",
         "guardrail-profile",
-        "inference-profile"
+        "bedrock-marketplace-model-endpoint",
+        "inference-profile",
+        "system-tool",
+        "default-prompt-router",
+        "data-automation-profile"
       ]
     },
     {
       "name": "AWS CloudFormation",
       "taggable": [
-        "changeset",
         "stackset",
+        "changeset",
         "stack"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "type",
-        "stackset-target",
         "generatedtemplate",
         "typehook",
-        "resourcescan"
+        "resourcescan",
+        "type",
+        "stackset-target"
       ]
     },
     {
       "name": "Amazon CloudWatch Internet Monitor",
       "taggable": [
-        "healthevent",
-        "monitor"
+        "monitor",
+        "healthevent"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3083,51 +3083,63 @@
       ]
     },
     {
+      "name": "Amazon CloudFront",
+      "taggable": [
+        "distribution",
+        "streaming-distribution",
+        "connection-function",
+        "vpcorigin",
+        "anycast-ip-list",
+        "distribution-tenant",
+        "connection-group",
+        "function",
+        "key-value-store",
+        "trust-store"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "cache-policy",
+        "field-level-encryption-config",
+        "origin-access-control",
+        "continuous-deployment-policy",
+        "realtime-log-config",
+        "field-level-encryption-profile",
+        "response-headers-policy",
+        "origin-request-policy",
+        "origin-access-identity"
+      ]
+    },
+    {
+      "name": "AWS CodeArtifact",
+      "taggable": [
+        "package-group",
+        "domain",
+        "repository"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "package"
+      ]
+    },
+    {
       "name": "Amazon Chime",
       "taggable": [
-        "voice-profile-domain",
-        "app-instance-user",
-        "media-insights-pipeline-configuration",
-        "app-instance",
         "meeting",
-        "media-pipeline",
-        "channel",
-        "channel-flow",
-        "sip-media-application",
         "app-instance-bot",
+        "media-insights-pipeline-configuration",
+        "media-pipeline",
+        "app-instance",
         "media-pipeline-kinesis-video-stream-pool",
-        "voice-connector"
+        "voice-profile-domain",
+        "sip-media-application",
+        "voice-connector",
+        "channel-flow",
+        "app-instance-user",
+        "channel"
       ],
       "conditionally_taggable": [],
       "untaggable": [
         "voice-profile"
-      ]
-    },
-    {
-      "name": "Amazon CloudFront",
-      "taggable": [
-        "streaming-distribution",
-        "anycast-ip-list",
-        "connection-function",
-        "function",
-        "key-value-store",
-        "trust-store",
-        "vpcorigin",
-        "distribution",
-        "distribution-tenant",
-        "connection-group"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "origin-access-control",
-        "field-level-encryption-config",
-        "continuous-deployment-policy",
-        "origin-request-policy",
-        "origin-access-identity",
-        "response-headers-policy",
-        "field-level-encryption-profile",
-        "realtime-log-config",
-        "cache-policy"
       ]
     },
     {
@@ -3138,32 +3150,8 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "space",
-        "project"
-      ]
-    },
-    {
-      "name": "AWS CodeArtifact",
-      "taggable": [
-        "domain",
-        "package-group",
-        "repository"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "package"
-      ]
-    },
-    {
-      "name": "AWS CodeDeploy",
-      "taggable": [
-        "deploymentgroup",
-        "application",
-        "instance"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "deploymentconfig"
+        "project",
+        "space"
       ]
     },
     {
@@ -3187,18 +3175,30 @@
       ]
     },
     {
+      "name": "AWS CodeDeploy",
+      "taggable": [
+        "instance",
+        "deploymentgroup",
+        "application"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "deploymentconfig"
+      ]
+    },
+    {
       "name": "AWS CodeBuild",
       "taggable": [
-        "report-group",
-        "project"
+        "project",
+        "report-group"
       ],
       "conditionally_taggable": [],
       "untaggable": [
         "sandbox",
-        "build-batch",
         "build",
-        "report",
-        "fleet"
+        "build-batch",
+        "fleet",
+        "report"
       ]
     },
     {
@@ -3214,35 +3214,18 @@
     {
       "name": "AWS Config",
       "taggable": [
-        "organizationconfigrule",
+        "configurationrecorder",
         "configurationaggregator",
-        "storedquery",
-        "aggregationauthorization",
-        "conformancepack",
         "configrule",
+        "organizationconfigrule",
+        "conformancepack",
         "organizationconformancepack",
-        "configurationrecorder"
+        "storedquery",
+        "aggregationauthorization"
       ],
       "conditionally_taggable": [],
       "untaggable": [
         "remediationconfiguration"
-      ]
-    },
-    {
-      "name": "AWS Data Exchange",
-      "taggable": [
-        "data-grants",
-        "event-actions",
-        "assets",
-        "revisions",
-        "data-sets"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "entitled-data-sets",
-        "entitled-revisions",
-        "jobs",
-        "entitled-assets"
       ]
     },
     {
@@ -3255,6 +3238,23 @@
       "conditionally_taggable": [],
       "untaggable": [
         "baseline"
+      ]
+    },
+    {
+      "name": "AWS Data Exchange",
+      "taggable": [
+        "event-actions",
+        "assets",
+        "data-grants",
+        "data-sets",
+        "revisions"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "entitled-assets",
+        "entitled-data-sets",
+        "entitled-revisions",
+        "jobs"
       ]
     },
     {
@@ -3283,40 +3283,40 @@
       "name": "AWS Device Farm",
       "taggable": [
         "testgrid-project",
+        "device",
+        "networkprofile",
+        "project",
+        "run",
+        "session",
+        "vpceconfiguration",
+        "testgrid-session",
         "instanceprofile",
         "deviceinstance",
-        "device",
-        "testgrid-session",
-        "devicepool",
-        "run",
-        "networkprofile",
-        "session",
-        "project",
-        "vpceconfiguration"
+        "devicepool"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "sample",
-        "artifact",
-        "suite",
-        "upload",
         "test",
-        "job"
+        "artifact",
+        "job",
+        "upload",
+        "suite",
+        "sample"
       ]
     },
     {
       "name": "Amazon DynamoDB",
       "taggable": [
-        "table",
-        "index"
+        "index",
+        "table"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "backup",
-        "global-table",
         "stream",
         "export",
-        "import"
+        "import",
+        "backup",
+        "global-table"
       ]
     },
     {
@@ -3330,6 +3330,30 @@
       ]
     },
     {
+      "name": "Amazon EC2 Image Builder",
+      "taggable": [
+        "lifecyclepolicy",
+        "containerrecipe",
+        "image",
+        "imagerecipe",
+        "distributionconfiguration",
+        "imagepipeline",
+        "component",
+        "infrastructureconfiguration",
+        "imageversion",
+        "workflow"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "allimagebuildversions",
+        "allcomponentbuildversions",
+        "allworkflowbuildversions",
+        "workflowstepexecution",
+        "lifecycleexecution",
+        "workflowexecution"
+      ]
+    },
+    {
       "name": "Amazon Elastic Container Registry Public",
       "taggable": [
         "repository"
@@ -3340,36 +3364,12 @@
       ]
     },
     {
-      "name": "Amazon EC2 Image Builder",
-      "taggable": [
-        "image",
-        "imagerecipe",
-        "distributionconfiguration",
-        "imageversion",
-        "imagepipeline",
-        "infrastructureconfiguration",
-        "workflow",
-        "lifecyclepolicy",
-        "component",
-        "containerrecipe"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "allcomponentbuildversions",
-        "allimagebuildversions",
-        "workflowexecution",
-        "workflowstepexecution",
-        "allworkflowbuildversions",
-        "lifecycleexecution"
-      ]
-    },
-    {
       "name": "AWS Elastic Beanstalk",
       "taggable": [
-        "environment",
         "applicationversion",
         "configurationtemplate",
-        "application"
+        "application",
+        "environment"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3380,16 +3380,16 @@
     {
       "name": "Amazon Elastic Kubernetes Service",
       "taggable": [
-        "identityproviderconfig",
-        "eks-anywhere-subscription",
-        "addon",
-        "nodegroup",
         "dashboard",
         "capability",
-        "access-entry",
+        "nodegroup",
         "cluster",
+        "fargateprofile",
+        "eks-anywhere-subscription",
         "podidentityassociation",
-        "fargateprofile"
+        "access-entry",
+        "identityproviderconfig",
+        "addon"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3399,58 +3399,58 @@
     {
       "name": "Amazon Connect",
       "taggable": [
-        "security-profile",
-        "rule",
-        "hierarchy-group",
-        "contact-evaluation",
-        "email-address",
-        "quick-connect",
-        "prompt",
-        "traffic-distribution-group",
-        "wildcard-phone-number",
-        "phone-number",
-        "attached-file",
-        "customer-managed-view-version",
-        "vocabulary",
-        "routing-profile",
-        "contact-flow",
-        "data-table",
         "user",
-        "evaluation-form",
-        "queue",
-        "use-case",
-        "hours-of-operation",
-        "agent-status",
-        "task-template",
-        "qualified-customer-managed-view",
         "workspace",
+        "agent-status",
+        "routing-profile",
         "customer-managed-view",
-        "notification",
+        "wildcard-phone-number",
+        "contact-flow-module",
+        "attached-file",
         "integration-association",
+        "phone-number",
+        "contact-flow",
+        "rule",
+        "hours-of-operation",
+        "security-profile",
+        "quick-connect",
+        "traffic-distribution-group",
+        "data-table",
+        "queue",
+        "vocabulary",
+        "prompt",
+        "task-template",
+        "customer-managed-view-version",
+        "email-address",
+        "notification",
+        "contact-evaluation",
         "instance",
-        "contact-flow-module"
+        "use-case",
+        "hierarchy-group",
+        "evaluation-form",
+        "qualified-customer-managed-view"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "qualified-aws-managed-view",
-        "authentication-profile",
-        "wildcard-legacy-phone-number",
-        "wildcard-queue",
-        "wildcard-contact-flow",
-        "wildcard-agent-status",
-        "ai-agent",
-        "wildcard-quick-connect",
-        "legacy-phone-number",
         "aws-managed-view",
-        "contact"
+        "ai-agent",
+        "authentication-profile",
+        "legacy-phone-number",
+        "contact",
+        "qualified-aws-managed-view",
+        "wildcard-agent-status",
+        "wildcard-contact-flow",
+        "wildcard-queue",
+        "wildcard-legacy-phone-number",
+        "wildcard-quick-connect"
       ]
     },
     {
       "name": "AWS Elemental MediaConvert",
       "taggable": [
+        "queue",
         "preset",
         "job",
-        "queue",
         "jobtemplate"
       ],
       "conditionally_taggable": [],
@@ -3465,54 +3465,32 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "folder",
-        "object"
+        "object",
+        "folder"
       ]
     },
     {
       "name": "AWS Elemental MediaPackage V2",
       "taggable": [
-        "channel",
-        "harvestjob",
+        "channelgroup",
         "originendpoint",
-        "channelgroup"
+        "harvestjob",
+        "channel"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "channelpolicy",
-        "originendpointpolicy"
-      ]
-    },
-    {
-      "name": "AWS Elemental MediaConnect",
-      "taggable": [
-        "flow",
-        "output",
-        "mediastream",
-        "vpcinterface",
-        "routeroutput",
-        "entitlement",
-        "source",
-        "routernetworkinterface",
-        "routerinput"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "bridge",
-        "gatewayinstance",
-        "offering",
-        "reservation",
-        "gateway"
+        "originendpointpolicy",
+        "channelpolicy"
       ]
     },
     {
       "name": "AWS Elemental MediaTailor",
       "taggable": [
-        "channel",
-        "vodsource",
-        "livesource",
         "sourcelocation",
-        "playbackconfiguration"
+        "livesource",
+        "playbackconfiguration",
+        "vodsource",
+        "channel"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3521,18 +3499,40 @@
       ]
     },
     {
+      "name": "AWS Elemental MediaConnect",
+      "taggable": [
+        "source",
+        "vpcinterface",
+        "routernetworkinterface",
+        "entitlement",
+        "mediastream",
+        "routerinput",
+        "output",
+        "routeroutput",
+        "flow"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "offering",
+        "reservation",
+        "bridge",
+        "gatewayinstance",
+        "gateway"
+      ]
+    },
+    {
       "name": "Amazon ElastiCache",
       "taggable": [
         "user",
+        "subnetgroup",
         "usergroup",
-        "securitygroup",
-        "replicationgroup",
+        "cluster",
         "snapshot",
         "serverlesscache",
         "serverlesscachesnapshot",
-        "subnetgroup",
-        "cluster",
-        "reserved-instance"
+        "reserved-instance",
+        "replicationgroup",
+        "securitygroup"
       ],
       "conditionally_taggable": [
         "parametergroup"
@@ -3544,21 +3544,21 @@
     {
       "name": "AWS Elemental MediaLive",
       "taggable": [
-        "cloudwatch-alarm-template",
-        "eventbridge-rule-template-group",
-        "input-security-group",
-        "cloudwatch-alarm-template-group",
-        "multiplex",
-        "channel-placement-group",
-        "signal-map",
-        "eventbridge-rule-template",
-        "sdi-source",
-        "node",
-        "network",
         "reservation",
-        "channel",
+        "input",
+        "sdi-source",
         "cluster",
-        "input"
+        "node",
+        "multiplex",
+        "network",
+        "signal-map",
+        "cloudwatch-alarm-template",
+        "cloudwatch-alarm-template-group",
+        "eventbridge-rule-template-group",
+        "eventbridge-rule-template",
+        "channel-placement-group",
+        "input-security-group",
+        "channel"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3580,8 +3580,8 @@
       "name": "AWS Fault Injection Service",
       "taggable": [
         "experiment",
-        "action",
-        "experiment-template"
+        "experiment-template",
+        "action"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3589,17 +3589,40 @@
       ]
     },
     {
+      "name": "Amazon EventBridge",
+      "taggable": [
+        "rule-on-custom-event-bus",
+        "event-bus",
+        "rule-on-default-event-bus"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "reboot-instance",
+        "archive",
+        "key",
+        "endpoint",
+        "create-snapshot",
+        "api-destination",
+        "event-source",
+        "terminate-instance",
+        "replay",
+        "alias",
+        "connection",
+        "stop-instance"
+      ]
+    },
+    {
       "name": "AWS End User Messaging SMS and Voice V2",
       "taggable": [
-        "pool",
-        "registration",
-        "verifieddestinationnumber",
         "optoutlist",
-        "phonenumber",
         "protectconfiguration",
+        "verifieddestinationnumber",
         "configurationset",
         "senderid",
-        "registrationattachment"
+        "pool",
+        "registrationattachment",
+        "registration",
+        "phonenumber"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3607,45 +3630,22 @@
       ]
     },
     {
-      "name": "Amazon EventBridge",
-      "taggable": [
-        "event-bus",
-        "rule-on-custom-event-bus",
-        "rule-on-default-event-bus"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "replay",
-        "stop-instance",
-        "archive",
-        "endpoint",
-        "api-destination",
-        "reboot-instance",
-        "event-source",
-        "alias",
-        "terminate-instance",
-        "create-snapshot",
-        "connection",
-        "key"
-      ]
-    },
-    {
       "name": "Amazon Forecast",
       "taggable": [
-        "predictorbacktestexportjob",
-        "forecastexport",
-        "monitor",
         "whatifforecast",
-        "explainabilityexport",
-        "endpoint",
-        "explainability",
-        "datasetgroup",
-        "predictor",
-        "forecast",
         "dataset",
         "whatifanalysis",
+        "predictorbacktestexportjob",
+        "datasetimportjob",
+        "endpoint",
+        "explainabilityexport",
+        "predictor",
+        "monitor",
+        "forecastexport",
+        "forecast",
         "whatifforecastexport",
-        "datasetimportjob"
+        "explainability",
+        "datasetgroup"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3655,17 +3655,17 @@
     {
       "name": "AWS Ground Station",
       "taggable": [
-        "missionprofile",
-        "ephemerisitem",
-        "dataflowendpointgroup",
         "config",
+        "dataflowendpointgroup",
+        "ephemerisitem",
+        "missionprofile",
         "contact"
       ],
       "conditionally_taggable": [],
       "untaggable": [
+        "groundstationresource",
         "satellite",
-        "agent",
-        "groundstationresource"
+        "agent"
       ]
     },
     {
@@ -3673,10 +3673,10 @@
       "taggable": [],
       "conditionally_taggable": [],
       "untaggable": [
-        "screen-automation",
-        "table",
         "workbook",
-        "screen"
+        "screen",
+        "table",
+        "screen-automation"
       ]
     },
     {
@@ -3692,20 +3692,20 @@
     {
       "name": "AWS HealthOmics",
       "taggable": [
-        "workflow",
+        "runcache",
         "workflowversion",
-        "reference",
-        "referencestore",
         "configuration",
-        "readset",
-        "runbatch",
         "sequencestore",
         "run",
-        "rungroup",
         "annotationstoreversion",
         "annotationstore",
+        "rungroup",
+        "readset",
+        "reference",
         "variantstore",
-        "runcache"
+        "runbatch",
+        "referencestore",
+        "workflow"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3716,8 +3716,8 @@
       "name": "AWS IAM Identity Center",
       "taggable": [
         "permissionset",
-        "trustedtokenissuer",
         "instance",
+        "trustedtokenissuer",
         "application"
       ],
       "conditionally_taggable": [],
@@ -3739,10 +3739,10 @@
     {
       "name": "Amazon Inspector2",
       "taggable": [
-        "cis scan configuration",
         "code security integration",
         "filter",
-        "code security scan configuration"
+        "code security scan configuration",
+        "cis scan configuration"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3753,23 +3753,23 @@
       "name": "AWS Identity and Access Management (IAM)",
       "taggable": [
         "role",
+        "saml-provider",
         "user",
-        "instance-profile",
         "oidc-provider",
         "mfa",
-        "saml-provider",
+        "instance-profile",
         "server-certificate"
       ],
       "conditionally_taggable": [
         "policy"
       ],
       "untaggable": [
-        "access-report",
-        "delegation-request",
-        "sms-mfa",
         "federated-user",
         "group",
-        "assumed-role"
+        "assumed-role",
+        "access-report",
+        "sms-mfa",
+        "delegation-request"
       ]
     },
     {
@@ -3779,18 +3779,50 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
+        "pipeline",
         "dataset",
-        "datastore",
-        "pipeline"
+        "datastore"
+      ]
+    },
+    {
+      "name": "AWS Glue",
+      "taggable": [
+        "dataqualityruleset",
+        "mltransform",
+        "crawler",
+        "trigger",
+        "integrationresourceproperty",
+        "connection",
+        "customentitytype",
+        "registry",
+        "catalog",
+        "blueprint",
+        "connectiontype",
+        "job",
+        "schema",
+        "devendpoint",
+        "session",
+        "integration",
+        "usageprofile",
+        "database",
+        "workflow"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "completion",
+        "userdefinedfunction",
+        "table",
+        "rootcatalog",
+        "tableversion"
       ]
     },
     {
       "name": "AWS IoT Greengrass V2",
       "taggable": [
-        "componentversion",
-        "coredevice",
         "component",
-        "deployment"
+        "coredevice",
+        "deployment",
+        "componentversion"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3798,45 +3830,13 @@
       ]
     },
     {
-      "name": "AWS Glue",
-      "taggable": [
-        "database",
-        "connectiontype",
-        "customentitytype",
-        "devendpoint",
-        "schema",
-        "integration",
-        "usageprofile",
-        "dataqualityruleset",
-        "catalog",
-        "mltransform",
-        "session",
-        "blueprint",
-        "workflow",
-        "registry",
-        "trigger",
-        "integrationresourceproperty",
-        "job",
-        "crawler",
-        "connection"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "rootcatalog",
-        "table",
-        "tableversion",
-        "completion",
-        "userdefinedfunction"
-      ]
-    },
-    {
       "name": "AWS IoT TwinMaker",
       "taggable": [
-        "componenttype",
         "workspace",
+        "syncjob",
         "scene",
-        "entity",
-        "syncjob"
+        "componenttype",
+        "entity"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3846,47 +3846,47 @@
     {
       "name": "AWS IoT Greengrass",
       "taggable": [
-        "coredefinition",
-        "bulkdeployment",
         "subscriptiondefinition",
-        "devicedefinition",
         "loggerdefinition",
-        "connectordefinition",
         "functiondefinition",
+        "resourcedefinition",
         "group",
-        "resourcedefinition"
+        "coredefinition",
+        "devicedefinition",
+        "connectordefinition",
+        "bulkdeployment"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "resourcedefinitionversion",
-        "loggerdefinitionversion",
-        "thing",
-        "thingruntimeconfig",
-        "connectordefinitionversion",
-        "connectivityinfo",
         "certificateauthority",
-        "deployment",
-        "coredefinitionversion",
         "groupversion",
-        "devicedefinitionversion",
+        "thingruntimeconfig",
         "subscriptiondefinitionversion",
-        "functiondefinitionversion"
+        "coredefinitionversion",
+        "thing",
+        "devicedefinitionversion",
+        "functiondefinitionversion",
+        "loggerdefinitionversion",
+        "resourcedefinitionversion",
+        "deployment",
+        "connectivityinfo",
+        "connectordefinitionversion"
       ]
     },
     {
       "name": "AWS IoT Wireless",
       "taggable": [
-        "wirelessgatewaytaskdefinition",
-        "networkanalyzerconfiguration",
-        "wirelessdevice",
-        "wirelessgateway",
-        "multicastgroup",
-        "fuotatask",
-        "deviceprofile",
-        "sidewalkaccount",
-        "destination",
         "importtask",
-        "serviceprofile"
+        "destination",
+        "wirelessgatewaytaskdefinition",
+        "wirelessgateway",
+        "wirelessdevice",
+        "networkanalyzerconfiguration",
+        "sidewalkaccount",
+        "deviceprofile",
+        "serviceprofile",
+        "multicastgroup",
+        "fuotatask"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -3897,89 +3897,17 @@
     {
       "name": "Amazon Kendra",
       "taggable": [
+        "index",
         "thesaurus",
-        "data-source",
-        "featured-results-set",
         "query-suggestions-block-list",
+        "featured-results-set",
         "faq",
-        "index"
+        "data-source"
       ],
       "conditionally_taggable": [],
       "untaggable": [
         "access-control-configuration",
         "experience"
-      ]
-    },
-    {
-      "name": "AWS IoT",
-      "taggable": [
-        "rule",
-        "cacert",
-        "dimension",
-        "jobtemplate",
-        "dynamicthinggroup",
-        "mitigationaction",
-        "package",
-        "packageversion",
-        "billinggroup",
-        "rolealias",
-        "fleetmetric",
-        "command",
-        "custommetric",
-        "scheduledaudit",
-        "thinggroup",
-        "tunnel",
-        "certificateprovider",
-        "stream",
-        "domainconfiguration",
-        "authorizer",
-        "provisioningtemplate",
-        "job",
-        "securityprofile",
-        "otaupdate",
-        "policy",
-        "thingtype"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "thing",
-        "cert",
-        "topic",
-        "topicfilter",
-        "client",
-        "destination",
-        "index"
-      ]
-    },
-    {
-      "name": "Amazon Lex",
-      "taggable": [
-        "bot",
-        "channel",
-        "bot alias",
-        "bot version"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "slottype version",
-        "intent version"
-      ]
-    },
-    {
-      "name": "AWS Lambda",
-      "taggable": [
-        "code signing config",
-        "function alias",
-        "function version",
-        "function",
-        "eventsourcemapping",
-        "capacityprovider"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "layer",
-        "durable execution",
-        "layerversion"
       ]
     },
     {
@@ -3990,6 +3918,78 @@
       "conditionally_taggable": [],
       "untaggable": [
         "alias"
+      ]
+    },
+    {
+      "name": "Amazon Lex",
+      "taggable": [
+        "bot version",
+        "bot",
+        "bot alias",
+        "channel"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "slottype version",
+        "intent version"
+      ]
+    },
+    {
+      "name": "AWS IoT",
+      "taggable": [
+        "stream",
+        "certificateprovider",
+        "otaupdate",
+        "dynamicthinggroup",
+        "scheduledaudit",
+        "domainconfiguration",
+        "authorizer",
+        "packageversion",
+        "thingtype",
+        "mitigationaction",
+        "dimension",
+        "command",
+        "custommetric",
+        "thinggroup",
+        "rule",
+        "rolealias",
+        "cacert",
+        "job",
+        "package",
+        "tunnel",
+        "provisioningtemplate",
+        "billinggroup",
+        "policy",
+        "fleetmetric",
+        "jobtemplate",
+        "securityprofile"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "index",
+        "destination",
+        "thing",
+        "cert",
+        "client",
+        "topicfilter",
+        "topic"
+      ]
+    },
+    {
+      "name": "AWS Lambda",
+      "taggable": [
+        "capacityprovider",
+        "eventsourcemapping",
+        "function version",
+        "function",
+        "function alias",
+        "code signing config"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "durable execution",
+        "layerversion",
+        "layer"
       ]
     },
     {
@@ -4009,9 +4009,9 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "datasource",
+        "mlmodel",
         "evaluation",
-        "mlmodel"
+        "datasource"
       ]
     },
     {
@@ -4027,56 +4027,56 @@
     {
       "name": "Amazon Lightsail",
       "taggable": [
-        "relationaldatabasesnapshot",
-        "instancesnapshot",
-        "disk",
-        "loadbalancer",
-        "domain",
-        "staticip",
-        "keypair",
-        "disksnapshot",
-        "containerservice",
         "distribution",
-        "contactmethod",
+        "instancesnapshot",
+        "containerservice",
+        "disksnapshot",
         "certificate",
+        "domain",
+        "loadbalancer",
+        "relationaldatabasesnapshot",
+        "staticip",
         "bucket",
-        "alarm",
+        "contactmethod",
         "relationaldatabase",
-        "instance"
+        "instance",
+        "alarm",
+        "keypair",
+        "disk"
       ],
       "conditionally_taggable": [],
       "untaggable": [
+        "exportsnapshotrecord",
         "loadbalancertlscertificate",
-        "cloudformationstackrecord",
-        "exportsnapshotrecord"
-      ]
-    },
-    {
-      "name": "Amazon Managed Streaming for Apache Kafka",
-      "taggable": [
-        "cluster",
-        "replicator",
-        "vpc-connection"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "topic",
-        "group",
-        "transactional-id",
-        "configuration"
+        "cloudformationstackrecord"
       ]
     },
     {
       "name": "AWS Marketplace Catalog",
       "taggable": [
-        "entity",
+        "issuedtaxinvoice",
         "changeset",
         "invoicesubmissiontask",
-        "issuedtaxinvoice"
+        "entity"
       ],
       "conditionally_taggable": [],
       "untaggable": [
         "assessment"
+      ]
+    },
+    {
+      "name": "Amazon Managed Streaming for Apache Kafka",
+      "taggable": [
+        "vpc-connection",
+        "cluster",
+        "replicator"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "configuration",
+        "topic",
+        "transactional-id",
+        "group"
       ]
     },
     {
@@ -4086,141 +4086,23 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "migrationtask",
         "progressupdatestream",
-        "automationunitresource",
-        "automationrunresource"
-      ]
-    },
-    {
-      "name": "Amazon EC2",
-      "taggable": [
-        "customer-gateway",
-        "traffic-mirror-filter",
-        "local-gateway-virtual-interface",
-        "verified-access-endpoint-target",
-        "local-gateway-route-table",
-        "carrier-gateway",
-        "ipam-prefix-list-resolver-target",
-        "traffic-mirror-filter-rule",
-        "placement-group",
-        "vpc-endpoint-service-permission",
-        "vpc-block-public-access-exclusion",
-        "traffic-mirror-session",
-        "mac-modification-task",
-        "secondary-subnet",
-        "subnet",
-        "elastic-gpu",
-        "network-interface",
-        "ipam-resource-discovery",
-        "ipv4pool-ec2",
-        "verified-access-policy",
-        "subnet-cidr-reservation",
-        "elastic-ip",
-        "network-insights-path",
-        "prefix-list",
-        "route-server-peer",
-        "ipam-pool",
-        "local-gateway",
-        "replace-root-volume-task",
-        "declarative-policies-report",
-        "secondary-interface",
-        "ipam",
-        "launch-template",
-        "secondary-network",
-        "snapshot",
-        "spot-instances-request",
-        "host-reservation",
-        "instance-connect-endpoint",
-        "local-gateway-route-table-virtual-interface-group-association",
-        "internet-gateway",
-        "security-group-rule",
-        "capacity-reservation-fleet",
-        "reserved-instances",
-        "import-image-task",
-        "local-gateway-route-table-vpc-association",
-        "route-server",
-        "vpc-endpoint-service",
-        "client-vpn-endpoint",
-        "transit-gateway-policy-table",
-        "transit-gateway-metering-policy",
-        "verified-access-endpoint",
-        "export-image-task",
-        "capacity-reservation",
-        "ipv6pool-ec2",
-        "network-insights-access-scope-analysis",
-        "instance-event-window",
-        "route-table",
-        "image",
-        "vpn-gateway",
-        "spot-fleet-request",
-        "local-gateway-virtual-interface-group",
-        "network-acl",
-        "capacity-manager-data-export",
-        "export-instance-task",
-        "ipam-policy",
-        "key-pair",
-        "natgateway",
-        "verified-access-instance",
-        "volume",
-        "transit-gateway",
-        "ipam-scope",
-        "vpn-connection",
-        "transit-gateway-multicast-domain",
-        "egress-only-internet-gateway",
-        "import-snapshot-task",
-        "dhcp-options",
-        "network-insights-access-scope",
-        "transit-gateway-connect-peer",
-        "security-group",
-        "vpc-flow-log",
-        "network-insights-analysis",
-        "vpn-concentrator",
-        "fpga-image",
-        "ipam-external-resource-verification-token",
-        "coip-pool",
-        "route-server-endpoint",
-        "vpc-encryption-control",
-        "verified-access-group",
-        "ipam-resource-discovery-association",
-        "vpc-endpoint",
-        "verified-access-trust-provider",
-        "transit-gateway-route-table-announcement",
-        "transit-gateway-route-table",
-        "traffic-mirror-target",
-        "outpost-lag",
-        "fleet",
-        "capacity-block",
-        "vpc-peering-connection",
-        "dedicated-host",
-        "vpc",
-        "transit-gateway-attachment",
-        "image-usage-report",
-        "instance",
-        "vpc-endpoint-connection",
-        "ipam-prefix-list-resolver"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "vpn-connection-device-type",
-        "role",
-        "license-configuration",
-        "certificate",
-        "elastic-inference",
-        "group"
+        "migrationtask",
+        "automationrunresource",
+        "automationunitresource"
       ]
     },
     {
       "name": "Amazon MemoryDB",
       "taggable": [
         "user",
+        "subnetgroup",
+        "cluster",
+        "snapshot",
         "multiregioncluster",
         "parametergroup",
-        "snapshot",
-        "reservednode",
         "acl",
-        "subnetgroup",
-        "cluster"
+        "reservednode"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -4230,20 +4112,151 @@
     {
       "name": "Amazon Neptune Analytics",
       "taggable": [
-        "graph-snapshot",
-        "graph"
+        "graph",
+        "graph-snapshot"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "export-task",
-        "import-task"
+        "import-task",
+        "export-task"
+      ]
+    },
+    {
+      "name": "Amazon EC2",
+      "taggable": [
+        "export-image-task",
+        "vpn-concentrator",
+        "vpc-encryption-control",
+        "route-server-endpoint",
+        "ipam-external-resource-verification-token",
+        "route-table",
+        "internet-gateway",
+        "subnet-cidr-reservation",
+        "local-gateway-route-table-vpc-association",
+        "local-gateway-virtual-interface",
+        "ipam-scope",
+        "ipam-pool",
+        "secondary-interface",
+        "outpost-lag",
+        "dhcp-options",
+        "verified-access-policy",
+        "key-pair",
+        "traffic-mirror-target",
+        "spot-fleet-request",
+        "reserved-instances",
+        "image-usage-report",
+        "client-vpn-endpoint",
+        "fleet",
+        "capacity-manager-data-export",
+        "elastic-ip",
+        "ipam-prefix-list-resolver-target",
+        "ipam-prefix-list-resolver",
+        "vpc-endpoint-connection",
+        "transit-gateway-metering-policy",
+        "instance-connect-endpoint",
+        "verified-access-endpoint",
+        "instance-event-window",
+        "placement-group",
+        "vpc-peering-connection",
+        "snapshot",
+        "traffic-mirror-session",
+        "vpc-block-public-access-exclusion",
+        "export-instance-task",
+        "local-gateway-route-table",
+        "vpc",
+        "fpga-image",
+        "egress-only-internet-gateway",
+        "secondary-subnet",
+        "coip-pool",
+        "vpn-connection",
+        "security-group",
+        "instance",
+        "transit-gateway-policy-table",
+        "ipv6pool-ec2",
+        "security-group-rule",
+        "route-server",
+        "secondary-network",
+        "transit-gateway-route-table",
+        "vpc-flow-log",
+        "vpc-endpoint-service",
+        "local-gateway",
+        "image",
+        "transit-gateway-multicast-domain",
+        "capacity-reservation",
+        "ipam-policy",
+        "transit-gateway-route-table-announcement",
+        "verified-access-endpoint-target",
+        "declarative-policies-report",
+        "local-gateway-route-table-virtual-interface-group-association",
+        "launch-template",
+        "local-gateway-virtual-interface-group",
+        "vpc-endpoint-service-permission",
+        "carrier-gateway",
+        "transit-gateway",
+        "subnet",
+        "host-reservation",
+        "elastic-gpu",
+        "network-insights-path",
+        "vpc-endpoint",
+        "dedicated-host",
+        "network-insights-access-scope-analysis",
+        "mac-modification-task",
+        "capacity-reservation-fleet",
+        "transit-gateway-connect-peer",
+        "volume",
+        "network-insights-analysis",
+        "network-insights-access-scope",
+        "ipam-resource-discovery-association",
+        "verified-access-trust-provider",
+        "import-image-task",
+        "ipv4pool-ec2",
+        "vpn-gateway",
+        "customer-gateway",
+        "capacity-block",
+        "replace-root-volume-task",
+        "verified-access-instance",
+        "traffic-mirror-filter",
+        "ipam",
+        "network-acl",
+        "spot-instances-request",
+        "traffic-mirror-filter-rule",
+        "network-interface",
+        "transit-gateway-attachment",
+        "verified-access-group",
+        "route-server-peer",
+        "import-snapshot-task",
+        "prefix-list",
+        "natgateway",
+        "ipam-resource-discovery"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "role",
+        "elastic-inference",
+        "group",
+        "vpn-connection-device-type",
+        "certificate",
+        "license-configuration"
+      ]
+    },
+    {
+      "name": "Amazon One Enterprise",
+      "taggable": [
+        "site",
+        "device-instance",
+        "device-configuration-template"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "configuration",
+        "user"
       ]
     },
     {
       "name": "Amazon OpenSearch Ingestion",
       "taggable": [
-        "pipeline-endpoint",
-        "pipeline"
+        "pipeline",
+        "pipeline-endpoint"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -4251,23 +4264,26 @@
       ]
     },
     {
-      "name": "Amazon One Enterprise",
+      "name": "Amazon Nimble Studio",
       "taggable": [
-        "site",
-        "device-configuration-template",
-        "device-instance"
+        "studio-component",
+        "launch-profile",
+        "streaming-image",
+        "streaming-session",
+        "studio",
+        "streaming-session-backup"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "user",
-        "configuration"
+        "eula",
+        "eula-acceptance"
       ]
     },
     {
       "name": "Amazon OpenSearch Serverless",
       "taggable": [
-        "collectiongroup",
-        "collection"
+        "collection",
+        "collectiongroup"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -4279,48 +4295,32 @@
       "taggable": [],
       "conditionally_taggable": [],
       "untaggable": [
-        "backup",
-        "server"
-      ]
-    },
-    {
-      "name": "Amazon Nimble Studio",
-      "taggable": [
-        "streaming-image",
-        "studio-component",
-        "studio",
-        "launch-profile",
-        "streaming-session",
-        "streaming-session-backup"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "eula",
-        "eula-acceptance"
+        "server",
+        "backup"
       ]
     },
     {
       "name": "AWS Organizations",
       "taggable": [
-        "root",
+        "resourcepolicy",
+        "organizationalunit",
         "account",
         "responsibilitytransfer",
         "policy",
-        "resourcepolicy",
-        "organizationalunit"
+        "root"
       ],
       "conditionally_taggable": [],
       "untaggable": [
         "awspolicy",
-        "organization",
-        "handshake"
+        "handshake",
+        "organization"
       ]
     },
     {
       "name": "AWS Payment Cryptography",
       "taggable": [
-        "key",
-        "approval-team"
+        "approval-team",
+        "key"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -4328,94 +4328,94 @@
       ]
     },
     {
-      "name": "Amazon Personalize",
+      "name": "AWS Partner Central",
       "taggable": [
-        "recommender",
-        "filter",
-        "batchsegmentjob",
-        "batchinferencejob",
-        "solution",
-        "datasetexportjob",
-        "eventtracker",
-        "datasetgroup",
-        "datadeletionjob",
-        "dataset",
-        "campaign",
-        "datasetimportjob"
+        "programmanagementaccount",
+        "benefitapplication",
+        "partner",
+        "opportunity",
+        "relationship",
+        "resource-snapshot-job",
+        "channelhandshake"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "recipe",
-        "featuretransformation",
-        "metricattribution",
-        "datainsightsjob",
-        "algorithm",
-        "schema"
+        "engagement-by-accepting-invitation-task",
+        "benefit",
+        "benefitallocation",
+        "engagement-from-opportunity-task",
+        "engagement-invitation",
+        "engagement",
+        "resourcesnapshot",
+        "connectioninvitation",
+        "opportunityfromengagementtask",
+        "solution",
+        "dashboard",
+        "connection",
+        "connectionpreferences"
       ]
     },
     {
-      "name": "AWS Partner Central",
+      "name": "Amazon Personalize",
       "taggable": [
-        "relationship",
-        "channelhandshake",
-        "opportunity",
-        "partner",
-        "resource-snapshot-job",
-        "benefitapplication",
-        "programmanagementaccount"
+        "dataset",
+        "batchinferencejob",
+        "datasetexportjob",
+        "eventtracker",
+        "datasetimportjob",
+        "recommender",
+        "batchsegmentjob",
+        "filter",
+        "datadeletionjob",
+        "campaign",
+        "solution",
+        "datasetgroup"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "connectioninvitation",
-        "opportunityfromengagementtask",
-        "engagement-from-opportunity-task",
-        "resourcesnapshot",
-        "dashboard",
-        "engagement",
-        "solution",
-        "connectionpreferences",
-        "engagement-by-accepting-invitation-task",
-        "benefitallocation",
-        "benefit",
-        "engagement-invitation",
-        "connection"
+        "schema",
+        "datainsightsjob",
+        "recipe",
+        "metricattribution",
+        "algorithm",
+        "featuretransformation"
       ]
     },
     {
       "name": "Amazon Pinpoint",
       "taggable": [
+        "journey",
         "template",
-        "campaign",
-        "segment",
         "app",
-        "journey"
+        "campaign",
+        "segment"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "apps",
-        "journey-execution-metrics",
-        "journeys",
-        "otp",
-        "events",
-        "messages",
-        "endpoint",
-        "verify-otp",
-        "campaign-metrics",
-        "import-job",
-        "journey-metrics",
-        "recommenders",
-        "export-job",
-        "application-metrics",
-        "recommender",
         "user",
-        "reports",
-        "channels",
-        "journey-execution-activity-metrics",
-        "event-stream",
-        "attribute",
+        "journey-execution-metrics",
         "templates",
+        "verify-otp",
+        "journey-metrics",
+        "endpoint",
+        "apps",
+        "reports",
+        "import-job",
+        "recommender",
+        "event-stream",
+        "campaign-metrics",
+        "channels",
+        "attribute",
+        "application-metrics",
+        "export-job",
+        "recommenders",
+        "messages",
         "channel",
-        "phone-number-validate"
+        "events",
+        "journeys",
+        "journey-execution-activity-metrics",
+        "phone-number-validate",
+        "otp"
       ]
     },
     {
@@ -4432,15 +4432,15 @@
     {
       "name": "Amazon Q Business",
       "taggable": [
-        "data-source",
-        "web-experience",
-        "integration",
-        "retriever",
+        "index",
         "data-accessor",
-        "plugin",
-        "application",
+        "integration",
+        "data-source",
         "chat-response-configuration",
-        "index"
+        "web-experience",
+        "retriever",
+        "application",
+        "plugin"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -4450,8 +4450,8 @@
     {
       "name": "Amazon Redshift Data API",
       "taggable": [
-        "cluster",
-        "workgroup"
+        "workgroup",
+        "cluster"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -4461,15 +4461,15 @@
     {
       "name": "Amazon Redshift Serverless",
       "taggable": [
-        "recoverypoint",
         "workgroup",
-        "namespace",
-        "snapshot"
+        "snapshot",
+        "recoverypoint",
+        "namespace"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "managed-workgroup",
-        "endpointaccess"
+        "endpointaccess",
+        "managed-workgroup"
       ]
     },
     {
@@ -4480,8 +4480,8 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "resource-share-invitation",
-        "permission"
+        "permission",
+        "resource-share-invitation"
       ]
     },
     {
@@ -4496,10 +4496,39 @@
       ]
     },
     {
+      "name": "Amazon Redshift",
+      "taggable": [
+        "eventsubscription",
+        "securitygroupingress-cidr",
+        "hsmconfiguration",
+        "subnetgroup",
+        "cluster",
+        "integration",
+        "securitygroupingress-ec2securitygroup",
+        "snapshot",
+        "usagelimit",
+        "hsmclientcertificate",
+        "parametergroup",
+        "snapshotschedule",
+        "snapshotcopygrant",
+        "securitygroup",
+        "datashare"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "dbname",
+        "qev2idcapplication",
+        "namespace",
+        "dbgroup",
+        "redshiftidcapplication",
+        "dbuser"
+      ]
+    },
+    {
       "name": "Amazon Route 53 Recovery Controls",
       "taggable": [
-        "cluster",
         "safetyrule",
+        "cluster",
         "controlpanel"
       ],
       "conditionally_taggable": [],
@@ -4508,85 +4537,56 @@
       ]
     },
     {
-      "name": "Amazon Redshift",
-      "taggable": [
-        "securitygroupingress-ec2securitygroup",
-        "eventsubscription",
-        "usagelimit",
-        "securitygroup",
-        "snapshotschedule",
-        "parametergroup",
-        "snapshot",
-        "integration",
-        "securitygroupingress-cidr",
-        "subnetgroup",
-        "cluster",
-        "snapshotcopygrant",
-        "datashare",
-        "hsmconfiguration",
-        "hsmclientcertificate"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "qev2idcapplication",
-        "dbname",
-        "dbgroup",
-        "namespace",
-        "redshiftidcapplication",
-        "dbuser"
-      ]
-    },
-    {
       "name": "Amazon QuickSight",
       "taggable": [
-        "folder",
-        "brand",
-        "datasource",
-        "emailcustomizationtemplate",
-        "dataset",
-        "dashboardsnapshotjob",
-        "actionconnector",
-        "custompermissions",
         "template",
-        "theme",
+        "custompermissions",
+        "brand",
+        "analysis",
+        "actionconnector",
         "customization",
         "topic",
-        "analysis",
-        "flow",
         "dashboard",
+        "flow",
+        "folder",
+        "theme",
+        "datasource",
+        "dataset",
+        "emailcustomizationtemplate",
+        "ingestion",
         "vpcconnection",
-        "ingestion"
+        "dashboardsnapshotjob"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "assetbundleimportjob",
         "user",
-        "automationjob",
-        "assignment",
-        "automationgroup",
-        "agent",
-        "extensionaccess",
-        "assetbundleexportjob",
-        "account",
         "automation",
-        "refreshschedule",
         "group",
-        "namespace"
+        "account",
+        "assetbundleimportjob",
+        "assignment",
+        "agent",
+        "namespace",
+        "automationjob",
+        "refreshschedule",
+        "extensionaccess",
+        "automationgroup",
+        "assetbundleexportjob"
       ]
     },
     {
       "name": "Amazon Route 53 Resolver",
       "taggable": [
         "firewall-rule-group-association",
-        "firewall-domain-list",
-        "firewall-rule-group",
-        "resolver-endpoint",
-        "resolver-query-log-config",
         "resolver-rule",
-        "autodefined-rule",
         "firewall-config",
+        "firewall-domain-list",
         "outpost-resolver",
-        "resolver-dnssec-config"
+        "autodefined-rule",
+        "resolver-dnssec-config",
+        "resolver-query-log-config",
+        "firewall-rule-group",
+        "resolver-endpoint"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -4600,8 +4600,8 @@
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "federated-user",
         "context-provider",
+        "federated-user",
         "self-session",
         "root-user"
       ]
@@ -4609,18 +4609,18 @@
     {
       "name": "AWS Security Hub",
       "taggable": [
-        "connectorv2",
         "aggregatorv2",
-        "configuration-policy",
-        "automation-rule",
+        "connectorv2",
         "hub",
         "hubv2",
-        "automation-rulev2"
+        "automation-rule",
+        "automation-rulev2",
+        "configuration-policy"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "finding-aggregator",
-        "product"
+        "product",
+        "finding-aggregator"
       ]
     },
     {
@@ -4634,8 +4634,8 @@
     {
       "name": "AWS Shield",
       "taggable": [
-        "protection-group",
-        "protection"
+        "protection",
+        "protection-group"
       ],
       "conditionally_taggable": [],
       "untaggable": [
@@ -4655,46 +4655,46 @@
     {
       "name": "Amazon S3",
       "taggable": [
-        "storagelensgroup",
         "bucket",
         "accesspointobject",
-        "accessgrantsinstance",
-        "accessgrant",
         "object",
-        "accesspoint",
+        "storagelensgroup",
         "job",
-        "storagelensconfiguration",
-        "accessgrantslocation"
+        "accesspoint",
+        "accessgrant",
+        "accessgrantsinstance",
+        "accessgrantslocation",
+        "storagelensconfiguration"
       ],
       "conditionally_taggable": [],
       "untaggable": [
         "objectlambdaaccesspoint",
-        "multiregionaccesspoint",
-        "multiregionaccesspointrequestarn"
+        "multiregionaccesspointrequestarn",
+        "multiregionaccesspoint"
       ]
     },
     {
       "name": "AWS Step Functions",
       "taggable": [
+        "statemachinealias",
+        "statemachineversion",
         "statemachine",
         "execution",
-        "statemachineversion",
-        "activity",
-        "statemachinealias"
+        "activity"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "labelled express",
-        "labelled execution",
         "express",
-        "maprun"
+        "labelled express",
+        "maprun",
+        "labelled execution"
       ]
     },
     {
       "name": "AWS Supply Chain",
       "taggable": [
-        "data-integration-flow",
         "dataset",
+        "data-integration-flow",
         "namespace",
         "instance"
       ],
@@ -4706,33 +4706,33 @@
     {
       "name": "Amazon Simple Email Service v2",
       "taggable": [
-        "contact-list",
-        "tenant",
-        "template",
-        "mailmanager-archive",
-        "identity",
         "deliverability-test-report",
+        "template",
         "dedicated-ip-pool",
+        "tenant",
+        "identity",
+        "contact-list",
         "custom-verification-email-template",
-        "configuration-set"
+        "configuration-set",
+        "mailmanager-archive"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "export-job",
-        "reputation-policy",
         "import-job",
+        "reputation-policy",
+        "export-job",
         "multi-region-endpoint"
       ]
     },
     {
       "name": "AWS Storage Gateway",
       "taggable": [
-        "gateway",
         "cache-report",
         "tape",
-        "fs-association",
-        "share",
         "tapepool",
+        "share",
+        "gateway",
+        "fs-association",
         "volume"
       ],
       "conditionally_taggable": [],
@@ -4744,14 +4744,14 @@
     {
       "name": "AWS Systems Manager Incident Manager Contacts",
       "taggable": [
-        "contact",
-        "rotation"
+        "rotation",
+        "contact"
       ],
       "conditionally_taggable": [],
       "untaggable": [
         "page",
-        "contactchannel",
-        "engagement"
+        "engagement",
+        "contactchannel"
       ]
     },
     {
@@ -4765,97 +4765,97 @@
       ]
     },
     {
-      "name": "Amazon SageMaker",
-      "taggable": [
-        "monitoring-schedule",
-        "endpoint-config",
-        "model-explainability-job-definition",
-        "model-bias-job-definition",
-        "hyper-parameter-tuning-job",
-        "inference-experiment",
-        "hub-content",
-        "flow-definition",
-        "image-version",
-        "partner-app",
-        "model-package",
-        "processing-job",
-        "experiment-trial-component",
-        "cluster",
-        "inference-component",
-        "feature-group",
-        "transform-job",
-        "ai-recommendation-job",
-        "user-profile",
-        "pipeline-execution",
-        "labeling-job",
-        "experiment",
-        "mlflow-app",
-        "model-card-export-job",
-        "training-job",
-        "compute-quota",
-        "data-quality-job-definition",
-        "model-quality-job-definition",
-        "edge-deployment-plan",
-        "ai-workload-config",
-        "hub",
-        "app-image-config",
-        "space",
-        "image",
-        "optimization-job",
-        "workteam",
-        "action",
-        "experiment-trial",
-        "model-package-group",
-        "reserved-capacity",
-        "device-fleet",
-        "edge-packaging-job",
-        "automl-job",
-        "workforce",
-        "project",
-        "notebook-instance",
-        "human-task-ui",
-        "context",
-        "studio-lifecycle-config",
-        "device",
-        "endpoint",
-        "domain",
-        "code-repository",
-        "model",
-        "algorithm",
-        "artifact",
-        "inference-recommendations-job",
-        "notebook-instance-lifecycle-config",
-        "training-plan",
-        "app",
-        "compilation-job",
-        "lineage-group",
-        "cluster-scheduler-config",
-        "model-card",
-        "ai-benchmark-job",
-        "pipeline"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "human-loop",
-        "monitoring-schedule-alert",
-        "shared-model-event",
-        "sagemaker-catalog",
-        "shared-model",
-        "mlflow-tracking-server"
-      ]
-    },
-    {
       "name": "AWS User Notifications",
       "taggable": [
         "notificationconfiguration"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "eventrule",
-        "managednotificationconfiguration",
         "managednotificationchildevent",
-        "managednotificationevent",
-        "notificationevent"
+        "managednotificationconfiguration",
+        "notificationevent",
+        "eventrule",
+        "managednotificationevent"
+      ]
+    },
+    {
+      "name": "Amazon SageMaker",
+      "taggable": [
+        "app",
+        "user-profile",
+        "transform-job",
+        "domain",
+        "inference-experiment",
+        "inference-component",
+        "mlflow-app",
+        "algorithm",
+        "cluster-scheduler-config",
+        "pipeline",
+        "app-image-config",
+        "endpoint-config",
+        "model-package",
+        "endpoint",
+        "model-quality-job-definition",
+        "space",
+        "flow-definition",
+        "image-version",
+        "workteam",
+        "processing-job",
+        "artifact",
+        "training-job",
+        "compilation-job",
+        "data-quality-job-definition",
+        "feature-group",
+        "experiment-trial",
+        "device-fleet",
+        "context",
+        "hyper-parameter-tuning-job",
+        "lineage-group",
+        "automl-job",
+        "workforce",
+        "device",
+        "reserved-capacity",
+        "monitoring-schedule",
+        "image",
+        "code-repository",
+        "model-bias-job-definition",
+        "ai-workload-config",
+        "human-task-ui",
+        "studio-lifecycle-config",
+        "notebook-instance-lifecycle-config",
+        "edge-deployment-plan",
+        "hub",
+        "project",
+        "inference-recommendations-job",
+        "model-card",
+        "training-plan",
+        "experiment",
+        "model-package-group",
+        "action",
+        "ai-benchmark-job",
+        "cluster",
+        "notebook-instance",
+        "edge-packaging-job",
+        "compute-quota",
+        "experiment-trial-component",
+        "model",
+        "labeling-job",
+        "pipeline-execution",
+        "model-card-export-job",
+        "model-explainability-job-definition",
+        "optimization-job",
+        "partner-app",
+        "ai-recommendation-job",
+        "hub-content"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "shared-model-event",
+        "shared-model",
+        "sagemaker-catalog",
+        "human-loop",
+        "monitoring-schedule-alert",
+        "mlflow-tracking-server"
       ]
     },
     {
@@ -4871,104 +4871,104 @@
     {
       "name": "AWS Systems Manager",
       "taggable": [
-        "association",
-        "task",
-        "windowtarget",
-        "patchbaseline",
-        "opsmetadata",
-        "parameter",
         "windowtask",
-        "document",
-        "automation-execution",
-        "opsitem",
         "maintenancewindow",
+        "opsmetadata",
+        "opsitem",
+        "managed-instance",
         "instance",
-        "managed-instance"
+        "windowtarget",
+        "parameter",
+        "task",
+        "association",
+        "automation-execution",
+        "document",
+        "patchbaseline"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "resourcedatasync",
         "bucket",
+        "session",
+        "servicesetting",
+        "managed-instance-inventory",
+        "opsitemgroup",
         "automation-definition",
         "iam-role",
-        "servicesetting",
-        "opsitemgroup",
-        "session",
-        "managed-instance-inventory"
+        "resourcedatasync"
       ]
     },
     {
       "name": "AWS WAF",
       "taggable": [
         "webacl",
-        "rulegroup",
+        "ratebasedrule",
         "rule",
-        "ratebasedrule"
+        "rulegroup"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "sizeconstraintset",
-        "sqlinjectionmatchset",
-        "regexpatternset",
-        "bytematchset",
         "ipset",
-        "geomatchset",
+        "bytematchset",
+        "sqlinjectionmatchset",
+        "sizeconstraintset",
         "xssmatchset",
-        "regexmatchset"
-      ]
-    },
-    {
-      "name": "AWS WAF V2",
-      "taggable": [
-        "rulegroup",
-        "webacl",
         "regexpatternset",
-        "ipset"
-      ],
-      "conditionally_taggable": [],
-      "untaggable": [
-        "appsync",
-        "amplify-app",
-        "userpool",
-        "apprunner",
-        "managedruleset",
-        "apigateway",
-        "loadbalancer/app/",
-        "verified-access-instance"
+        "regexmatchset",
+        "geomatchset"
       ]
     },
     {
       "name": "AWS WAF Regional",
       "taggable": [
         "webacl",
-        "rulegroup",
+        "ratebasedrule",
         "rule",
-        "ratebasedrule"
+        "rulegroup"
       ],
       "conditionally_taggable": [],
       "untaggable": [
-        "sizeconstraintset",
-        "sqlinjectionmatchset",
-        "regexpatternset",
-        "bytematchset",
         "ipset",
-        "geomatchset",
+        "bytematchset",
+        "sqlinjectionmatchset",
+        "sizeconstraintset",
         "xssmatchset",
+        "loadbalancer/app/",
+        "regexpatternset",
         "regexmatchset",
-        "loadbalancer/app/"
+        "geomatchset"
+      ]
+    },
+    {
+      "name": "AWS WAF V2",
+      "taggable": [
+        "ipset",
+        "regexpatternset",
+        "webacl",
+        "rulegroup"
+      ],
+      "conditionally_taggable": [],
+      "untaggable": [
+        "verified-access-instance",
+        "apprunner",
+        "appsync",
+        "loadbalancer/app/",
+        "userpool",
+        "amplify-app",
+        "apigateway",
+        "managedruleset"
       ]
     },
     {
       "name": "Amazon WorkSpaces",
       "taggable": [
+        "workspaceapplication",
         "connectionalias",
-        "workspacespoolid",
-        "workspacebundle",
         "workspaceid",
+        "workspacebundle",
         "directoryid",
+        "workspacespoolid",
         "workspaceimage",
-        "workspaceipgroup",
-        "workspaceapplication"
+        "workspaceipgroup"
       ],
       "conditionally_taggable": [],
       "untaggable": [

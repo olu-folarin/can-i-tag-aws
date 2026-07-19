@@ -19,6 +19,28 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 
+# Development image: runtime deps plus test/lint/type tooling and boto3, so the
+# full suite runs identically on any host OS (macOS, Windows, Linux). Not the
+# final stage, so `docker build` without a target still produces the slim
+# runtime image that gets published.
+FROM python:3.11-slim AS dev
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libxml2-dev \
+    libxslt1-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt requirements-dev.txt requirements-rgtapi.txt ./
+RUN pip install --no-cache-dir -r requirements-dev.txt -r requirements-rgtapi.txt
+
+COPY . .
+
+CMD ["pytest", "-q", "-m", "not integration"]
+
+
 FROM python:3.11-slim AS runtime
 
 WORKDIR /app

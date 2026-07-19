@@ -34,12 +34,17 @@ class ConditionallyTaggableResource(TypedDict):
     The resource type passes standard taggability checks, but specific AWS-managed
     default instances (e.g., default.redis7, default.mysql8.0) are read-only to the
     account holder. SCP tag enforcement must exclude the given ARN pattern.
+
+    ``source`` records how the entry was derived: "heuristic" (from naming
+    conventions and scraped ARN templates, no credentials) or "live" (confirmed
+    against an AWS account via boto3).
     """
 
     resource: str
     service: str
     arn_pattern: str
     description: str
+    source: str
 
 
 # ---------------------------------------------------------------------------
@@ -52,6 +57,7 @@ class ResourceTypeInfo(TypedDict):
 
     all_resources: list[str]
     resources_with_tag_condition: list[str]
+    arn_templates: dict[str, str]
 
 
 class TaggingActionInfo(TypedDict):
@@ -66,12 +72,14 @@ class ServiceAnalysis(TypedDict):
 
     name: str
     url: str
+    service_prefix: str
     has_tagging_api: bool
     all_resources: list[str]
     taggable_resources: list[str]
     untaggable_resources: list[str]
     tagging_actions: list[str]
     resources_with_tag_condition: list[str]
+    arn_templates: dict[str, str]
 
 
 class ServiceAnalysisError(TypedDict):

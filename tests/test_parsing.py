@@ -109,6 +109,13 @@ class TestExtractResourceTypesWithTaggingInfo:
         assert result["all_resources"] == []
         assert result["resources_with_tag_condition"] == []
 
+    def test_captures_arn_templates(self):
+        soup = BeautifulSoup(SAMPLE_RESOURCE_TYPES_HTML, "lxml")
+        result = extract_resource_types_with_tagging_info(soup)
+
+        assert result["arn_templates"]["instance"] == "arn:aws:ec2:region:account:instance/instance-id"
+        assert set(result["arn_templates"]) == {"instance", "volume", "snapshot"}
+
 
 class TestExtractTaggingActionsAndResources:
     def test_extracts_tagging_actions(self):

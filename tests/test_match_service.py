@@ -22,7 +22,7 @@ class TestMatchService:
         assert match_service("ec2", service_list) is None
 
     def test_fuzzy_match_fallback(self):
-        """No exact mapping — fuzzy match strips prefixes and normalizes."""
+        """No exact mapping, so fuzzy match strips prefixes and normalizes."""
         service_list = ["Amazon DynamoDB"]
         # "dynamodb" is in CFN_TO_IAM_SERVICE, so this hits the exact path
         assert match_service("dynamodb", service_list) == "Amazon DynamoDB"

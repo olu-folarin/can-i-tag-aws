@@ -80,6 +80,22 @@ docker run --rm \
   ghcr.io/olu-folarin/can-i-tag-aws
 ```
 
+### Run any task in Docker (identical on macOS, Windows, and Linux)
+
+Every script, plus the tests and linters, can run inside a container via `docker compose`, so results do not depend on your host OS. This is the most reliable path (native runs can be unstable on some macOS setups because of lxml segfaults).
+
+```bash
+docker compose run --rm detect          # primary detection
+docker compose run --rm detect --live   # detection with live boto3 confirmation
+docker compose run --rm service-level   # secondary service-level scan
+docker compose run --rm cfn-map         # CloudFormation mapping
+docker compose run --rm diff            # compare the two latest runs
+docker compose run --rm test            # unit tests
+docker compose run --rm lint            # ruff check + format check + mypy
+```
+
+`detect`, `service-level`, `cfn-map`, and `diff` write to the mounted `output/` and `history/` directories. `test` and `lint` use a dev image that adds pytest, ruff, and mypy. Add `--build` after a dependency change to rebuild the image.
+
 ### Native Python
 
 ```bash

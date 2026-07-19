@@ -1,0 +1,88 @@
+# Run every task inside a container so behavior is identical across host
+# operating systems (macOS, Windows, Linux). This avoids environment-specific
+# problems such as the native lxml segfaults seen on some macOS setups.
+#
+# Detection scripts use the slim runtime image; test/lint use the dev image
+# (which adds pytest, ruff, mypy, and boto3).
+#
+# Examples:
+#   docker compose run --rm detect         # primary detection
+#   docker compose run --rm detect --live  # with live boto3 confirmation
+#   docker compose run --rm test           # unit tests
+#   docker compose run --rm lint           # ruff + format + mypy
+#   docker compose run --rm service-level  # secondary service-level scan
+#   docker compose run --rm diff           # compare the two latest runs
+
+services:
+  detect:
+    build:
+      context: .
+      target: runtime
+    volumes:
+      - ./output:/app/output
+      - ./history:/app/history
+    entrypoint: ["python", "detect_api_taggable.py"]
+
+  service-level:
+    build:
+      context: .
+      target: runtime
+    volumes:
+      - ./output:/app/output
+    entrypoint: ["python", "detect_service_level.py"]
+
+  cfn-map:
+    build:
+      context: .
+      target: runtime
+    volumes:
+      - ./output:/app/output
+    entrypoint: ["python", "cfn_to_iam_mapper.py"]
+
+  diff:
+    build:
+      context: .
+      target: runtime
+    volumes:
+      - ./output:/app/output
+      - ./history:/app/history
+    entrypoint: ["python", "diff_runs.py"]
+
+  rgtapi:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - ./output:/app/output
+    # Requires AWS credentials; pass them through from the host environment.
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+      - AWS_DEFAULT_REGION
+      - AWS_PROFILE
+    entrypoint: ["python", "resource_groups_api/detect_rgtapi.py"]
+
+  test:
+    build:
+      context: .
+      target: dev
+    command: ["pytest", "-q", "-m", "not integration"]
+
+  test-integration:
+    build:
+      context: .
+      target: dev
+    command: ["pytest", "-q", "-m", "integration"]
+
+  lint:
+    build:
+      context: .
+      target: dev
+    command:
+      - sh
+      - -c
+      - >-
+        ruff check . &&
+        ruff format --check . &&
+        mypy report_types.py aws_docs.py detect_api_taggable.py detect_service_level.py cfn_to_iam_mapper.py diff_runs.py managed_defaults.py

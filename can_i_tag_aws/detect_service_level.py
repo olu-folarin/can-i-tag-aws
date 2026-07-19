@@ -16,16 +16,16 @@ from __future__ import annotations
 
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from pathlib import Path
 
 import requests
 from rich.console import Console
 from rich.table import Table
 
-from aws_docs import get_all_services
-from cache_config import get_cached_session
-from constants import DEFAULT_HTTP_TIMEOUT
-from report_types import SvcReport, TaggingSupportResult
+from can_i_tag_aws.core.aws_docs import get_all_services
+from can_i_tag_aws.core.cache_config import get_cached_session
+from can_i_tag_aws.core.constants import DEFAULT_HTTP_TIMEOUT
+from can_i_tag_aws.core.paths import OUTPUT_DIR
+from can_i_tag_aws.core.report_types import SvcReport, TaggingSupportResult
 
 console = Console()
 session = get_cached_session()
@@ -178,7 +178,7 @@ def main():
 
     display_results(taggable, untaggable, errors)
 
-    output_dir = Path(__file__).parent / "output"
+    output_dir = OUTPUT_DIR
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "service_level_untaggable.json"
     with open(output_file, "w") as f:

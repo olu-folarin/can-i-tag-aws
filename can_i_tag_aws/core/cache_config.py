@@ -1,10 +1,9 @@
 """Shared caching configuration for AWS documentation requests."""
 
-from pathlib import Path
-
 import requests_cache
 
-CACHE_DIR = Path(__file__).parent / ".cache"
+from can_i_tag_aws.core.paths import CACHE_DIR
+
 CACHE_DIR.mkdir(exist_ok=True)
 
 

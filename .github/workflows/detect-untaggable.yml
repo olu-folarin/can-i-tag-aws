@@ -38,7 +38,7 @@ jobs:
         run: pytest -q -m integration
       
       - name: Run detection
-        run: python detect_api_taggable.py
+        run: python -m can_i_tag_aws.detect_api_taggable
 
       - name: Prune history (keep latest 3)
         run: |

@@ -1,9 +1,9 @@
 """Tests for classify_results() and build_report() in detect_api_taggable and detect_service_level."""
 
-from detect_api_taggable import build_report as api_build_report
-from detect_api_taggable import classify_results as api_classify
-from detect_service_level import build_report as svc_build_report
-from detect_service_level import classify_results as svc_classify
+from can_i_tag_aws.detect_api_taggable import build_report as api_build_report
+from can_i_tag_aws.detect_api_taggable import classify_results as api_classify
+from can_i_tag_aws.detect_service_level import build_report as svc_build_report
+from can_i_tag_aws.detect_service_level import classify_results as svc_classify
 
 
 class TestApiClassifyResults:

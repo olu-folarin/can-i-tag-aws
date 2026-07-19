@@ -26,28 +26,28 @@ import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 from rich.console import Console
 from rich.table import Table
 
-from aws_docs import get_all_services
-from cache_config import get_cached_session
-from constants import (
+from can_i_tag_aws.core.aws_docs import get_all_services
+from can_i_tag_aws.core.cache_config import get_cached_session
+from can_i_tag_aws.core.constants import (
     DEFAULT_HTTP_TIMEOUT,
     MAX_RETRIES,
     RETRY_DELAY,
     TAGGING_ACTION_PATTERNS,
 )
-from exceptions import AWSDocParsingError
-from managed_defaults import (
+from can_i_tag_aws.core.exceptions import AWSDocParsingError
+from can_i_tag_aws.core.managed_defaults import (
     build_conditionally_taggable,
     enumerate_live_managed_defaults,
     merge_conditionally_taggable,
 )
-from report_types import (
+from can_i_tag_aws.core.paths import HISTORY_DIR, OUTPUT_DIR
+from can_i_tag_aws.core.report_types import (
     ApiReport,
     ConditionallyTaggableResource,
     MixedServiceDetail,
@@ -455,14 +455,14 @@ def main(argv: list[str] | None = None):
 
     display_results(no_tagging_api, has_tagging_api, mixed_services, errors, report)
 
-    output_dir = Path(__file__).parent / "output"
+    output_dir = OUTPUT_DIR
     output_dir.mkdir(parents=True, exist_ok=True)
 
     output_file = output_dir / "api_taggable_resources.json"
     with open(output_file, "w") as f:
         json.dump(report, f, indent=2)
 
-    history_dir = Path(__file__).parent / "history"
+    history_dir = HISTORY_DIR
     history_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     history_file = history_dir / f"api_taggable_resources_{timestamp}.json"

@@ -98,10 +98,12 @@ docker compose run --rm lint            # ruff check + format check + mypy
 
 ### Native Python
 
+Run the modules from the repository root so the `can_i_tag_aws` package is importable:
+
 ```bash
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-python detect_api_taggable.py
+python -m can_i_tag_aws.detect_api_taggable
 ```
 
 For development/testing:
@@ -115,7 +117,7 @@ For optional live validation via Resource Groups Tagging API:
 
 ```bash
 pip install -r requirements-rgtapi.txt
-python resource_groups_api/detect_rgtapi.py
+python -m can_i_tag_aws.resource_groups_api.detect_rgtapi
 ```
 
 Output is saved to `output/` (latest) and `history/` (versioned).
@@ -124,7 +126,7 @@ Output is saved to `output/` (latest) and `history/` (versioned).
 
 The `conditionally_taggable_resources` category (taggable types whose AWS-managed default instances reject tags) is derived two ways:
 
-1. **Heuristic (default, no credentials).** Each detected taggable resource type is matched against stable AWS naming conventions handled in `managed_defaults.py`:
+1. **Heuristic (default, no credentials).** Each detected taggable resource type is matched against stable AWS naming conventions handled in `can_i_tag_aws/core/managed_defaults.py`:
    - parameter groups (`pg`, `cluster-pg`, `*parametergroup`) map to `default.*` instances
    - option groups (`og`, `*optiongroup`) map to `default:*` instances
    - IAM `policy` maps to AWS-managed policies under `arn:aws:iam::aws:policy/*`
@@ -135,11 +137,11 @@ The `conditionally_taggable_resources` category (taggable types whose AWS-manage
 
 ```bash
 # Heuristic only (offline, no credentials)
-python detect_api_taggable.py
+python -m can_i_tag_aws.detect_api_taggable
 
 # Heuristic plus live confirmation against the current account
 pip install -r requirements-rgtapi.txt
-python detect_api_taggable.py --live
+python -m can_i_tag_aws.detect_api_taggable --live
 ```
 
 ### Sample Output
@@ -187,24 +189,28 @@ From `output/api_taggable_resources.json`:
 
 ## Scripts
 
-| Script | Role | Description |
+Run each with `python -m <module>` from the repository root.
+
+| Module | Role | Description |
 |--------|------|-------------|
-| `detect_api_taggable.py` | **PRIMARY** | Authoritative resource-level detection (no AWS creds needed) |
-| `detect_service_level.py` | SECONDARY | Quick service-level validation |
-| `cfn_to_iam_mapper.py` | SUPPLEMENTARY | Maps CloudFormation types to tagging status |
-| `diff_runs.py` | UTILITY | Compare two runs to detect changes |
-| `resource_groups_api/detect_rgtapi.py` | OPTIONAL | Live validation against your AWS account (requires creds) |
+| `can_i_tag_aws.detect_api_taggable` | **PRIMARY** | Authoritative resource-level detection (no AWS creds needed) |
+| `can_i_tag_aws.detect_service_level` | SECONDARY | Quick service-level validation |
+| `can_i_tag_aws.cfn_to_iam_mapper` | SUPPLEMENTARY | Maps CloudFormation types to tagging status |
+| `can_i_tag_aws.diff_runs` | UTILITY | Compare two runs to detect changes |
+| `can_i_tag_aws.resource_groups_api.detect_rgtapi` | OPTIONAL | Live validation against your AWS account (requires creds) |
+
+Shared building blocks (documentation fetching, parsing helpers, report types, managed-default rules) live under `can_i_tag_aws/core/`.
 
 ### Script Relationships
 
 ```
-detect_api_taggable.py (PRIMARY)
+can_i_tag_aws.detect_api_taggable (PRIMARY)
 │
 ├── Source: IAM Service Authorization Reference (web scrape)
 ├── No AWS credentials required
 └── Produces: output/api_taggable_resources.json
 
-detect_rgtapi.py (OPTIONAL VALIDATION)
+can_i_tag_aws.resource_groups_api.detect_rgtapi (OPTIONAL VALIDATION)
 │
 ├── Source: Your AWS account via Resource Groups Tagging API
 ├── Requires AWS credentials
@@ -222,7 +228,7 @@ The primary script works offline by parsing AWS documentation. The RGTAPI script
 ## Comparing Runs
 
 ```bash
-python diff_runs.py  # Compare latest two runs
+python -m can_i_tag_aws.diff_runs  # Compare latest two runs
 ```
 
 ## Contributing

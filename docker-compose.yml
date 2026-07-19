@@ -21,7 +21,7 @@ services:
     volumes:
       - ./output:/app/output
       - ./history:/app/history
-    entrypoint: ["python", "detect_api_taggable.py"]
+    entrypoint: ["python", "-m", "can_i_tag_aws.detect_api_taggable"]
 
   service-level:
     build:
@@ -29,7 +29,7 @@ services:
       target: runtime
     volumes:
       - ./output:/app/output
-    entrypoint: ["python", "detect_service_level.py"]
+    entrypoint: ["python", "-m", "can_i_tag_aws.detect_service_level"]
 
   cfn-map:
     build:
@@ -37,7 +37,7 @@ services:
       target: runtime
     volumes:
       - ./output:/app/output
-    entrypoint: ["python", "cfn_to_iam_mapper.py"]
+    entrypoint: ["python", "-m", "can_i_tag_aws.cfn_to_iam_mapper"]
 
   diff:
     build:
@@ -46,7 +46,7 @@ services:
     volumes:
       - ./output:/app/output
       - ./history:/app/history
-    entrypoint: ["python", "diff_runs.py"]
+    entrypoint: ["python", "-m", "can_i_tag_aws.diff_runs"]
 
   rgtapi:
     build:
@@ -61,7 +61,7 @@ services:
       - AWS_SESSION_TOKEN
       - AWS_DEFAULT_REGION
       - AWS_PROFILE
-    entrypoint: ["python", "resource_groups_api/detect_rgtapi.py"]
+    entrypoint: ["python", "-m", "can_i_tag_aws.resource_groups_api.detect_rgtapi"]
 
   test:
     build:
@@ -85,4 +85,4 @@ services:
       - >-
         ruff check . &&
         ruff format --check . &&
-        mypy report_types.py aws_docs.py detect_api_taggable.py detect_service_level.py cfn_to_iam_mapper.py diff_runs.py managed_defaults.py
+        mypy can_i_tag_aws

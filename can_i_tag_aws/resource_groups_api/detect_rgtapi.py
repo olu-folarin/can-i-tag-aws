@@ -33,6 +33,8 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
+from can_i_tag_aws.core.paths import OUTPUT_DIR
+
 console = Console()
 
 # Known resource type prefixes from AWS documentation
@@ -137,24 +139,18 @@ def get_tag_statistics(client) -> dict:
     """Get statistics about tags in the account."""
     console.print("[blue]Gathering tag statistics...[/blue]")
 
-    stats = {
-        "total_tag_keys": 0,
-        "tag_keys": [],
-    }
+    tag_keys: list[str] = []
 
     try:
         paginator = client.get_paginator("get_tag_keys")
 
         for page in paginator.paginate():
-            keys = page.get("TagKeys", [])
-            stats["tag_keys"].extend(keys)
-
-        stats["total_tag_keys"] = len(stats["tag_keys"])
-        return stats
+            tag_keys.extend(page.get("TagKeys", []))
 
     except ClientError as e:
         console.print(f"[yellow]Could not get tag keys: {e}[/yellow]")
-        return stats
+
+    return {"total_tag_keys": len(tag_keys), "tag_keys": tag_keys}
 
 
 def check_service_tagging_support(client, service_prefix: str) -> bool | None:
@@ -290,7 +286,7 @@ def main():
     supported, unsupported, unknown = analyze_services(client)
 
     # Generate report
-    output_dir = Path(__file__).parent.parent / "output"
+    output_dir = OUTPUT_DIR
     generate_report(
         discovered_types,
         tag_stats,

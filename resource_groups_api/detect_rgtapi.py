@@ -16,6 +16,8 @@ Reference:
 https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/Welcome.html
 """
 
+from __future__ import annotations
+
 import json
 
 try:
@@ -155,10 +157,13 @@ def get_tag_statistics(client) -> dict:
         return stats
 
 
-def check_service_tagging_support(client, service_prefix: str) -> bool:
+def check_service_tagging_support(client, service_prefix: str) -> bool | None:
     """
     Check if a service supports the Resource Groups Tagging API
     by attempting to query for its resources.
+
+    Returns True if supported, False if the filter is rejected as invalid, and
+    None when the status cannot be determined (for example a permissions error).
     """
     try:
         client.get_resources(
@@ -176,7 +181,7 @@ def check_service_tagging_support(client, service_prefix: str) -> bool:
         return None
 
 
-def analyze_services(client) -> tuple[list, list, list]:
+def analyze_services(client) -> tuple[list[str], list[str], list[str]]:
     """
     Analyze known services for Tagging API support.
 

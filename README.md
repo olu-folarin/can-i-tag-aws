@@ -37,7 +37,9 @@ A resource is considered **taggable** if:
 
 A resource is **untaggable** only if it has NEITHER indicator.
 
-A resource type is **conditionally taggable** if it passes both checks above, but specific AWS-managed default instances within that type cannot be tagged. For example, `elasticache:parametergroup` as a type is taggable. You can tag a user-created parameter group. But `default.redis7` is an AWS-managed default owned by AWS, not by the account, so it will reject tags. This is an instance-level restriction that IAM documentation does not distinguish from user-created instances of the same type. The tool maintains a curated list of known patterns and surfaces them as a separate `conditionally_taggable_resources` category with the ARN patterns you need to exclude from SCP enforcement.
+A resource type is **conditionally taggable** if it passes both checks above, but specific AWS-managed default instances within that type cannot be tagged. For example, `elasticache:parametergroup` as a type is taggable. You can tag a user-created parameter group. But `default.redis7` is an AWS-managed default owned by AWS, not by the account, so it will reject tags. This is an instance-level restriction that IAM documentation does not distinguish from user-created instances of the same type. The tool surfaces these as a separate `conditionally_taggable_resources` category with the ARN patterns you need to exclude from SCP enforcement.
+
+These patterns are derived dynamically rather than from a hardcoded list. Any taggable resource type that follows a stable AWS naming convention (parameter groups, option groups, AWS-managed IAM policies) is matched, and the exclusion ARN pattern is built from that resource type's own ARN template as scraped from the IAM Service Authorization Reference. New services that follow the same conventions are therefore covered automatically. See [How conditionally taggable resources are detected](#how-conditionally-taggable-resources-are-detected) below.
 
 ## Why `aws:ResourceTag`?
 
@@ -61,7 +63,7 @@ Scope is limited to untaggable resources, not:
 - **Web scraping dependency**: the tool parses AWS HTML docs; structure changes can break extraction
 - **Point-in-time accuracy**: AWS adds/changes services frequently; re-run to stay current
 - **Native runs may be unstable on some macOS setups** (Python/lxml segfaults). Docker is the recommended execution path.
-- **Conditionally taggable list is manually curated**: AWS does not publish a registry of managed default instances. The `conditionally_taggable_resources` list covers known patterns (ElastiCache default parameter groups, RDS default parameter and option groups, AWS-managed IAM policies) but may be incomplete. If you encounter an AWS-managed resource instance that rejects tags despite the type appearing as taggable, open an issue.
+- **Conditionally taggable detection is convention-based**: AWS does not publish a registry of managed default instances, so the tool infers them from stable naming conventions (parameter groups, option groups, AWS-managed IAM policies) rather than a hardcoded list. This covers services that follow those conventions automatically, but a managed default that follows a different convention may be missed. Detection deliberately errs toward inclusion, since an unnecessary `default.*` exclusion is harmless for SCP enforcement while a missing one blocks deployments. If you encounter an AWS-managed resource instance that rejects tags despite the type appearing as taggable, open an issue. For account-verified results, run with `--live` (see below).
 
 ## Quick Start
 
@@ -102,6 +104,28 @@ python resource_groups_api/detect_rgtapi.py
 
 Output is saved to `output/` (latest) and `history/` (versioned).
 
+### How conditionally taggable resources are detected
+
+The `conditionally_taggable_resources` category (taggable types whose AWS-managed default instances reject tags) is derived two ways:
+
+1. **Heuristic (default, no credentials).** Each detected taggable resource type is matched against stable AWS naming conventions handled in `managed_defaults.py`:
+   - parameter groups (`pg`, `cluster-pg`, `*parametergroup`) map to `default.*` instances
+   - option groups (`og`, `*optiongroup`) map to `default:*` instances
+   - IAM `policy` maps to AWS-managed policies under `arn:aws:iam::aws:policy/*`
+
+   The exclusion ARN pattern is built from the resource type's own ARN template as scraped from the IAM Service Authorization Reference, so any new service that follows a matched convention is covered without a code change. Each entry is tagged `"source": "heuristic"`.
+
+2. **Live confirmation (optional, requires AWS credentials).** Add `--live` to enumerate the managed defaults that actually exist in your account (IAM AWS-managed policies, RDS/ElastiCache/Redshift default parameter and option groups) and merge them in. Confirmed entries are tagged `"source": "live"` and take precedence on overlap.
+
+```bash
+# Heuristic only (offline, no credentials)
+python detect_api_taggable.py
+
+# Heuristic plus live confirmation against the current account
+pip install -r requirements-rgtapi.txt
+python detect_api_taggable.py --live
+```
+
 ### Sample Output
 
 From `output/api_taggable_resources.json`:
@@ -128,7 +152,8 @@ From `output/api_taggable_resources.json`:
       "resource": "parametergroup",
       "service": "Amazon ElastiCache",
       "arn_pattern": "arn:aws:elasticache:*:*:parametergroup:default.*",
-      "description": "AWS-managed default ElastiCache parameter groups (e.g., default.redis7, default.memcached1.6)"
+      "description": "AWS-managed default parameter groups (e.g., default.redis7, default.mysql8.0) are owned by AWS and reject account-defined tags",
+      "source": "heuristic"
     }
   ],
   "mixed_services_detail": [

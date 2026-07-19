@@ -20,6 +20,7 @@ Related scripts:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import time
@@ -35,13 +36,17 @@ from rich.table import Table
 from aws_docs import get_all_services
 from cache_config import get_cached_session
 from constants import (
-    AWS_MANAGED_DEFAULTS,
     DEFAULT_HTTP_TIMEOUT,
     MAX_RETRIES,
     RETRY_DELAY,
     TAGGING_ACTION_PATTERNS,
 )
 from exceptions import AWSDocParsingError
+from managed_defaults import (
+    build_conditionally_taggable,
+    enumerate_live_managed_defaults,
+    merge_conditionally_taggable,
+)
 from report_types import (
     ApiReport,
     ConditionallyTaggableResource,
@@ -72,6 +77,12 @@ def extract_resource_types_with_tagging_info(soup: BeautifulSoup) -> ResourceTyp
     The presence of aws:ResourceTag/${TagKey} condition key is the authoritative
     indicator that a resource supports tagging, regardless of TagResource action scope.
     """
+    empty: ResourceTypeInfo = {
+        "all_resources": [],
+        "resources_with_tag_condition": [],
+        "arn_templates": {},
+    }
+
     resource_section = None
     for heading in soup.find_all(["h2", "h3"]):
         if "resource type" in heading.get_text(strip=True).lower():
@@ -79,20 +90,22 @@ def extract_resource_types_with_tagging_info(soup: BeautifulSoup) -> ResourceTyp
             break
 
     if not resource_section:
-        return {"all_resources": [], "resources_with_tag_condition": []}
+        return empty
 
     table = resource_section.find_next("table")
     if not table:
-        return {"all_resources": [], "resources_with_tag_condition": []}
+        return empty
 
     headers = [th.get_text(strip=True).lower() for th in table.find_all("th")]
     if not any("arn" in h for h in headers):
-        return {"all_resources": [], "resources_with_tag_condition": []}
+        return empty
 
     condition_col = next((i for i, h in enumerate(headers) if "condition" in h), -1)
+    arn_col = next((i for i, h in enumerate(headers) if "arn" in h), -1)
 
     all_resources = []
     resources_with_tag_condition = []
+    arn_templates: dict[str, str] = {}
 
     for row in table.find_all("tr")[1:]:
         cells = row.find_all("td")
@@ -107,9 +120,15 @@ def extract_resource_types_with_tagging_info(soup: BeautifulSoup) -> ResourceTyp
                     if "aws:resourcetag" in condition_text:
                         resources_with_tag_condition.append(resource_name)
 
+                if arn_col >= 0 and len(cells) > arn_col:
+                    arn_template = cells[arn_col].get_text(strip=True)
+                    if arn_template.startswith("arn:"):
+                        arn_templates[resource_name] = arn_template
+
     return {
         "all_resources": all_resources,
         "resources_with_tag_condition": resources_with_tag_condition,
+        "arn_templates": arn_templates,
     }
 
 
@@ -210,12 +229,14 @@ def analyze_service(service: ServiceEntry) -> ServiceAnalysisResult:
         return {
             "name": service["name"],
             "url": service["url"],
+            "service_prefix": extract_service_prefix(soup),
             "has_tagging_api": has_tagging,
             "all_resources": list(all_resources),
             "taggable_resources": list(taggable),
             "untaggable_resources": untaggable,
             "tagging_actions": tagging_info["tagging_actions"],
             "resources_with_tag_condition": list(resources_with_tag_condition),
+            "arn_templates": resource_info["arn_templates"],
         }
     except (requests.RequestException, ValueError, AttributeError, AWSDocParsingError) as e:
         return {
@@ -255,42 +276,21 @@ def classify_results(
     return no_tagging_api, has_tagging_api, mixed_services, errors
 
 
-def _build_conditionally_taggable(
-    has_tagging_api: list[ServiceAnalysisResult],
-) -> list[ConditionallyTaggableResource]:
-    """Cross-reference detected taggable resources against known AWS-managed defaults.
-
-    Returns entries only for resource types that were actually detected as taggable,
-    so the list stays accurate as the upstream IAM docs evolve.
-    """
-    detected: dict[str, set[str]] = {}
-    for svc in has_tagging_api:
-        name = svc["name"]
-        detected[name] = set(svc.get("taggable_resources", []))  # type: ignore[attr-defined,call-overload]
-
-    result: list[ConditionallyTaggableResource] = []
-    for entry in AWS_MANAGED_DEFAULTS:
-        service = entry["service"]
-        resource_type = entry["resource_type"]
-        if service in detected and resource_type in detected[service]:
-            result.append(
-                ConditionallyTaggableResource(
-                    resource=resource_type,
-                    service=service,
-                    arn_pattern=entry["arn_pattern"],
-                    description=entry["description"],
-                )
-            )
-    return result
-
-
 def build_report(
     services: list[ServiceEntry],
     no_tagging_api: list[ServiceAnalysisResult],
     has_tagging_api: list[ServiceAnalysisResult],
     mixed_services: list[ServiceAnalysisResult],
+    live_conditional: list[ConditionallyTaggableResource] | None = None,
 ) -> ApiReport:
-    """Build the detection report from classified results."""
+    """Build the detection report from classified results.
+
+    Conditionally taggable resources (taggable types with AWS-managed default
+    instances that reject tags) are derived dynamically from scraped ARN
+    templates and stable naming conventions. When ``live_conditional`` is
+    provided (from an authenticated boto3 run), those confirmations are merged
+    in and take precedence.
+    """
     all_untaggable: list[UntaggableResource] = []
 
     for svc in no_tagging_api:
@@ -305,10 +305,12 @@ def build_report(
                 UntaggableResource(resource=res, service=svc["name"], reason="resource_not_in_tag_action_scope")
             )
 
-    all_conditionally_taggable = _build_conditionally_taggable(has_tagging_api)
+    heuristic_conditional = build_conditionally_taggable(has_tagging_api)  # type: ignore[arg-type]
+    all_conditionally_taggable = merge_conditionally_taggable(heuristic_conditional, live_conditional or [])
 
-    # Build (service, resource_type) index for fast lookup when annotating mixed services
-    managed_index: set[tuple[str, str]] = {(e["service"], e["resource_type"]) for e in AWS_MANAGED_DEFAULTS}
+    # Index of (service, resource_type) flagged as conditionally taggable, for
+    # annotating mixed services without re-running the heuristic.
+    managed_index: set[tuple[str, str]] = {(e["service"], e["resource"]) for e in all_conditionally_taggable}
 
     mixed_services_detail: list[MixedServiceDetail] = []
     for s in mixed_services:
@@ -388,7 +390,10 @@ def display_results(
     if cond_taggable:
         console.print("\n[bold yellow]CONDITIONALLY TAGGABLE (AWS-managed instances cannot be tagged):[/bold yellow]\n")
         for entry in cond_taggable:
-            console.print(f"[cyan]{entry['service']}[/cyan] / [magenta]{entry['resource']}[/magenta]")
+            console.print(
+                f"[cyan]{entry['service']}[/cyan] / [magenta]{entry['resource']}[/magenta] "
+                f"[dim]({entry['source']})[/dim]"
+            )
             console.print(f"  ARN pattern to exclude: [dim]{entry['arn_pattern']}[/dim]")
             console.print(f"  {entry['description']}")
 
@@ -401,7 +406,22 @@ def display_results(
     console.print("[dim]Run 'python diff_runs.py' to compare with previous runs[/dim]")
 
 
-def main():
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Detect which AWS resources support tagging at the API level.")
+    parser.add_argument(
+        "--live",
+        action="store_true",
+        help=(
+            "Confirm AWS-managed default instances against a live account via boto3 "
+            "(requires AWS credentials and the optional requirements-rgtapi.txt dependencies)."
+        ),
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None):
+    args = parse_args(argv)
+
     console.print("[bold]AWS Resource-Level Tagging Detection (API Source of Truth)[/bold]")
     console.print("[dim]Parsing IAM Service Authorization Reference for resource-level tagging support[/dim]\n")
 
@@ -424,8 +444,14 @@ def main():
             result = future.result()
             results.append(result)
 
+    live_conditional: list[ConditionallyTaggableResource] = []
+    if args.live:
+        console.print("[blue]Confirming AWS-managed defaults against live account...[/blue]")
+        live_conditional = enumerate_live_managed_defaults()
+        console.print(f"[green]Confirmed {len(live_conditional)} managed-default pattern(s) live[/green]")
+
     no_tagging_api, has_tagging_api, mixed_services, errors = classify_results(results)
-    report = build_report(services, no_tagging_api, has_tagging_api, mixed_services)
+    report = build_report(services, no_tagging_api, has_tagging_api, mixed_services, live_conditional)
 
     display_results(no_tagging_api, has_tagging_api, mixed_services, errors, report)
 

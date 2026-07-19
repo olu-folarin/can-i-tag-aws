@@ -32,7 +32,7 @@ jobs:
         run: ruff format --check .
 
       - name: Type check
-        run: mypy report_types.py aws_docs.py detect_api_taggable.py detect_service_level.py cfn_to_iam_mapper.py diff_runs.py
+        run: mypy report_types.py aws_docs.py detect_api_taggable.py detect_service_level.py cfn_to_iam_mapper.py diff_runs.py managed_defaults.py
 
   unit:
     name: Unit tests

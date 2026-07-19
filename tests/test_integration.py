@@ -9,6 +9,8 @@ These tests verify:
 Run with: pytest tests/test_integration.py -v
 """
 
+from functools import lru_cache
+
 import pytest
 import requests
 
@@ -20,6 +22,42 @@ from constants import (
 )
 
 pytestmark = pytest.mark.integration
+
+
+@lru_cache(maxsize=1)
+def _toc_service_urls() -> dict[str, str]:
+    """Map each service's IAM prefix to its list page URL, read live from the TOC.
+
+    AWS periodically renames the ``list_*.html`` page slugs (e.g.
+    ``list_amazonec2.html`` -> ``list_ec2.html``), but the IAM service prefix
+    shown in parentheses in each TOC link (e.g. ``Amazon EC2 (ec2)``) is stable.
+    Resolving URLs by that prefix keeps these tests self-healing across renames.
+    """
+    from bs4 import BeautifulSoup
+
+    response = requests.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
+    soup = BeautifulSoup(response.text, "lxml")
+
+    urls: dict[str, str] = {}
+    for link in soup.find_all("a", href=True):
+        href = link.get("href", "")
+        if not isinstance(href, str):
+            continue
+        if "list_" not in href or not href.endswith(".html"):
+            continue
+        text = link.get_text(strip=True)
+        if text.endswith(")") and "(" in text:
+            prefix = text[text.rindex("(") + 1 : -1].strip()
+            clean_href = href.lstrip("./")
+            urls[prefix] = f"{SERVICE_AUTH_REF_BASE}/{clean_href}"
+    return urls
+
+
+def service_url(prefix: str) -> str:
+    """Resolve a service's list page URL from the live TOC by IAM prefix."""
+    urls = _toc_service_urls()
+    assert prefix in urls, f"Service prefix '{prefix}' not found in TOC"
+    return urls[prefix]
 
 
 class TestAWSDocAccessibility:
@@ -61,7 +99,7 @@ class TestAWSDocStructure:
         """Verify a sample service page has expected tables."""
         from bs4 import BeautifulSoup
 
-        ec2_url = f"{SERVICE_AUTH_REF_BASE}/list_amazonec2.html"
+        ec2_url = service_url("ec2")
         response = requests.get(ec2_url, timeout=DEFAULT_HTTP_TIMEOUT)
         soup = BeautifulSoup(response.text, "lxml")
 
@@ -88,19 +126,19 @@ class TestSampleServiceParsing:
         """Verify EC2 page shows tagging support."""
         from bs4 import BeautifulSoup
 
-        ec2_url = f"{SERVICE_AUTH_REF_BASE}/list_amazonec2.html"
+        ec2_url = service_url("ec2")
         response = requests.get(ec2_url, timeout=DEFAULT_HTTP_TIMEOUT)
         soup = BeautifulSoup(response.text, "lxml")
 
         text = soup.get_text().lower()
         assert "createtags" in text or "tagresource" in text
 
-    def test_artifact_has_no_tagging_actions(self):
-        """Verify AWS Artifact (a known untaggable service) has no tagging actions."""
+    def test_health_has_no_tagging_actions(self):
+        """Verify AWS Health (a known untaggable service) has no tagging actions."""
         from bs4 import BeautifulSoup
 
-        artifact_url = f"{SERVICE_AUTH_REF_BASE}/list_awsartifact.html"
-        response = requests.get(artifact_url, timeout=DEFAULT_HTTP_TIMEOUT)
+        health_url = service_url("health")
+        response = requests.get(health_url, timeout=DEFAULT_HTTP_TIMEOUT)
         soup = BeautifulSoup(response.text, "lxml")
 
         text = soup.get_text().lower()

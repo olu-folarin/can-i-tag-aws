@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from diff_runs import compare_reports, extract_untaggable_set, parse_args
+from can_i_tag_aws.diff_runs import compare_reports, extract_untaggable_set, parse_args
 
 
 class TestParseArgs:

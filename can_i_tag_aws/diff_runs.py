@@ -16,12 +16,10 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
-from report_types import DiffReport
+from can_i_tag_aws.core.paths import HISTORY_DIR, OUTPUT_DIR
+from can_i_tag_aws.core.report_types import DiffReport
 
 console = Console()
-
-HISTORY_DIR = Path(__file__).parent / "history"
-OUTPUT_DIR = Path(__file__).parent / "output"
 
 
 def load_report(filepath: Path) -> dict:  # type: ignore[type-arg]

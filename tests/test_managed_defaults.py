@@ -1,6 +1,6 @@
 """Tests for the dynamic AWS-managed-defaults detection engine."""
 
-from managed_defaults import (
+from can_i_tag_aws.core.managed_defaults import (
     RULES,
     build_arn_pattern,
     build_conditionally_taggable,

@@ -8,15 +8,15 @@ from __future__ import annotations
 from bs4 import BeautifulSoup
 from rich.console import Console
 
-from cache_config import get_cached_session
-from constants import (
+from can_i_tag_aws.core.cache_config import get_cached_session
+from can_i_tag_aws.core.constants import (
     DEFAULT_HTTP_TIMEOUT,
     MIN_EXPECTED_SERVICES,
     SERVICE_AUTH_REF_BASE,
     SERVICE_AUTH_REF_TOC,
 )
-from exceptions import AWSDocStructureError
-from report_types import ServiceEntry
+from can_i_tag_aws.core.exceptions import AWSDocStructureError
+from can_i_tag_aws.core.report_types import ServiceEntry
 
 console = Console()
 session = get_cached_session()

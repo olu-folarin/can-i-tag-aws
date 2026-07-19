@@ -68,7 +68,7 @@ USER appuser
 ENV PATH="/home/appuser/.local/bin:$PATH"
 
 # Default command runs the primary detection script
-CMD ["python", "detect_api_taggable.py"]
+CMD ["python", "-m", "can_i_tag_aws.detect_api_taggable"]
 
 # Labels for GHCR
 LABEL org.opencontainers.image.source="https://github.com/olu-folarin/can-i-tag-aws"

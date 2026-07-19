@@ -2,7 +2,10 @@
 
 from bs4 import BeautifulSoup
 
-from detect_api_taggable import extract_resource_types_with_tagging_info, extract_tagging_actions_and_resources
+from can_i_tag_aws.detect_api_taggable import (
+    extract_resource_types_with_tagging_info,
+    extract_tagging_actions_and_resources,
+)
 
 SAMPLE_RESOURCE_TYPES_HTML = """
 <html>

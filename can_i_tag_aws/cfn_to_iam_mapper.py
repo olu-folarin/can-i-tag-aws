@@ -20,10 +20,11 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
-from cache_config import get_cached_session
-from constants import CFN_SPEC_URL, DEFAULT_HTTP_TIMEOUT
-from report_types import CfnReport, ClassificationResults, ServiceLevelData
-from service_mapping import CFN_TO_IAM_SERVICE, normalize_for_fuzzy_match
+from can_i_tag_aws.core.cache_config import get_cached_session
+from can_i_tag_aws.core.constants import CFN_SPEC_URL, DEFAULT_HTTP_TIMEOUT
+from can_i_tag_aws.core.paths import OUTPUT_DIR
+from can_i_tag_aws.core.report_types import CfnReport, ClassificationResults, ServiceLevelData
+from can_i_tag_aws.core.service_mapping import CFN_TO_IAM_SERVICE, normalize_for_fuzzy_match
 
 console = Console()
 session = get_cached_session()
@@ -177,7 +178,7 @@ def display_results(results: ClassificationResults, report: CfnReport) -> None:
 def main():
     console.print("[bold]Resource-Level Untaggable Detection[/bold]\n")
 
-    output_dir = Path(__file__).parent / "output"
+    output_dir = OUTPUT_DIR
 
     service_data = load_service_level_data(output_dir)
 

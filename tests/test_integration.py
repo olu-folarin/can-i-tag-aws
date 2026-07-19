@@ -14,7 +14,7 @@ from functools import lru_cache
 import pytest
 import requests
 
-from constants import (
+from can_i_tag_aws.core.constants import (
     CFN_SPEC_URL,
     DEFAULT_HTTP_TIMEOUT,
     SERVICE_AUTH_REF_BASE,

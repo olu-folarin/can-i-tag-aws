@@ -32,7 +32,7 @@ import re
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 
-from report_types import ConditionallyTaggableResource
+from can_i_tag_aws.core.report_types import ConditionallyTaggableResource
 
 # ---------------------------------------------------------------------------
 # Heuristic rules

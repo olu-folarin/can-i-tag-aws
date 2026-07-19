@@ -1,7 +1,7 @@
 """Tests for cfn_to_iam_mapper.match_service() and service_mapping helpers."""
 
-from cfn_to_iam_mapper import match_service
-from service_mapping import normalize_for_fuzzy_match
+from can_i_tag_aws.cfn_to_iam_mapper import match_service
+from can_i_tag_aws.core.service_mapping import normalize_for_fuzzy_match
 
 
 class TestMatchService:

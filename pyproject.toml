@@ -2,7 +2,7 @@
 name = "can-i-tag-aws"
 version = "0.3.0"
 description = "Detect which AWS resources support tagging at the API level"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = {text = "MIT"}
 
 [tool.pytest.ini_options]
@@ -13,7 +13,7 @@ markers = [
 ]
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 check_untyped_defs = true
@@ -30,7 +30,7 @@ module = [
 ignore_missing_imports = true
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py311"
 line-length = 120
 
 [tool.ruff.lint]

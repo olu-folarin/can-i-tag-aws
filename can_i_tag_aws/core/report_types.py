@@ -6,7 +6,7 @@ and enable static type checking with mypy.
 
 from __future__ import annotations
 
-from typing import TypedDict, Union
+from typing import TypedDict
 
 # ---------------------------------------------------------------------------
 # Shared / Common
@@ -90,7 +90,7 @@ class ServiceAnalysisError(TypedDict):
     error: str
 
 
-ServiceAnalysisResult = Union[ServiceAnalysis, ServiceAnalysisError]
+ServiceAnalysisResult = ServiceAnalysis | ServiceAnalysisError
 
 
 class ApiReportSummary(TypedDict):
@@ -144,7 +144,7 @@ class TaggingSupportError(TypedDict):
     tagging_actions: list[str]
 
 
-TaggingSupportResult = Union[TaggingSupportSuccess, TaggingSupportError]
+TaggingSupportResult = TaggingSupportSuccess | TaggingSupportError
 
 
 class SvcReportSummary(TypedDict):

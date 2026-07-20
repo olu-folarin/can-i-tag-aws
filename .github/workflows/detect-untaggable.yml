@@ -9,36 +9,47 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   detect:
     runs-on: ubuntu-latest
     env:
       PR_TOKEN: ${{ secrets.PR_BOT_TOKEN || github.token }}
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           token: ${{ env.PR_TOKEN }}
-      
+
       - name: Set up Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.11'
           cache: 'pip'
-      
+
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
       - name: Run unit tests
         run: pytest -q -m "not integration"
 
+      # Pre-flight canary: fails loudly if AWS changed the doc structure enough
+      # to break parsing, before any scrape output is produced.
       - name: Run integration tests
         run: pytest -q -m integration
-      
+
       - name: Run detection
         run: python -m can_i_tag_aws.detect_api_taggable
+
+      # Post-scrape gate: fails the job if the fresh report violates hard
+      # invariants (a broken scrape that slipped past the integration tests), and
+      # flags a large-but-plausible change for human review instead of
+      # auto-merging it.
+      - name: Validate report
+        id: validate
+        run: python -m can_i_tag_aws.validate_report
 
       - name: Prune history (keep latest 3)
         run: |
@@ -53,7 +64,7 @@ jobs:
           for f in files[3:]:
               f.unlink()
           PY
-      
+
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
@@ -63,13 +74,13 @@ jobs:
           title: "chore: update untaggable resources report"
           body: |
             Automated update of untaggable resources detection.
-            
-            Run date: ${{ github.run_id }}
+
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           branch: auto-update-reports
           delete-branch: true
-      
-      - name: Merge pull request
-        if: steps.cpr.outputs.pull-request-number
+
+      - name: Auto-merge validated change
+        if: steps.cpr.outputs.pull-request-number && steps.validate.outputs.needs_review != 'true'
         env:
           GH_TOKEN: ${{ env.PR_TOKEN }}
           PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
@@ -83,4 +94,34 @@ jobs:
             else
               exit 1
             fi
+          fi
+
+      - name: Hold large change for review
+        if: steps.cpr.outputs.pull-request-number && steps.validate.outputs.needs_review == 'true'
+        env:
+          GH_TOKEN: ${{ env.PR_TOKEN }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          gh label create needs-review --color FBCA04 \
+            --description "Automated change large enough to need a human" --force || true
+          gh pr edit "$PR_NUMBER" --add-label needs-review
+          gh pr comment "$PR_NUMBER" --body \
+            "This automated update changed more than 25% of the untaggable set, so it was **not** auto-merged. Please review the diff before merging."
+
+      # Dead-man's-switch (in-repo half): any failure above (broken scrape,
+      # invalid report, tests, or merge) opens or updates a tracking issue, so a
+      # silent-degradation run shouts even if nobody is watching the Actions tab.
+      - name: Alert on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ env.PR_TOKEN }}
+        run: |
+          gh label create automation-failure --color B60205 \
+            --description "Scheduled detection run failed" --force || true
+          body="The scheduled detection run failed on $(date -u '+%Y-%m-%d %H:%M UTC'). The untaggable report was NOT published. This usually means the AWS documentation scrape broke or produced an invalid report. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          existing=$(gh issue list --label automation-failure --state open --json number --jq '.[0].number // empty')
+          if [ -z "$existing" ]; then
+            gh issue create --title "Scheduled detection run failed" --label automation-failure --body "$body"
+          else
+            gh issue comment "$existing" --body "$body"
           fi

@@ -106,7 +106,7 @@ jobs:
             --description "Automated change large enough to need a human" --force || true
           gh pr edit "$PR_NUMBER" --add-label needs-review
           gh pr comment "$PR_NUMBER" --body \
-            "This automated update changed more than 25% of the untaggable set, so it was **not** auto-merged. Please review the diff before merging."
+            "This automated update was **not** auto-merged because it needs a human: ${{ steps.validate.outputs.review_reason }}. Please review the diff before merging."
 
       # Dead-man's-switch (in-repo half): any failure above (broken scrape,
       # invalid report, tests, or merge) opens or updates a tracking issue, so a

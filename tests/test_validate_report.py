@@ -84,27 +84,50 @@ class TestAssessDelta:
         return {"untaggable_resources": [{"service": s, "resource": r} for s, r in pairs]}
 
     def test_no_previous_run(self):
-        churn, needs_review = assess_delta(None, self._report_with([("a", "1")]))
-        assert churn == 0.0
-        assert needs_review is False
+        result = assess_delta(None, self._report_with([("a", "1")]))
+        assert result.churn == 0.0
+        assert result.needs_review is False
 
     def test_identical_runs(self):
         pairs = [("a", "1"), ("b", "2"), ("c", "3"), ("d", "4")]
         prev = self._report_with(pairs)
-        churn, needs_review = assess_delta(prev, copy.deepcopy(prev))
-        assert churn == 0.0
-        assert needs_review is False
+        result = assess_delta(prev, copy.deepcopy(prev))
+        assert result.churn == 0.0
+        assert result.needs_review is False
 
     def test_small_change_no_review(self):
-        prev = self._report_with([("a", str(i)) for i in range(10)])
-        curr = self._report_with([("a", str(i)) for i in range(10)] + [("a", "new")])
-        churn, needs_review = assess_delta(prev, curr)
-        assert churn <= 0.25
-        assert needs_review is False
+        # A single addition to a large set: under every threshold.
+        prev = self._report_with([("a", str(i)) for i in range(200)])
+        curr = self._report_with([("a", str(i)) for i in range(200)] + [("a", "new")])
+        result = assess_delta(prev, curr)
+        assert result.needs_review is False
+        assert result.added == 1
+        assert result.removed == 0
 
-    def test_large_change_needs_review(self):
+    def test_large_churn_needs_review(self):
         prev = self._report_with([("a", str(i)) for i in range(10)])
         curr = self._report_with([("a", str(i)) for i in range(3)])  # dropped 7 of 10
-        churn, needs_review = assess_delta(prev, curr)
-        assert churn > 0.25
-        assert needs_review is True
+        result = assess_delta(prev, curr)
+        assert result.churn > 0.25
+        assert result.needs_review is True
+
+    def test_small_silent_removal_under_churn_band_still_reviewed(self):
+        # ~8% of a large set silently drops: churn stays under 25%, but the
+        # absolute removal count trips the tighter removal guard.
+        prev = self._report_with([("a", str(i)) for i in range(500)])
+        curr = self._report_with([("a", str(i)) for i in range(460)])  # -40 (8%)
+        result = assess_delta(prev, curr)
+        assert result.churn < 0.25
+        assert result.removed == 40
+        assert result.needs_review is True
+        assert "removed" in result.reason
+
+    def test_additions_are_not_as_sensitive_as_removals(self):
+        # Adding the same count that would trip the removal guard does not, on
+        # its own, force review (over-exclusion is the safe direction).
+        prev = self._report_with([("a", str(i)) for i in range(500)])
+        curr = self._report_with([("a", str(i)) for i in range(500)] + [("b", str(i)) for i in range(15)])
+        result = assess_delta(prev, curr)
+        assert result.added == 15
+        assert result.removed == 0
+        assert result.needs_review is False

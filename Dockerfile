@@ -3,7 +3,7 @@
 # can-i-tag-aws
 # Multi-stage build for minimal image size
 
-FROM python:3.13-slim AS builder
+FROM python:3.14-slim AS builder
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 # full suite runs identically on any host OS (macOS, Windows, Linux). Not the
 # final stage, so `docker build` without a target still produces the slim
 # runtime image that gets published.
-FROM python:3.13-slim AS dev
+FROM python:3.14-slim AS dev
 
 WORKDIR /app
 
@@ -41,7 +41,7 @@ COPY . .
 CMD ["pytest", "-q", "-m", "not integration"]
 
 
-FROM python:3.13-slim AS runtime
+FROM python:3.14-slim AS runtime
 
 WORKDIR /app
 

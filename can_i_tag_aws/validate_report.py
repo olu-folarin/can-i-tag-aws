@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import os
 import sys
+from dataclasses import dataclass
 
 from can_i_tag_aws.core.constants import MIN_EXPECTED_SERVICES
 from can_i_tag_aws.core.paths import OUTPUT_DIR
@@ -46,9 +47,17 @@ MIN_TOTAL_UNTAGGABLE = 200
 MAX_TOTAL_UNTAGGABLE = 1500
 MIN_CONDITIONALLY_TAGGABLE = 4
 
-# Fraction of the untaggable set that may change between runs before the report
-# is held back for human review rather than auto-merged.
+# Fraction of the untaggable set that may change (in either direction) between
+# runs before the report is held back for human review rather than auto-merged.
 DELTA_REVIEW_THRESHOLD = 0.25
+
+# Removals are the dangerous direction: an untaggable resource dropping off the
+# list means SCP/IAM tag enforcement would start applying to something that
+# cannot be tagged, which is exactly the deployment breakage this tool exists to
+# prevent. So removals get a much tighter, absolute trigger than overall churn:
+# a small silent drop (well under the 25% band) still gets a human.
+REMOVAL_REVIEW_ABS = 10
+REMOVAL_REVIEW_RATIO = 0.05
 
 
 def _all_service_names(report: dict) -> set[str]:
@@ -118,32 +127,57 @@ def check_invariants(report: dict) -> list[str]:
     return violations
 
 
-def assess_delta(previous: dict | None, current: dict) -> tuple[float, bool]:
-    """Compare the untaggable sets of two runs.
+@dataclass
+class DeltaAssessment:
+    """Outcome of comparing the untaggable sets of two runs."""
 
-    Returns (churn_ratio, needs_review). churn_ratio is the fraction of the
-    previous set that was added or removed. With no previous run there is no
-    baseline, so churn is 0 and review is not required.
+    churn: float
+    removed: int
+    added: int
+    needs_review: bool
+    reason: str
+
+
+def assess_delta(previous: dict | None, current: dict) -> DeltaAssessment:
+    """Compare the untaggable sets of two runs and decide whether a human is needed.
+
+    Review is triggered by any of: overall churn above the band, an absolute
+    number of removals, or a removal ratio. The removal triggers are deliberately
+    tighter than churn so a plausible-but-quietly-wrong run that silently drops a
+    handful of untaggable resources does not auto-merge unreviewed. With no
+    previous run there is no baseline, so nothing is flagged.
     """
     if previous is None:
-        return 0.0, False
+        return DeltaAssessment(0.0, 0, 0, False, "")
 
     old_set = extract_untaggable_set(previous)
     new_set = extract_untaggable_set(current)
     if not old_set:
-        return 0.0, False
+        return DeltaAssessment(0.0, 0, len(new_set), False, "")
 
-    changed = old_set.symmetric_difference(new_set)
-    churn = len(changed) / len(old_set)
-    return churn, churn > DELTA_REVIEW_THRESHOLD
+    removed = old_set - new_set
+    added = new_set - old_set
+    churn = len(removed | added) / len(old_set)
+    removed_ratio = len(removed) / len(old_set)
+
+    reasons: list[str] = []
+    if churn > DELTA_REVIEW_THRESHOLD:
+        reasons.append(f"churn {churn:.0%} exceeds {DELTA_REVIEW_THRESHOLD:.0%}")
+    if len(removed) >= REMOVAL_REVIEW_ABS:
+        reasons.append(f"{len(removed)} untaggable resources removed (>= {REMOVAL_REVIEW_ABS})")
+    if removed_ratio > REMOVAL_REVIEW_RATIO:
+        reasons.append(f"removals {removed_ratio:.0%} exceed {REMOVAL_REVIEW_RATIO:.0%}")
+
+    return DeltaAssessment(churn, len(removed), len(added), bool(reasons), "; ".join(reasons))
 
 
-def _emit_output(needs_review: bool) -> None:
+def _emit_output(assessment: DeltaAssessment) -> None:
     """Expose the merge decision to the workflow via GITHUB_OUTPUT."""
     output_path = os.environ.get("GITHUB_OUTPUT")
     if output_path:
         with open(output_path, "a") as fh:
-            fh.write(f"needs_review={'true' if needs_review else 'false'}\n")
+            fh.write(f"needs_review={'true' if assessment.needs_review else 'false'}\n")
+            fh.write(f"review_reason={assessment.reason}\n")
 
 
 def main() -> int:
@@ -163,19 +197,19 @@ def main() -> int:
 
     previous_file, _ = get_latest_history_files()
     previous = load_report(previous_file) if previous_file else None
-    churn, needs_review = assess_delta(previous, current)
+    delta = assess_delta(previous, current)
 
     summary = current.get("summary", {})
     print("Report validation passed hard invariants.")
     print(f"  total_untaggable_resources: {summary.get('total_untaggable_resources')}")
     print(f"  conditionally_taggable_resource_types: {summary.get('conditionally_taggable_resource_types')}")
-    print(f"  churn vs previous run: {churn:.1%}")
-    if needs_review:
-        print(f"  churn exceeds {DELTA_REVIEW_THRESHOLD:.0%}: holding for human review (no auto-merge).")
+    print(f"  vs previous run: churn {delta.churn:.1%}, +{delta.added} / -{delta.removed}")
+    if delta.needs_review:
+        print(f"  holding for human review (no auto-merge): {delta.reason}")
     else:
-        print("  change within threshold: safe to auto-merge.")
+        print("  change within thresholds: safe to auto-merge.")
 
-    _emit_output(needs_review)
+    _emit_output(delta)
     return 0
 
 

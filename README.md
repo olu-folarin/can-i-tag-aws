@@ -61,7 +61,7 @@ Scope is limited to untaggable resources, not:
 ## Known Limitations
 
 - **Web scraping dependency**: the tool parses AWS HTML docs; structure changes can break extraction
-- **Point-in-time accuracy**: AWS adds/changes services frequently; re-run to stay current
+- **Point-in-time accuracy**: AWS adds/changes services frequently. A weekly GitHub Actions run re-scrapes, validates the output against invariant and anchor checks, and opens an update PR: small validated changes auto-merge, large ones are held for review, and a broken scrape fails the run and opens a tracking issue rather than publishing bad data. You can also re-run on demand.
 - **Native runs may be unstable on some macOS setups** (Python/lxml segfaults). Docker is the recommended execution path.
 - **Conditionally taggable detection is convention-based**: AWS does not publish a registry of managed default instances, so the tool infers them from stable naming conventions (parameter groups, option groups, AWS-managed IAM policies) rather than a hardcoded list. This covers services that follow those conventions automatically, but a managed default that follows a different convention may be missed. Detection deliberately errs toward inclusion, since an unnecessary `default.*` exclusion is harmless for SCP enforcement while a missing one blocks deployments. If you encounter an AWS-managed resource instance that rejects tags despite the type appearing as taggable, open an issue. For account-verified results, run with `--live` (see below).
 

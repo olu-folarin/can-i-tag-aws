@@ -1,0 +1,83 @@
+name: Docker Scout image scan
+
+# Scans the runtime Docker image for OS and Python-package vulnerabilities with
+# Docker Scout and publishes results to the Security tab (Code scanning). Runs
+# when the image inputs change and on a weekly schedule so newly disclosed CVEs
+# surface even without a code change. Reports only fixable findings, so alerts
+# stay actionable.
+#
+# Docker Scout requires an authenticated Docker Hub account. Set the repository
+# secrets DOCKERHUB_USERNAME and DOCKERHUB_TOKEN (a read-only access token) to
+# enable it. Without them the job skips cleanly instead of failing.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - "requirements*.txt"
+      - ".github/workflows/scout.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - "requirements*.txt"
+      - ".github/workflows/scout.yml"
+  schedule:
+    - cron: "0 7 * * 1" # Mondays 07:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Scan runtime image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Check for Docker Hub credentials
+        id: creds
+        run: |
+          if [ -n "$DOCKERHUB_TOKEN" ] && [ -n "$DOCKERHUB_USERNAME" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Docker Scout skipped: set DOCKERHUB_USERNAME and DOCKERHUB_TOKEN repository secrets to enable image scanning."
+          fi
+
+      - name: Log in to Docker Hub
+        if: steps.creds.outputs.present == 'true'
+        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build runtime image
+        if: steps.creds.outputs.present == 'true'
+        run: docker build -t can-i-tag-aws:scan .
+
+      - name: Analyze image with Docker Scout
+        if: steps.creds.outputs.present == 'true'
+        uses: docker/scout-action@2688993af7bafd6ba8c6a74ec652442be91dd82b # v1.23.1
+        with:
+          command: cves
+          image: can-i-tag-aws:scan
+          sarif-file: scout-results.sarif
+          only-severities: critical,high
+          only-fixed: true
+
+      - name: Upload results to Code scanning
+        if: steps.creds.outputs.present == 'true'
+        uses: github/codeql-action/upload-sarif@b7351df727350dca84cb9d725d57dcf5bc82ba26 # v3
+        with:
+          sarif_file: scout-results.sarif
+          category: docker-scout

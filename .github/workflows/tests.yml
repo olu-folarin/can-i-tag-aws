@@ -1,8 +1,17 @@
 name: Tests
 
+# Pushes to a branch with an open PR used to run this whole workflow twice, once
+# for each event, so the integration job hit the AWS docs twice at the same
+# moment from the same runner range and one copy got throttled. Branch pushes are
+# covered by the pull_request run.
 on:
   push:
+    branches: [main]
   pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read

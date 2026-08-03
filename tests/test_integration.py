@@ -13,6 +13,8 @@ from functools import lru_cache
 
 import pytest
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from can_i_tag_aws.core.constants import (
     CFN_SPEC_URL,
@@ -22,6 +24,38 @@ from can_i_tag_aws.core.constants import (
 )
 
 pytestmark = pytest.mark.integration
+
+USER_AGENT = "can-i-tag-aws-tests (+https://github.com/olu-folarin/can-i-tag-aws)"
+
+
+@lru_cache(maxsize=1)
+def _session() -> requests.Session:
+    """Session that retries the throttling responses AWS docs returns to CI runners.
+
+    Requests from shared CI address ranges are occasionally answered with 403 or
+    429 rather than the page, and the body then parses as a document with no
+    services in it. Retrying with backoff keeps that from being reported as a
+    change in the AWS documentation.
+    """
+    retry = Retry(
+        total=4,
+        backoff_factor=1,
+        status_forcelist=(403, 429, 500, 502, 503, 504),
+        allowed_methods=("GET",),
+        respect_retry_after_header=True,
+        raise_on_status=False,
+    )
+    session = requests.Session()
+    session.headers["User-Agent"] = USER_AGENT
+    session.mount("https://", HTTPAdapter(max_retries=retry))
+    return session
+
+
+def fetch(url: str) -> requests.Response:
+    """GET a documentation URL, failing loudly if it was not actually served."""
+    response = _session().get(url, timeout=DEFAULT_HTTP_TIMEOUT)
+    assert response.status_code == 200, f"{url} returned HTTP {response.status_code} after retries"
+    return response
 
 
 @lru_cache(maxsize=1)
@@ -35,7 +69,7 @@ def _toc_service_urls() -> dict[str, str]:
     """
     from bs4 import BeautifulSoup
 
-    response = requests.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
+    response = fetch(SERVICE_AUTH_REF_TOC)
     soup = BeautifulSoup(response.text, "lxml")
 
     urls: dict[str, str] = {}
@@ -65,15 +99,12 @@ class TestAWSDocAccessibility:
 
     def test_iam_service_auth_ref_toc_accessible(self):
         """Verify IAM Service Authorization Reference TOC is accessible."""
-        response = requests.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
-        assert response.status_code == 200
+        response = fetch(SERVICE_AUTH_REF_TOC)
         assert "Actions, resources, and condition keys" in response.text
 
     def test_cfn_spec_accessible(self):
         """Verify CloudFormation spec is accessible."""
-        response = requests.get(CFN_SPEC_URL, timeout=DEFAULT_HTTP_TIMEOUT)
-        assert response.status_code == 200
-        data = response.json()
+        data = fetch(CFN_SPEC_URL).json()
         assert "ResourceTypes" in data
 
 
@@ -84,7 +115,7 @@ class TestAWSDocStructure:
         """Verify we find a reasonable number of services."""
         from bs4 import BeautifulSoup
 
-        response = requests.get(SERVICE_AUTH_REF_TOC, timeout=DEFAULT_HTTP_TIMEOUT)
+        response = fetch(SERVICE_AUTH_REF_TOC)
         soup = BeautifulSoup(response.text, "lxml")
 
         services = []
@@ -100,7 +131,7 @@ class TestAWSDocStructure:
         from bs4 import BeautifulSoup
 
         ec2_url = service_url("ec2")
-        response = requests.get(ec2_url, timeout=DEFAULT_HTTP_TIMEOUT)
+        response = fetch(ec2_url)
         soup = BeautifulSoup(response.text, "lxml")
 
         tables = soup.find_all("table")
@@ -112,8 +143,7 @@ class TestAWSDocStructure:
 
     def test_cfn_spec_has_expected_resource_count(self):
         """Verify CFN spec has a reasonable number of resource types."""
-        response = requests.get(CFN_SPEC_URL, timeout=DEFAULT_HTTP_TIMEOUT)
-        data = response.json()
+        data = fetch(CFN_SPEC_URL).json()
 
         resource_types = data.get("ResourceTypes", {})
         assert len(resource_types) >= 1000, f"Expected 1000+ resources, found {len(resource_types)}"
@@ -127,7 +157,7 @@ class TestSampleServiceParsing:
         from bs4 import BeautifulSoup
 
         ec2_url = service_url("ec2")
-        response = requests.get(ec2_url, timeout=DEFAULT_HTTP_TIMEOUT)
+        response = fetch(ec2_url)
         soup = BeautifulSoup(response.text, "lxml")
 
         text = soup.get_text().lower()
@@ -138,7 +168,7 @@ class TestSampleServiceParsing:
         from bs4 import BeautifulSoup
 
         health_url = service_url("health")
-        response = requests.get(health_url, timeout=DEFAULT_HTTP_TIMEOUT)
+        response = fetch(health_url)
         soup = BeautifulSoup(response.text, "lxml")
 
         text = soup.get_text().lower()

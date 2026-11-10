@@ -15,11 +15,19 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     env:
-      PR_TOKEN: ${{ secrets.PR_BOT_TOKEN || github.token }}
+      PR_TOKEN: ${{ github.token }}
 
     steps:
+      - name: Resolve auth token
+        env:
+          PAT: ${{ secrets.PR_BOT_TOKEN }}
+        run: |
+          if [ -n "$PAT" ] && GH_TOKEN="$PAT" gh api user >/dev/null 2>&1; then
+            echo "PR_TOKEN=$PAT" >> "$GITHUB_ENV"
+          fi
+
       - name: Checkout repository
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           token: ${{ env.PR_TOKEN }}
 
